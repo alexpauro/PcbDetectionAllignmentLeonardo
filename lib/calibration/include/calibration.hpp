@@ -2,8 +2,17 @@
 #define CALIBRATION_HPP
 
 #include <string>
+#include <filesystem>
 #include <opencv2/opencv.hpp>
 #include <opencv2/aruco/charuco.hpp>
+
+/**
+ * @brief Sposta un file nella sottocartella "ok" all'interno della sua cartella sorgente.
+ * 
+ * @param sourcePath Percorso del file da spostare.
+ * @return true se lo spostamento ha avuto successo, false altrimenti.
+ */
+bool moveToOkFolder(const std::filesystem::path& sourcePath);
 
 /**
  * @brief Calibra la telecamera utilizzando un pattern ChArUco in modo iterativo.

@@ -12,8 +12,6 @@
 #include <future>
 #include <thread>
 
-namespace {
-
 // Funzione per spostare un file in una sottocartella "ok" della cartella sorgente dopo avere usato la foto per la calibrazione
 bool moveToOkFolder(const std::filesystem::path& sourcePath) {
     const std::filesystem::path okFolder = sourcePath.parent_path() / "ok";
@@ -40,6 +38,8 @@ bool moveToOkFolder(const std::filesystem::path& sourcePath) {
     }
     return true;
 }
+
+namespace {
 
 // Struttura per memorizzare i dati di rilevamento ChArUco per un'immagine
 struct CharucoDetection {

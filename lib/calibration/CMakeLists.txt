@@ -1,5 +1,6 @@
 add_library(calibration
     src/calibration.cpp
+    src/undistort.cpp
 )
 
 target_include_directories(calibration
