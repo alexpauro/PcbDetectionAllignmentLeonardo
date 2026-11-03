@@ -1,0 +1,1086 @@
+======================================================
+ Avvio run.sh: 2026-11-03 17:08:54
+ Log file: logs/run_2026-11-03_17-08-54.txt
+======================================================
+-- OpenCV versione trovata: 4.9.0
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/build
+Consolidate compiler generated dependencies of target component_detection
+Consolidate compiler generated dependencies of target cv_component_detection
+Consolidate compiler generated dependencies of target calibration
+[ 22%] Built target cv_component_detection
+[ 55%] Built target calibration
+[ 77%] Built target component_detection
+Consolidate compiler generated dependencies of target pcb_app
+[100%] Built target pcb_app
+
+=== ESECUZIONE ===
+=== AVVIO CALIBRAZIONE TELECAMERA ===
+
+--- Elaborazione in corso ---
+
+======================================================
+CALIBRAZIONE GIA' EFFETTUATA PER: ../data/inputs/calib_images/calib_images_robot
+Parametri trovati in: ../data/parameters/camera_params_robot.yml
+Salto la fase di calibrazione.
+======================================================
+
+========================================================
+Calibrazione completata con successo!
+Parametri salvati in: ../data/parameters/camera_params_robot.yml
+========================================================
+
+=== AVVIO RADDRIZZAMENTO IMMAGINI ROBOT ===
+
+Modalità di elaborazione raddrizzamento:
+1) Fai tutto (elabora automaticamente tutte le schede e tutti i lati)
+2) Una scheda alla volta e un lato alla volta
+Seleziona un'opzione (1 / 2): 
+=== MODALITÀ FAI TUTTO: Elaborazione automatica di tutte le schede e lati ===
+
+--- Elaborazione scheda: C ---
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/C/TOP. Salto la telecamera.
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/C/BOTTOM. Salto la telecamera.
+Scheda C completata.
+
+--- Elaborazione scheda: E ---
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/E/TOP. Salto la telecamera.
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/E/BOTTOM. Salto la telecamera.
+Scheda E completata.
+
+--- Elaborazione scheda: G ---
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/G/TOP. Salto la telecamera.
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/G/BOTTOM. Salto la telecamera.
+Scheda G completata.
+
+--- Elaborazione scheda: A ---
+
+======================================================
+INIZIO RADDRIZZAMENTO: ../data/inputs/pcb_images/A/TOP
+======================================================
+
+====================================================================
+FINESTRA REGOLAZIONE ATTIVA: A_TOP_1
+Comandi (modificabili entrambi indipendentemente):
+  [W] / [Freccia SU] / [+]       : Aumenta Luminosita' (+8)  [Range: 10 - 250]
+  [S] / [Freccia GIU'] / [-]     : Diminuisce Luminosita' (-8) [Range: 10 - 250]
+  [D] / [Freccia DESTRA]         : Aumenta Contrasto (+0.50) [Range: 0.2 - 16.0]
+  [A] / [Freccia SINISTRA]       : Diminuisce Contrasto (-0.50)[Range: 0.2 - 16.0]
+  [R]                            : Reset (Lum: 128, Cont: 2.5)
+  [INVIO] o [SPAZIO]             : CONFERMA (OK) e procedi
+====================================================================
+
+
+
+======================================================
+PARAMETRI CONFERMATI PER A_TOP_1:
+  - Luminosita' target: 128
+  - Contrasto (CLAHE) : 2.5
+======================================================
+
+Elaborata e salvata con successo: ../data/outputs/pcb_images_undistorted/A/TOP/A_TOP_001.bmp. Originale spostato in ok/.
+
+====================================================================
+FINESTRA REGOLAZIONE ATTIVA: A_TOP_2
+Comandi (modificabili entrambi indipendentemente):
+  [W] / [Freccia SU] / [+]       : Aumenta Luminosita' (+8)  [Range: 10 - 250]
+  [S] / [Freccia GIU'] / [-]     : Diminuisce Luminosita' (-8) [Range: 10 - 250]
+  [D] / [Freccia DESTRA]         : Aumenta Contrasto (+0.50) [Range: 0.2 - 16.0]
+  [A] / [Freccia SINISTRA]       : Diminuisce Contrasto (-0.50)[Range: 0.2 - 16.0]
+  [R]                            : Reset (Lum: 128, Cont: 2.5)
+  [INVIO] o [SPAZIO]             : CONFERMA (OK) e procedi
+====================================================================
+
+
+
+======================================================
+PARAMETRI CONFERMATI PER A_TOP_2:
+  - Luminosita' target: 128
+  - Contrasto (CLAHE) : 2.5
+======================================================
+
+Elaborata e salvata con successo: ../data/outputs/pcb_images_undistorted/A/TOP/A_TOP_002.bmp. Originale spostato in ok/.
+
+====================================================================
+FINESTRA REGOLAZIONE ATTIVA: A_TOP_3
+Comandi (modificabili entrambi indipendentemente):
+  [W] / [Freccia SU] / [+]       : Aumenta Luminosita' (+8)  [Range: 10 - 250]
+  [S] / [Freccia GIU'] / [-]     : Diminuisce Luminosita' (-8) [Range: 10 - 250]
+  [D] / [Freccia DESTRA]         : Aumenta Contrasto (+0.50) [Range: 0.2 - 16.0]
+  [A] / [Freccia SINISTRA]       : Diminuisce Contrasto (-0.50)[Range: 0.2 - 16.0]
+  [R]                            : Reset (Lum: 128, Cont: 2.5)
+  [INVIO] o [SPAZIO]             : CONFERMA (OK) e procedi
+====================================================================
+
+
+
+======================================================
+PARAMETRI CONFERMATI PER A_TOP_3:
+  - Luminosita' target: 128
+  - Contrasto (CLAHE) : 2.5
+======================================================
+
+Elaborata e salvata con successo: ../data/outputs/pcb_images_undistorted/A/TOP/A_TOP_003.bmp. Originale spostato in ok/.
+
+====================================================================
+FINESTRA REGOLAZIONE ATTIVA: A_TOP_4
+Comandi (modificabili entrambi indipendentemente):
+  [W] / [Freccia SU] / [+]       : Aumenta Luminosita' (+8)  [Range: 10 - 250]
+  [S] / [Freccia GIU'] / [-]     : Diminuisce Luminosita' (-8) [Range: 10 - 250]
+  [D] / [Freccia DESTRA]         : Aumenta Contrasto (+0.50) [Range: 0.2 - 16.0]
+  [A] / [Freccia SINISTRA]       : Diminuisce Contrasto (-0.50)[Range: 0.2 - 16.0]
+  [R]                            : Reset (Lum: 128, Cont: 2.5)
+  [INVIO] o [SPAZIO]             : CONFERMA (OK) e procedi
+====================================================================
+
+
+
+======================================================
+PARAMETRI CONFERMATI PER A_TOP_4:
+  - Luminosita' target: 128
+  - Contrasto (CLAHE) : 2.5
+======================================================
+
+Elaborata e salvata con successo: ../data/outputs/pcb_images_undistorted/A/TOP/A_TOP_004.bmp. Originale spostato in ok/.
+
+====================================================================
+FINESTRA REGOLAZIONE ATTIVA: A_TOP_5
+Comandi (modificabili entrambi indipendentemente):
+  [W] / [Freccia SU] / [+]       : Aumenta Luminosita' (+8)  [Range: 10 - 250]
+  [S] / [Freccia GIU'] / [-]     : Diminuisce Luminosita' (-8) [Range: 10 - 250]
+  [D] / [Freccia DESTRA]         : Aumenta Contrasto (+0.50) [Range: 0.2 - 16.0]
+  [A] / [Freccia SINISTRA]       : Diminuisce Contrasto (-0.50)[Range: 0.2 - 16.0]
+  [R]                            : Reset (Lum: 128, Cont: 2.5)
+  [INVIO] o [SPAZIO]             : CONFERMA (OK) e procedi
+====================================================================
+
+
+
+======================================================
+PARAMETRI CONFERMATI PER A_TOP_5:
+  - Luminosita' target: 128
+  - Contrasto (CLAHE) : 2.5
+======================================================
+
+Elaborata e salvata con successo: ../data/outputs/pcb_images_undistorted/A/TOP/A_TOP_005.bmp. Originale spostato in ok/.
+
+====================================================================
+FINESTRA REGOLAZIONE ATTIVA: A_TOP_6
+Comandi (modificabili entrambi indipendentemente):
+  [W] / [Freccia SU] / [+]       : Aumenta Luminosita' (+8)  [Range: 10 - 250]
+  [S] / [Freccia GIU'] / [-]     : Diminuisce Luminosita' (-8) [Range: 10 - 250]
+  [D] / [Freccia DESTRA]         : Aumenta Contrasto (+0.50) [Range: 0.2 - 16.0]
+  [A] / [Freccia SINISTRA]       : Diminuisce Contrasto (-0.50)[Range: 0.2 - 16.0]
+  [R]                            : Reset (Lum: 128, Cont: 2.5)
+  [INVIO] o [SPAZIO]             : CONFERMA (OK) e procedi
+====================================================================
+
+
+
+======================================================
+PARAMETRI CONFERMATI PER A_TOP_6:
+  - Luminosita' target: 128
+  - Contrasto (CLAHE) : 2.5
+======================================================
+
+Elaborata e salvata con successo: ../data/outputs/pcb_images_undistorted/A/TOP/A_TOP_006.bmp. Originale spostato in ok/.
+
+====================================================================
+FINESTRA REGOLAZIONE ATTIVA: A_TOP_7
+Comandi (modificabili entrambi indipendentemente):
+  [W] / [Freccia SU] / [+]       : Aumenta Luminosita' (+8)  [Range: 10 - 250]
+  [S] / [Freccia GIU'] / [-]     : Diminuisce Luminosita' (-8) [Range: 10 - 250]
+  [D] / [Freccia DESTRA]         : Aumenta Contrasto (+0.50) [Range: 0.2 - 16.0]
+  [A] / [Freccia SINISTRA]       : Diminuisce Contrasto (-0.50)[Range: 0.2 - 16.0]
+  [R]                            : Reset (Lum: 128, Cont: 2.5)
+  [INVIO] o [SPAZIO]             : CONFERMA (OK) e procedi
+====================================================================
+
+
+
+======================================================
+PARAMETRI CONFERMATI PER A_TOP_7:
+  - Luminosita' target: 128
+  - Contrasto (CLAHE) : 2.5
+======================================================
+
+Elaborata e salvata con successo: ../data/outputs/pcb_images_undistorted/A/TOP/A_TOP_007.bmp. Originale spostato in ok/.
+
+====================================================================
+FINESTRA REGOLAZIONE ATTIVA: A_TOP_8
+Comandi (modificabili entrambi indipendentemente):
+  [W] / [Freccia SU] / [+]       : Aumenta Luminosita' (+8)  [Range: 10 - 250]
+  [S] / [Freccia GIU'] / [-]     : Diminuisce Luminosita' (-8) [Range: 10 - 250]
+  [D] / [Freccia DESTRA]         : Aumenta Contrasto (+0.50) [Range: 0.2 - 16.0]
+  [A] / [Freccia SINISTRA]       : Diminuisce Contrasto (-0.50)[Range: 0.2 - 16.0]
+  [R]                            : Reset (Lum: 128, Cont: 2.5)
+  [INVIO] o [SPAZIO]             : CONFERMA (OK) e procedi
+====================================================================
+
+
+
+======================================================
+PARAMETRI CONFERMATI PER A_TOP_8:
+  - Luminosita' target: 128
+  - Contrasto (CLAHE) : 2.5
+======================================================
+
+Elaborata e salvata con successo: ../data/outputs/pcb_images_undistorted/A/TOP/A_TOP_008.bmp. Originale spostato in ok/.
+
+====================================================================
+FINESTRA REGOLAZIONE ATTIVA: A_TOP_9
+Comandi (modificabili entrambi indipendentemente):
+  [W] / [Freccia SU] / [+]       : Aumenta Luminosita' (+8)  [Range: 10 - 250]
+  [S] / [Freccia GIU'] / [-]     : Diminuisce Luminosita' (-8) [Range: 10 - 250]
+  [D] / [Freccia DESTRA]         : Aumenta Contrasto (+0.50) [Range: 0.2 - 16.0]
+  [A] / [Freccia SINISTRA]       : Diminuisce Contrasto (-0.50)[Range: 0.2 - 16.0]
+  [R]                            : Reset (Lum: 128, Cont: 2.5)
+  [INVIO] o [SPAZIO]             : CONFERMA (OK) e procedi
+====================================================================
+
+
+
+======================================================
+PARAMETRI CONFERMATI PER A_TOP_9:
+  - Luminosita' target: 128
+  - Contrasto (CLAHE) : 2.5
+======================================================
+
+Elaborata e salvata con successo: ../data/outputs/pcb_images_undistorted/A/TOP/A_TOP_009.bmp. Originale spostato in ok/.
+
+====================================================================
+FINESTRA REGOLAZIONE ATTIVA: A_TOP_10
+Comandi (modificabili entrambi indipendentemente):
+  [W] / [Freccia SU] / [+]       : Aumenta Luminosita' (+8)  [Range: 10 - 250]
+  [S] / [Freccia GIU'] / [-]     : Diminuisce Luminosita' (-8) [Range: 10 - 250]
+  [D] / [Freccia DESTRA]         : Aumenta Contrasto (+0.50) [Range: 0.2 - 16.0]
+  [A] / [Freccia SINISTRA]       : Diminuisce Contrasto (-0.50)[Range: 0.2 - 16.0]
+  [R]                            : Reset (Lum: 128, Cont: 2.5)
+  [INVIO] o [SPAZIO]             : CONFERMA (OK) e procedi
+====================================================================
+
+
+
+======================================================
+PARAMETRI CONFERMATI PER A_TOP_10:
+  - Luminosita' target: 128
+  - Contrasto (CLAHE) : 2.5
+======================================================
+
+Elaborata e salvata con successo: ../data/outputs/pcb_images_undistorted/A/TOP/A_TOP_010.bmp. Originale spostato in ok/.
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/A/BOTTOM. Salto la telecamera.
+Scheda A completata.
+
+--- Elaborazione scheda: D ---
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/D/TOP. Salto la telecamera.
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/D/BOTTOM. Salto la telecamera.
+Scheda D completata.
+
+--- Elaborazione scheda: B ---
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/B/TOP. Salto la telecamera.
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/B/BOTTOM. Salto la telecamera.
+Scheda B completata.
+
+--- Elaborazione scheda: F ---
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/F/TOP. Salto la telecamera.
+Nessuna immagine da raddrizzare per F (BOTTOM). Salto.
+Scheda F completata.
+
+========================================================
+Raddrizzamento di tutte le schede completato!
+========================================================
+
+========================================================
+        MODALITÀ DI RILEVAMENTO COMPONENTI PCB          
+========================================================
+1) Computer Vision Classica (Filtro verde PCB, bordi, rettangoli ruotati e cerchi)
+2) Deep Learning YOLO (Modello a 2 stadi)
+3) Entrambi (prima CV Classica, poi YOLO)
+Seleziona un'opzione (1 / 2 / 3, default 1): 
+Vuoi mostrare le finestre a schermo con i risultati per ciascuna scheda? (S/N, default S): 
+========================================================
+=== AVVIO RILEVAMENTO COMPONENTI PCB (COMPUTER VISION) ===
+========================================================
+
+--- Elaborazione CV Componenti per scheda: A ---
+
+Elaborazione Computer Vision per A [TOP] (10 immagini)...
+
+-> Analisi filtri e bordi su: A_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_001_components_cv.json
+   Componenti totali trovati: 1
+     - Rettangoli orientati/ruotati: 1
+     - Cerchi: 0
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: A [TOP] - A_TOP_001
+  Totale componenti individuati: 1
+    - Rettangoli orientati: 1
+    - Cerchi: 0
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+
+-> Analisi filtri e bordi su: A_TOP_002.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_002_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_002_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_002_components_cv.json
+   Componenti totali trovati: 70
+     - Rettangoli orientati/ruotati: 60
+     - Cerchi: 10
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: A [TOP] - A_TOP_002
+  Totale componenti individuati: 70
+    - Rettangoli orientati: 60
+    - Cerchi: 10
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+
+-> Analisi filtri e bordi su: A_TOP_003.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.json
+   Componenti totali trovati: 429
+     - Rettangoli orientati/ruotati: 290
+     - Cerchi: 139
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: A [TOP] - A_TOP_003
+  Totale componenti individuati: 429
+    - Rettangoli orientati: 290
+    - Cerchi: 139
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+
+-> Analisi filtri e bordi su: A_TOP_004.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_004_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_004_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_004_components_cv.json
+   Componenti totali trovati: 326
+     - Rettangoli orientati/ruotati: 249
+     - Cerchi: 77
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: A [TOP] - A_TOP_004
+  Totale componenti individuati: 326
+    - Rettangoli orientati: 249
+    - Cerchi: 77
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+
+-> Analisi filtri e bordi su: A_TOP_005.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_005_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_005_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_005_components_cv.json
+   Componenti totali trovati: 0
+     - Rettangoli orientati/ruotati: 0
+     - Cerchi: 0
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: A [TOP] - A_TOP_005
+  Totale componenti individuati: 0
+    - Rettangoli orientati: 0
+    - Cerchi: 0
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+
+-> Analisi filtri e bordi su: A_TOP_006.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_006_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_006_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_006_components_cv.json
+   Componenti totali trovati: 358
+     - Rettangoli orientati/ruotati: 287
+     - Cerchi: 71
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: A [TOP] - A_TOP_006
+  Totale componenti individuati: 358
+    - Rettangoli orientati: 287
+    - Cerchi: 71
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+
+-> Analisi filtri e bordi su: A_TOP_007.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_007_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_007_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_007_components_cv.json
+   Componenti totali trovati: 98
+     - Rettangoli orientati/ruotati: 91
+     - Cerchi: 7
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: A [TOP] - A_TOP_007
+  Totale componenti individuati: 98
+    - Rettangoli orientati: 91
+    - Cerchi: 7
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+
+-> Analisi filtri e bordi su: A_TOP_008.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_008_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_008_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_008_components_cv.json
+   Componenti totali trovati: 1
+     - Rettangoli orientati/ruotati: 1
+     - Cerchi: 0
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: A [TOP] - A_TOP_008
+  Totale componenti individuati: 1
+    - Rettangoli orientati: 1
+    - Cerchi: 0
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+
+-> Analisi filtri e bordi su: A_TOP_009.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_009_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_009_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_009_components_cv.json
+   Componenti totali trovati: 3
+     - Rettangoli orientati/ruotati: 3
+     - Cerchi: 0
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: A [TOP] - A_TOP_009
+  Totale componenti individuati: 3
+    - Rettangoli orientati: 3
+    - Cerchi: 0
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+
+-> Analisi filtri e bordi su: A_TOP_010.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_010_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_010_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_010_components_cv.json
+   Componenti totali trovati: 2
+     - Rettangoli orientati/ruotati: 2
+     - Cerchi: 0
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: A [TOP] - A_TOP_010
+  Totale componenti individuati: 2
+    - Rettangoli orientati: 2
+    - Cerchi: 0
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/A/TOP"
+
+Elaborazione Computer Vision per A [BOTTOM] (1 immagini)...
+
+-> Analisi filtri e bordi su: A_BOTTOM_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/BOTTOM/A_BOTTOM_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/BOTTOM/A_BOTTOM_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/BOTTOM/A_BOTTOM_001_components_cv.json
+   Componenti totali trovati: 53
+     - Rettangoli orientati/ruotati: 49
+     - Cerchi: 4
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: A [BOTTOM] - A_BOTTOM_001
+  Totale componenti individuati: 53
+    - Rettangoli orientati: 49
+    - Cerchi: 4
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/A/BOTTOM"
+
+--- Elaborazione CV Componenti per scheda: B ---
+
+Elaborazione Computer Vision per B [TOP] (1 immagini)...
+
+-> Analisi filtri e bordi su: B_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/B/TOP/B_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/B/TOP/B_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/B/TOP/B_TOP_001_components_cv.json
+   Componenti totali trovati: 7
+     - Rettangoli orientati/ruotati: 7
+     - Cerchi: 0
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: B [TOP] - B_TOP_001
+  Totale componenti individuati: 7
+    - Rettangoli orientati: 7
+    - Cerchi: 0
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/B/TOP"
+
+Elaborazione Computer Vision per B [BOTTOM] (1 immagini)...
+
+-> Analisi filtri e bordi su: B_BOTTOM_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/B/BOTTOM/B_BOTTOM_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/B/BOTTOM/B_BOTTOM_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/B/BOTTOM/B_BOTTOM_001_components_cv.json
+   Componenti totali trovati: 1
+     - Rettangoli orientati/ruotati: 1
+     - Cerchi: 0
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: B [BOTTOM] - B_BOTTOM_001
+  Totale componenti individuati: 1
+    - Rettangoli orientati: 1
+    - Cerchi: 0
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/B/BOTTOM"
+
+--- Elaborazione CV Componenti per scheda: C ---
+
+Elaborazione Computer Vision per C [TOP] (1 immagini)...
+
+-> Analisi filtri e bordi su: C_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/C/TOP/C_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/C/TOP/C_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/C/TOP/C_TOP_001_components_cv.json
+   Componenti totali trovati: 6
+     - Rettangoli orientati/ruotati: 6
+     - Cerchi: 0
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: C [TOP] - C_TOP_001
+  Totale componenti individuati: 6
+    - Rettangoli orientati: 6
+    - Cerchi: 0
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/C/TOP"
+
+Elaborazione Computer Vision per C [BOTTOM] (1 immagini)...
+
+-> Analisi filtri e bordi su: C_BOTTOM_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/C/BOTTOM/C_BOTTOM_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/C/BOTTOM/C_BOTTOM_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/C/BOTTOM/C_BOTTOM_001_components_cv.json
+   Componenti totali trovati: 14
+     - Rettangoli orientati/ruotati: 12
+     - Cerchi: 2
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: C [BOTTOM] - C_BOTTOM_001
+  Totale componenti individuati: 14
+    - Rettangoli orientati: 12
+    - Cerchi: 2
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/C/BOTTOM"
+
+--- Elaborazione CV Componenti per scheda: D ---
+
+Elaborazione Computer Vision per D [TOP] (1 immagini)...
+
+-> Analisi filtri e bordi su: D_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/D/TOP/D_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/D/TOP/D_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/D/TOP/D_TOP_001_components_cv.json
+   Componenti totali trovati: 7
+     - Rettangoli orientati/ruotati: 6
+     - Cerchi: 1
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: D [TOP] - D_TOP_001
+  Totale componenti individuati: 7
+    - Rettangoli orientati: 6
+    - Cerchi: 1
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/D/TOP"
+
+Elaborazione Computer Vision per D [BOTTOM] (1 immagini)...
+
+-> Analisi filtri e bordi su: D_BOTTOM_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/D/BOTTOM/D_BOTTOM_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/D/BOTTOM/D_BOTTOM_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/D/BOTTOM/D_BOTTOM_001_components_cv.json
+   Componenti totali trovati: 4
+     - Rettangoli orientati/ruotati: 4
+     - Cerchi: 0
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: D [BOTTOM] - D_BOTTOM_001
+  Totale componenti individuati: 4
+    - Rettangoli orientati: 4
+    - Cerchi: 0
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/D/BOTTOM"
+
+--- Elaborazione CV Componenti per scheda: E ---
+
+Elaborazione Computer Vision per E [TOP] (1 immagini)...
+
+-> Analisi filtri e bordi su: E_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/E/TOP/E_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/E/TOP/E_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/E/TOP/E_TOP_001_components_cv.json
+   Componenti totali trovati: 148
+     - Rettangoli orientati/ruotati: 135
+     - Cerchi: 13
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: E [TOP] - E_TOP_001
+  Totale componenti individuati: 148
+    - Rettangoli orientati: 135
+    - Cerchi: 13
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/E/TOP"
+
+Elaborazione Computer Vision per E [BOTTOM] (1 immagini)...
+
+-> Analisi filtri e bordi su: E_BOTTOM_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/E/BOTTOM/E_BOTTOM_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/E/BOTTOM/E_BOTTOM_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/E/BOTTOM/E_BOTTOM_001_components_cv.json
+   Componenti totali trovati: 17
+     - Rettangoli orientati/ruotati: 15
+     - Cerchi: 2
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: E [BOTTOM] - E_BOTTOM_001
+  Totale componenti individuati: 17
+    - Rettangoli orientati: 15
+    - Cerchi: 2
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/E/BOTTOM"
+
+--- Elaborazione CV Componenti per scheda: F ---
+
+Elaborazione Computer Vision per F [TOP] (1 immagini)...
+
+-> Analisi filtri e bordi su: F_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/F/TOP/F_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/F/TOP/F_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/F/TOP/F_TOP_001_components_cv.json
+   Componenti totali trovati: 8
+     - Rettangoli orientati/ruotati: 7
+     - Cerchi: 1
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: F [TOP] - F_TOP_001
+  Totale componenti individuati: 8
+    - Rettangoli orientati: 7
+    - Cerchi: 1
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/F/TOP"
+
+--- Elaborazione CV Componenti per scheda: G ---
+
+Elaborazione Computer Vision per G [TOP] (1 immagini)...
+
+-> Analisi filtri e bordi su: G_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/G/TOP/G_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/G/TOP/G_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/G/TOP/G_TOP_001_components_cv.json
+   Componenti totali trovati: 7
+     - Rettangoli orientati/ruotati: 6
+     - Cerchi: 1
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: G [TOP] - G_TOP_001
+  Totale componenti individuati: 7
+    - Rettangoli orientati: 6
+    - Cerchi: 1
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/G/TOP"
+
+Elaborazione Computer Vision per G [BOTTOM] (1 immagini)...
+
+-> Analisi filtri e bordi su: G_BOTTOM_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/G/BOTTOM/G_BOTTOM_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/G/BOTTOM/G_BOTTOM_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/G/BOTTOM/G_BOTTOM_001_components_cv.json
+   Componenti totali trovati: 6
+     - Rettangoli orientati/ruotati: 4
+     - Cerchi: 2
+
+========================================================
+  FINESTRA ATTIVA: Riconoscimento CV Componenti: G [BOTTOM] - G_BOTTOM_001
+  Totale componenti individuati: 6
+    - Rettangoli orientati: 4
+    - Cerchi: 2
+  Premi un tasto qualsiasi sulla finestra per continuare...
+========================================================
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/G/BOTTOM"
+
+========================================================
+Rilevamento CV classica completato con successo!
+Immagini annotate, maschere, CSV e JSON salvati in:
+  ../data/outputs/pcb_cv_component_detection
+========================================================
+
+=== AVVIO RICONOSCIMENTO COMPONENTI PCB ===
+
+Inizializzazione del rilevatore componenti PCB...
+- Pesi 'any' (localizzazione): ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.pt
+- Pesi 'fine' (classificazione 13 classi): ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.pt
+[ComponentDetector] Trovato modello ONNX già esportato: "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx"
+[ComponentDetector] Caricamento rete ANY: ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx ...
+[ComponentDetector] Modello ANY caricato con successo.
+[ComponentDetector] Trovato modello ONNX già esportato: "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx"
+[ComponentDetector] Caricamento rete FINE: ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx ...
+[ComponentDetector] Modello FINE caricato con successo (13 classi configurate).
+
+--- Elaborazione componenti per scheda: C ---
+
+Elaborazione di 1 immagini per C [TOP]...
+
+-> Esecuzione rilevamento su: C_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/C/TOP/C_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/C/TOP/C_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/C/TOP/C_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/C/TOP/C_TOP_001_summary.json
+   Trovati 9 componenti.
+   Dettaglio classi:
+     - ?: 8
+     - IC: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/C/TOP"
+
+Elaborazione di 1 immagini per C [BOTTOM]...
+
+-> Esecuzione rilevamento su: C_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/C/BOTTOM/C_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/C/BOTTOM/C_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/C/BOTTOM/C_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/C/BOTTOM/C_BOTTOM_001_summary.json
+   Trovati 1 componenti.
+   Dettaglio classi:
+     - IC: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/C/BOTTOM"
+
+--- Elaborazione componenti per scheda: E ---
+
+Elaborazione di 1 immagini per E [TOP]...
+
+-> Esecuzione rilevamento su: E_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/E/TOP/E_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/E/TOP/E_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/E/TOP/E_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/E/TOP/E_TOP_001_summary.json
+   Trovati 153 componenti.
+   Dettaglio classi:
+     - ?: 95
+     - Capacitor: 43
+     - Connector: 1
+     - IC: 9
+     - Resistor: 5
+Risultati salvati in: "../data/outputs/pcb_component_detection/E/TOP"
+
+Elaborazione di 1 immagini per E [BOTTOM]...
+
+-> Esecuzione rilevamento su: E_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/E/BOTTOM/E_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/E/BOTTOM/E_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/E/BOTTOM/E_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/E/BOTTOM/E_BOTTOM_001_summary.json
+   Trovati 17 componenti.
+   Dettaglio classi:
+     - ?: 6
+     - IC: 11
+Risultati salvati in: "../data/outputs/pcb_component_detection/E/BOTTOM"
+
+--- Elaborazione componenti per scheda: G ---
+
+Elaborazione di 1 immagini per G [TOP]...
+
+-> Esecuzione rilevamento su: G_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/G/TOP/G_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/G/TOP/G_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/G/TOP/G_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/G/TOP/G_TOP_001_summary.json
+   Trovati 45 componenti.
+   Dettaglio classi:
+     - ?: 18
+     - Capacitor: 11
+     - IC: 12
+     - Resistor: 4
+Risultati salvati in: "../data/outputs/pcb_component_detection/G/TOP"
+
+Elaborazione di 1 immagini per G [BOTTOM]...
+
+-> Esecuzione rilevamento su: G_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/G/BOTTOM/G_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/G/BOTTOM/G_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/G/BOTTOM/G_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/G/BOTTOM/G_BOTTOM_001_summary.json
+   Trovati 44 componenti.
+   Dettaglio classi:
+     - ?: 15
+     - Capacitor: 7
+     - IC: 20
+     - Resistor: 1
+     - Transistor: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/G/BOTTOM"
+
+--- Elaborazione componenti per scheda: A ---
+
+Elaborazione di 10 immagini per A [TOP]...
+
+-> Esecuzione rilevamento su: A_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_summary.json
+   Trovati 20 componenti.
+   Dettaglio classi:
+     - ?: 13
+     - Electrolytic Capacitor: 1
+     - IC: 6
+
+-> Esecuzione rilevamento su: A_TOP_002.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_002_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_002_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_002_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_002_summary.json
+   Trovati 15 componenti.
+   Dettaglio classi:
+     - ?: 5
+     - Capacitor: 1
+     - IC: 3
+     - Resistor: 6
+
+-> Esecuzione rilevamento su: A_TOP_003.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_003_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_003_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_003_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_003_summary.json
+   Trovati 152 componenti.
+   Dettaglio classi:
+     - ?: 41
+     - Capacitor: 31
+     - Connector: 3
+     - Diode: 2
+     - IC: 20
+     - Marker: 3
+     - Other: 3
+     - Resistor: 46
+     - Transistor: 3
+
+-> Esecuzione rilevamento su: A_TOP_004.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_004_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_004_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_004_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_004_summary.json
+   Trovati 130 componenti.
+   Dettaglio classi:
+     - ?: 25
+     - Capacitor: 17
+     - Diode: 1
+     - Electrolytic Capacitor: 5
+     - IC: 17
+     - Inductor: 2
+     - LED: 2
+     - Marker: 4
+     - Oscillator: 1
+     - Other: 32
+     - Resistor: 23
+     - Switch/Button: 1
+
+-> Esecuzione rilevamento su: A_TOP_005.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_005_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_005_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_005_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_005_summary.json
+   Trovati 29 componenti.
+   Dettaglio classi:
+     - ?: 12
+     - Capacitor: 8
+     - IC: 8
+     - Resistor: 1
+
+-> Esecuzione rilevamento su: A_TOP_006.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_006_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_006_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_006_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_006_summary.json
+   Trovati 83 componenti.
+   Dettaglio classi:
+     - ?: 8
+     - Capacitor: 15
+     - Diode: 1
+     - Electrolytic Capacitor: 2
+     - IC: 21
+     - Inductor: 3
+     - LED: 1
+     - Marker: 2
+     - Other: 19
+     - Resistor: 8
+     - Switch/Button: 3
+
+-> Esecuzione rilevamento su: A_TOP_007.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_007_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_007_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_007_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_007_summary.json
+   Trovati 73 componenti.
+   Dettaglio classi:
+     - ?: 9
+     - Capacitor: 7
+     - Electrolytic Capacitor: 3
+     - IC: 21
+     - Inductor: 2
+     - LED: 1
+     - Marker: 2
+     - Oscillator: 1
+     - Other: 19
+     - Resistor: 6
+     - Transistor: 2
+
+-> Esecuzione rilevamento su: A_TOP_008.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_008_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_008_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_008_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_008_summary.json
+   Trovati 75 componenti.
+   Dettaglio classi:
+     - ?: 46
+     - Capacitor: 6
+     - Connector: 1
+     - Diode: 3
+     - IC: 10
+     - Marker: 1
+     - Resistor: 7
+     - Transistor: 1
+
+-> Esecuzione rilevamento su: A_TOP_009.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_009_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_009_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_009_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_009_summary.json
+   Trovati 19 componenti.
+   Dettaglio classi:
+     - ?: 12
+     - IC: 6
+     - Resistor: 1
+
+-> Esecuzione rilevamento su: A_TOP_010.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_010_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_010_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_010_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_010_summary.json
+   Trovati 19 componenti.
+   Dettaglio classi:
+     - ?: 10
+     - IC: 8
+     - Resistor: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/A/TOP"
+
+Elaborazione di 1 immagini per A [BOTTOM]...
+
+-> Esecuzione rilevamento su: A_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_summary.json
+   Trovati 43 componenti.
+   Dettaglio classi:
+     - ?: 21
+     - Capacitor: 3
+     - Diode: 1
+     - IC: 15
+     - Resistor: 2
+     - Transistor: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/A/BOTTOM"
+
+--- Elaborazione componenti per scheda: D ---
+
+Elaborazione di 1 immagini per D [TOP]...
+
+-> Esecuzione rilevamento su: D_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/D/TOP/D_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/D/TOP/D_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/D/TOP/D_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/D/TOP/D_TOP_001_summary.json
+   Trovati 29 componenti.
+   Dettaglio classi:
+     - ?: 26
+     - Capacitor: 2
+     - IC: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/D/TOP"
+
+Elaborazione di 1 immagini per D [BOTTOM]...
+
+-> Esecuzione rilevamento su: D_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/D/BOTTOM/D_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/D/BOTTOM/D_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/D/BOTTOM/D_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/D/BOTTOM/D_BOTTOM_001_summary.json
+   Trovati 104 componenti.
+   Dettaglio classi:
+     - ?: 41
+     - Capacitor: 25
+     - Diode: 1
+     - IC: 23
+     - Resistor: 13
+     - Transistor: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/D/BOTTOM"
+
+--- Elaborazione componenti per scheda: B ---
+
+Elaborazione di 1 immagini per B [TOP]...
+
+-> Esecuzione rilevamento su: B_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/B/TOP/B_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/B/TOP/B_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/B/TOP/B_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/B/TOP/B_TOP_001_summary.json
+   Trovati 10 componenti.
+   Dettaglio classi:
+     - ?: 7
+     - IC: 3
+Risultati salvati in: "../data/outputs/pcb_component_detection/B/TOP"
+
+Elaborazione di 1 immagini per B [BOTTOM]...
+
+-> Esecuzione rilevamento su: B_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/B/BOTTOM/B_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/B/BOTTOM/B_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/B/BOTTOM/B_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/B/BOTTOM/B_BOTTOM_001_summary.json
+   Trovati 2 componenti.
+   Dettaglio classi:
+     - IC: 2
+Risultati salvati in: "../data/outputs/pcb_component_detection/B/BOTTOM"
+
+--- Elaborazione componenti per scheda: F ---
+
+Elaborazione di 1 immagini per F [TOP]...
+
+-> Esecuzione rilevamento su: F_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/F/TOP/F_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/F/TOP/F_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/F/TOP/F_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/F/TOP/F_TOP_001_summary.json
+   Trovati 55 componenti.
+   Dettaglio classi:
+     - ?: 22
+     - Capacitor: 11
+     - IC: 16
+     - Resistor: 6
+Risultati salvati in: "../data/outputs/pcb_component_detection/F/TOP"
+
+========================================================
+Rilevamento componenti completato con successo!
+Immagini, CSV e riepiloghi JSON salvati in: ../data/outputs/pcb_component_detection
+========================================================
+
+Pipeline complessiva completata con successo.
+
+=== PROGRAMMA TERMINATO (Codice: 0) ===

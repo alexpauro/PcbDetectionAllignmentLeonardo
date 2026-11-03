@@ -1,1 +1,3 @@
 add_subdirectory(calibration)
+add_subdirectory(component_detection)
+add_subdirectory(cv_component_detection)

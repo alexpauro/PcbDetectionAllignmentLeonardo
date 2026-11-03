@@ -1,0 +1,334 @@
+======================================================
+ Avvio run.sh: 2026-11-03 16:00:50
+ Log file: logs/run_2026-11-03_16-00-50.txt
+======================================================
+-- OpenCV versione trovata: 4.9.0
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/build
+Consolidate compiler generated dependencies of target component_detection
+Consolidate compiler generated dependencies of target calibration
+[ 28%] Built target component_detection
+[ 71%] Built target calibration
+Consolidate compiler generated dependencies of target pcb_app
+[100%] Built target pcb_app
+
+=== ESECUZIONE ===
+=== AVVIO CALIBRAZIONE TELECAMERA ===
+
+--- Elaborazione in corso ---
+
+======================================================
+CALIBRAZIONE GIA' EFFETTUATA PER: ../data/inputs/calib_images/calib_images_robot
+Parametri trovati in: ../data/parameters/camera_params_robot.yml
+Salto la fase di calibrazione.
+======================================================
+
+========================================================
+Calibrazione completata con successo!
+Parametri salvati in: ../data/parameters/camera_params_robot.yml
+========================================================
+
+=== AVVIO RADDRIZZAMENTO IMMAGINI ROBOT ===
+
+Modalità di elaborazione raddrizzamento:
+1) Fai tutto (elabora automaticamente tutte le schede e tutti i lati)
+2) Una scheda alla volta e un lato alla volta
+Seleziona un'opzione (1 / 2): 
+=== MODALITÀ FAI TUTTO: Elaborazione automatica di tutte le schede e lati ===
+
+--- Elaborazione scheda: C ---
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/C/TOP. Salto la telecamera.
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/C/BOTTOM. Salto la telecamera.
+Scheda C completata.
+
+--- Elaborazione scheda: E ---
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/E/TOP. Salto la telecamera.
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/E/BOTTOM. Salto la telecamera.
+Scheda E completata.
+
+--- Elaborazione scheda: G ---
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/G/TOP. Salto la telecamera.
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/G/BOTTOM. Salto la telecamera.
+Scheda G completata.
+
+--- Elaborazione scheda: A ---
+
+======================================================
+INIZIO RADDRIZZAMENTO: ../data/inputs/pcb_images/A/TOP
+======================================================
+
+====================================================================
+FINESTRA REGOLAZIONE ATTIVA: A_TOP_1
+Comandi (modificabili entrambi indipendentemente):
+  [W] / [Freccia SU] / [+]       : Aumenta Luminosita' (+8)  [Range: 10 - 250]
+  [S] / [Freccia GIU'] / [-]     : Diminuisce Luminosita' (-8) [Range: 10 - 250]
+  [D] / [Freccia DESTRA]         : Aumenta Contrasto (+0.50) [Range: 0.2 - 16.0]
+  [A] / [Freccia SINISTRA]       : Diminuisce Contrasto (-0.50)[Range: 0.2 - 16.0]
+  [R]                            : Reset (Lum: 128, Cont: 2.5)
+  [INVIO] o [SPAZIO]             : CONFERMA (OK) e procedi
+====================================================================
+
+>> Modifica attiva: Luminosita' = 128.0 | Contrasto = 2.5        
+
+======================================================
+PARAMETRI CONFERMATI PER A_TOP_1:
+  - Luminosita' target: 128.0
+  - Contrasto (CLAHE) : 2.5
+======================================================
+
+Elaborata e salvata con successo: ../data/outputs/pcb_images_undistorted/A/TOP/A_TOP_001.bmp. Originale spostato in ok/.
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/A/BOTTOM. Salto la telecamera.
+Scheda A completata.
+
+--- Elaborazione scheda: D ---
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/D/TOP. Salto la telecamera.
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/D/BOTTOM. Salto la telecamera.
+Scheda D completata.
+
+--- Elaborazione scheda: B ---
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/B/TOP. Salto la telecamera.
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/B/BOTTOM. Salto la telecamera.
+Scheda B completata.
+
+--- Elaborazione scheda: F ---
+
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/F/TOP. Salto la telecamera.
+Nessuna immagine da raddrizzare per F (BOTTOM). Salto.
+Scheda F completata.
+
+========================================================
+Raddrizzamento di tutte le schede completato!
+========================================================
+
+=== AVVIO RICONOSCIMENTO COMPONENTI PCB ===
+
+Inizializzazione del rilevatore componenti PCB...
+- Pesi 'any' (localizzazione): ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.pt
+- Pesi 'fine' (classificazione 13 classi): ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.pt
+[ComponentDetector] Trovato modello ONNX già esportato: "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx"
+[ComponentDetector] Caricamento rete ANY: ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx ...
+[ComponentDetector] Modello ANY caricato con successo.
+[ComponentDetector] Trovato modello ONNX già esportato: "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx"
+[ComponentDetector] Caricamento rete FINE: ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx ...
+[ComponentDetector] Modello FINE caricato con successo (13 classi configurate).
+
+--- Elaborazione componenti per scheda: C ---
+
+Elaborazione di 1 immagini per C [TOP]...
+
+-> Esecuzione rilevamento su: C_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/C/TOP/C_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/C/TOP/C_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/C/TOP/C_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/C/TOP/C_TOP_001_summary.json
+   Trovati 9 componenti.
+   Dettaglio classi:
+     - ?: 8
+     - IC: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/C/TOP"
+
+Elaborazione di 1 immagini per C [BOTTOM]...
+
+-> Esecuzione rilevamento su: C_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/C/BOTTOM/C_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/C/BOTTOM/C_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/C/BOTTOM/C_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/C/BOTTOM/C_BOTTOM_001_summary.json
+   Trovati 1 componenti.
+   Dettaglio classi:
+     - IC: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/C/BOTTOM"
+
+--- Elaborazione componenti per scheda: E ---
+
+Elaborazione di 1 immagini per E [TOP]...
+
+-> Esecuzione rilevamento su: E_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/E/TOP/E_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/E/TOP/E_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/E/TOP/E_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/E/TOP/E_TOP_001_summary.json
+   Trovati 153 componenti.
+   Dettaglio classi:
+     - ?: 95
+     - Capacitor: 43
+     - Connector: 1
+     - IC: 9
+     - Resistor: 5
+Risultati salvati in: "../data/outputs/pcb_component_detection/E/TOP"
+
+Elaborazione di 1 immagini per E [BOTTOM]...
+
+-> Esecuzione rilevamento su: E_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/E/BOTTOM/E_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/E/BOTTOM/E_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/E/BOTTOM/E_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/E/BOTTOM/E_BOTTOM_001_summary.json
+   Trovati 17 componenti.
+   Dettaglio classi:
+     - ?: 6
+     - IC: 11
+Risultati salvati in: "../data/outputs/pcb_component_detection/E/BOTTOM"
+
+--- Elaborazione componenti per scheda: G ---
+
+Elaborazione di 1 immagini per G [TOP]...
+
+-> Esecuzione rilevamento su: G_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/G/TOP/G_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/G/TOP/G_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/G/TOP/G_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/G/TOP/G_TOP_001_summary.json
+   Trovati 45 componenti.
+   Dettaglio classi:
+     - ?: 18
+     - Capacitor: 11
+     - IC: 12
+     - Resistor: 4
+Risultati salvati in: "../data/outputs/pcb_component_detection/G/TOP"
+
+Elaborazione di 1 immagini per G [BOTTOM]...
+
+-> Esecuzione rilevamento su: G_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/G/BOTTOM/G_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/G/BOTTOM/G_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/G/BOTTOM/G_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/G/BOTTOM/G_BOTTOM_001_summary.json
+   Trovati 44 componenti.
+   Dettaglio classi:
+     - ?: 15
+     - Capacitor: 7
+     - IC: 20
+     - Resistor: 1
+     - Transistor: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/G/BOTTOM"
+
+--- Elaborazione componenti per scheda: A ---
+
+Elaborazione di 1 immagini per A [TOP]...
+
+-> Esecuzione rilevamento su: A_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_summary.json
+   Trovati 19 componenti.
+   Dettaglio classi:
+     - ?: 12
+     - IC: 7
+Risultati salvati in: "../data/outputs/pcb_component_detection/A/TOP"
+
+Elaborazione di 1 immagini per A [BOTTOM]...
+
+-> Esecuzione rilevamento su: A_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_summary.json
+   Trovati 43 componenti.
+   Dettaglio classi:
+     - ?: 21
+     - Capacitor: 3
+     - Diode: 1
+     - IC: 15
+     - Resistor: 2
+     - Transistor: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/A/BOTTOM"
+
+--- Elaborazione componenti per scheda: D ---
+
+Elaborazione di 1 immagini per D [TOP]...
+
+-> Esecuzione rilevamento su: D_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/D/TOP/D_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/D/TOP/D_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/D/TOP/D_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/D/TOP/D_TOP_001_summary.json
+   Trovati 29 componenti.
+   Dettaglio classi:
+     - ?: 26
+     - Capacitor: 2
+     - IC: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/D/TOP"
+
+Elaborazione di 1 immagini per D [BOTTOM]...
+
+-> Esecuzione rilevamento su: D_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/D/BOTTOM/D_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/D/BOTTOM/D_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/D/BOTTOM/D_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/D/BOTTOM/D_BOTTOM_001_summary.json
+   Trovati 104 componenti.
+   Dettaglio classi:
+     - ?: 41
+     - Capacitor: 25
+     - Diode: 1
+     - IC: 23
+     - Resistor: 13
+     - Transistor: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/D/BOTTOM"
+
+--- Elaborazione componenti per scheda: B ---
+
+Elaborazione di 1 immagini per B [TOP]...
+
+-> Esecuzione rilevamento su: B_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/B/TOP/B_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/B/TOP/B_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/B/TOP/B_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/B/TOP/B_TOP_001_summary.json
+   Trovati 10 componenti.
+   Dettaglio classi:
+     - ?: 7
+     - IC: 3
+Risultati salvati in: "../data/outputs/pcb_component_detection/B/TOP"
+
+Elaborazione di 1 immagini per B [BOTTOM]...
+
+-> Esecuzione rilevamento su: B_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/B/BOTTOM/B_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/B/BOTTOM/B_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/B/BOTTOM/B_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/B/BOTTOM/B_BOTTOM_001_summary.json
+   Trovati 2 componenti.
+   Dettaglio classi:
+     - IC: 2
+Risultati salvati in: "../data/outputs/pcb_component_detection/B/BOTTOM"
+
+--- Elaborazione componenti per scheda: F ---
+
+Elaborazione di 1 immagini per F [TOP]...
+
+-> Esecuzione rilevamento su: F_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/F/TOP/F_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/F/TOP/F_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/F/TOP/F_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/F/TOP/F_TOP_001_summary.json
+   Trovati 55 componenti.
+   Dettaglio classi:
+     - ?: 22
+     - Capacitor: 11
+     - IC: 16
+     - Resistor: 6
+Risultati salvati in: "../data/outputs/pcb_component_detection/F/TOP"
+
+========================================================
+Rilevamento componenti completato con successo!
+Immagini, CSV e riepiloghi JSON salvati in: ../data/outputs/pcb_component_detection
+========================================================
+
+Pipeline complessiva completata con successo.
+
+=== PROGRAMMA TERMINATO (Codice: 0) ===

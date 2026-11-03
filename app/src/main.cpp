@@ -1,5 +1,7 @@
 #include "calibration.hpp"
 #include "undistort.hpp"
+#include "component_detector.hpp"
+#include "cv_component_detector.hpp"
 #include <string>
 #include <iostream>
 #include <filesystem>
@@ -85,7 +87,7 @@ bool runRobotCameraCalibration() {
     return true;
 }
 
-// Funzione per raddrizzare le immagini PCB con loop interattivo (o automatico se c'è una sola scheda)
+// Funzione per raddrizzare le immagini PCB con opzione 'Fai tutto' o loop interattivo (scheda per scheda, lato per lato)
 bool runRobotImagesUndistortion() {
     std::cout << "\n=== AVVIO RADDRIZZAMENTO IMMAGINI ROBOT ===" << std::endl;
 
@@ -138,12 +140,71 @@ bool runRobotImagesUndistortion() {
         }
     };
 
-    // SE C'È UNA SOLA SCHEDA: procedi direttamente senza chiedere quale scheda scegliere
+    // Scelta iniziale della modalità: "Fai tutto" vs "Una scheda alla volta e un lato alla volta"
+    bool doAll = false;
+    while (true) {
+        std::cout << "\nModalità di elaborazione raddrizzamento:" << std::endl;
+        std::cout << "1) Fai tutto (elabora automaticamente tutte le schede e tutti i lati)" << std::endl;
+        std::cout << "2) Una scheda alla volta e un lato alla volta" << std::endl;
+        std::cout << "Seleziona un'opzione (1 / 2): ";
+
+        std::string modeChoice;
+        if (!(std::cin >> modeChoice)) {
+            std::cerr << "ERRORE: Impossibile leggere la modalità di elaborazione." << std::endl;
+            return false;
+        }
+
+        std::transform(modeChoice.begin(), modeChoice.end(), modeChoice.begin(),
+                       [](unsigned char c) { return static_cast<char>(std::toupper(c)); });
+
+        if (modeChoice == "1" || modeChoice == "TUTTO" || modeChoice == "ALL" || modeChoice == "FAI TUTTO") {
+            doAll = true;
+            break;
+        } else if (modeChoice == "2" || modeChoice == "MANUALE" || modeChoice == "M") {
+            doAll = false;
+            break;
+        } else {
+            std::cout << "Scelta non valida. Inserisci 1 per 'Fai tutto' oppure 2 per 'Una scheda alla volta e un lato alla volta'." << std::endl;
+        }
+    }
+
+    // SE L'UTENTE HA SCELTO "FAI TUTTO": elabora tutte le schede e tutti i lati senza ulteriori domande
+    if (doAll) {
+        std::cout << "\n=== MODALITÀ FAI TUTTO: Elaborazione automatica di tutte le schede e lati ===" << std::endl;
+        for (const auto& board_path : board_paths) {
+            std::string board_name = board_path.filename().string();
+            std::cout << "\n--- Elaborazione scheda: " << board_name << " ---" << std::endl;
+
+            bool hasTop = fs::exists(board_path / "TOP");
+            bool hasBottom = fs::exists(board_path / "BOTTOM");
+
+            if (!hasTop && !hasBottom) {
+                std::cout << "Nessuna cartella TOP o BOTTOM trovata per la scheda " << board_name << ". Salto." << std::endl;
+                continue;
+            }
+
+            if (hasTop) {
+                processSide(board_path, board_name, "TOP");
+            }
+            if (hasBottom) {
+                processSide(board_path, board_name, "BOTTOM");
+            }
+
+            std::cout << "Scheda " << board_name << " completata." << std::endl;
+        }
+
+        std::cout << "\n========================================================" << std::endl;
+        std::cout << "Raddrizzamento di tutte le schede completato!" << std::endl;
+        std::cout << "========================================================" << std::endl;
+        return true;
+    }
+
+    // SE C'È UNA SOLA SCHEDA: non serve chiedere quale scheda scegliere
     if (board_paths.size() == 1) {
         fs::path selected_board_path = board_paths[0];
         std::string board_name = selected_board_path.filename().string();
 
-        std::cout << "\nTrovata un'unica scheda: " << board_name << ". Procedo automaticamente." << std::endl;
+        std::cout << "\nTrovata un'unica scheda disponibile: " << board_name << "." << std::endl;
 
         bool hasTop = fs::exists(selected_board_path / "TOP");
         bool hasBottom = fs::exists(selected_board_path / "BOTTOM");
@@ -274,6 +335,275 @@ bool runRobotImagesUndistortion() {
     return true;
 }
 
+// Funzione per eseguire il rilevamento dei componenti PCB (modello ParsaVictor a 2 stadi: any + fine)
+bool runPcbComponentDetection() {
+    std::cout << "\n=== AVVIO RICONOSCIMENTO COMPONENTI PCB ===" << std::endl;
+
+    std::string undistorted_base_dir = "../data/outputs/pcb_images_undistorted";
+    std::string raw_base_dir = "../data/inputs/pcb_images";
+    std::string detection_output_base_dir = "../data/outputs/pcb_component_detection";
+
+    std::string input_base_dir = undistorted_base_dir;
+    if (!fs::exists(input_base_dir) || fs::is_empty(input_base_dir)) {
+        std::cout << "Cartella immagini raddrizzate (" << undistorted_base_dir 
+                  << ") non trovata o vuota. Utilizzo immagini originali (" << raw_base_dir << ")." << std::endl;
+        input_base_dir = raw_base_dir;
+    }
+
+    if (!fs::exists(input_base_dir)) {
+        std::cerr << "ERRORE: Cartella immagini PCB non trovata: " << input_base_dir << std::endl;
+        return false;
+    }
+
+    // Pesi predefiniti del modello ParsaVictor (supporta sia .pt che .onnx)
+    std::string any_weights = "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.pt";
+    std::string fine_weights = "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.pt";
+
+    pcb::DetectionConfig config;
+    config.conf_threshold = 0.20f;
+    config.nms_threshold = 0.50f;
+    config.match_iou = 0.30f;
+    config.imgsz = 1024;
+    config.tile_size = 0; // 0 = scala intera immagine, es. 1024 o 640 per tiling su immagini ad altissima risoluzione
+    config.overlap = 0.25f;
+    config.label_display_mode = "auto";
+    config.min_label_px = 24;
+
+    std::cout << "\nInizializzazione del rilevatore componenti PCB..." << std::endl;
+    std::cout << "- Pesi 'any' (localizzazione): " << any_weights << std::endl;
+    std::cout << "- Pesi 'fine' (classificazione 13 classi): " << fine_weights << std::endl;
+
+    pcb::ComponentDetector detector;
+    if (!detector.loadAnyModel(any_weights, config.imgsz)) {
+        std::cerr << "ERRORE: Impossibile caricare il modello ANY." << std::endl;
+        return false;
+    }
+
+    if (!detector.loadFineModel(fine_weights, pcb::ComponentDetector::getDefaultClasses(), config.imgsz)) {
+        std::cerr << "ERRORE: Impossibile caricare il modello FINE." << std::endl;
+        return false;
+    }
+
+    std::vector<fs::path> board_paths;
+    for (const auto& entry : fs::directory_iterator(input_base_dir)) {
+        if (entry.is_directory()) {
+            board_paths.push_back(entry.path());
+        }
+    }
+
+    if (board_paths.empty()) {
+        std::cout << "Nessuna sottocartella scheda trovata in " << input_base_dir << "." << std::endl;
+        return true;
+    }
+
+    auto processSideDetection = [&](const fs::path& side_dir, const std::string& board_name, const std::string& side) {
+        fs::path out_side_dir = fs::path(detection_output_base_dir) / board_name / side;
+        fs::create_directories(out_side_dir);
+
+        std::vector<std::string> valid_exts = {".bmp", ".png", ".jpg", ".jpeg", ".tiff", ".tif"};
+        std::vector<fs::path> image_files;
+        for (const auto& entry : fs::directory_iterator(side_dir)) {
+            if (entry.is_regular_file()) {
+                std::string ext = entry.path().extension().string();
+                std::transform(ext.begin(), ext.end(), ext.begin(), [](unsigned char c){ return static_cast<char>(std::tolower(c)); });
+                if (std::find(valid_exts.begin(), valid_exts.end(), ext) != valid_exts.end()) {
+                    image_files.push_back(entry.path());
+                }
+            }
+        }
+
+        std::sort(image_files.begin(), image_files.end());
+        if (image_files.empty()) {
+            std::cout << "Nessuna immagine trovata in " << side_dir << "." << std::endl;
+            return;
+        }
+
+        std::cout << "\nElaborazione di " << image_files.size() << " immagini per " << board_name << " [" << side << "]..." << std::endl;
+
+        for (const auto& img_path : image_files) {
+            std::cout << "\n-> Esecuzione rilevamento su: " << img_path.filename().string() << " ..." << std::endl;
+            cv::Mat img = cv::imread(img_path.string());
+            if (img.empty()) {
+                std::cerr << "ERRORE: Impossibile leggere l'immagine " << img_path << std::endl;
+                continue;
+            }
+
+            auto result = detector.detect(img, config, "both");
+            std::string stem = img_path.stem().string();
+
+            detector.saveResults(out_side_dir.string(), stem, img, result, "both");
+
+            std::cout << "   Trovati " << result.detections.size() << " componenti." << std::endl;
+            std::cout << "   Dettaglio classi:" << std::endl;
+            for (const auto& [label, count] : result.counts) {
+                std::cout << "     - " << label << ": " << count << std::endl;
+            }
+        }
+
+        std::cout << "Risultati salvati in: " << out_side_dir << std::endl;
+    };
+
+    for (const auto& bpath : board_paths) {
+        std::string bname = bpath.filename().string();
+        std::cout << "\n--- Elaborazione componenti per scheda: " << bname << " ---" << std::endl;
+
+        fs::path top_dir = bpath / "TOP";
+        fs::path bot_dir = bpath / "BOTTOM";
+
+        if (fs::exists(top_dir) && !fs::is_empty(top_dir)) {
+            processSideDetection(top_dir, bname, "TOP");
+        }
+        if (fs::exists(bot_dir) && !fs::is_empty(bot_dir)) {
+            processSideDetection(bot_dir, bname, "BOTTOM");
+        }
+    }
+
+    std::cout << "\n========================================================" << std::endl;
+    std::cout << "Rilevamento componenti completato con successo!" << std::endl;
+    std::cout << "Immagini, CSV e riepiloghi JSON salvati in: " << detection_output_base_dir << std::endl;
+    std::cout << "========================================================" << std::endl;
+
+    return true;
+}
+
+
+// Funzione per eseguire il rilevamento di tutti i componenti PCB mediante pura Computer Vision classica
+// (senza modelli deep learning, con filtro colore verdognolo PCB, filtri per i bordi, rettangoli ruotati e cerchi aderenti)
+bool runPcbCvComponentDetection(bool interactive_windows = true) {
+    std::cout << "\n========================================================" << std::endl;
+    std::cout << "=== AVVIO RILEVAMENTO COMPONENTI PCB (COMPUTER VISION) ===" << std::endl;
+    std::cout << "========================================================" << std::endl;
+
+    std::string undistorted_base_dir = "../data/outputs/pcb_images_undistorted";
+    std::string raw_base_dir = "../data/inputs/pcb_images";
+    std::string detection_output_base_dir = "../data/outputs/pcb_cv_component_detection";
+
+    std::string input_base_dir = undistorted_base_dir;
+    if (!fs::exists(input_base_dir) || fs::is_empty(input_base_dir)) {
+        std::cout << "Cartella immagini raddrizzate (" << undistorted_base_dir 
+                  << ") non trovata o vuota. Utilizzo immagini originali (" << raw_base_dir << ")." << std::endl;
+        input_base_dir = raw_base_dir;
+    }
+
+    if (!fs::exists(input_base_dir)) {
+        std::cerr << "ERRORE: Cartella immagini PCB non trovata: " << input_base_dir << std::endl;
+        return false;
+    }
+
+    // Configurazione filtri Computer Vision classica
+    pcb::CvDetectionConfig config;
+    config.use_green_filter = true;          // Filtro colore verdognolo tipico del PCB (solder mask)
+    config.h_min = 20;
+    config.h_max = 90;
+    config.s_min = 16;
+    config.v_min = 20;
+    config.use_bilateral = true;             // Riduzione rumore con conservazione bordi
+    config.use_clahe = true;                 // Contrasto locale adattivo
+    config.use_canny = true;                 // Canny edge detector
+    config.auto_canny = true;                // Soglie Canny dinamiche dalla mediana
+    config.use_morph_hats = true;            // Top-Hat (parti lucide/pin) e Black-Hat (chip neri)
+    config.open_kernel_size = 3;             // Rimuove piste sottili (1-2 px)
+    config.close_kernel_size = 3;            // Connette pin/saldature al corpo del componente
+    config.min_area = 12.0f;                 // Cattura anche componenti SMD piccolissimi (0402, 0603)
+    config.circularity_thresh = 0.74f;       // Soglia forma cerchio
+    config.circle_aspect_ratio_thresh = 0.68f;
+    config.circle_fill_thresh = 0.48f;
+    config.show_windows = interactive_windows;
+    config.wait_key_delay = 0;               // 0 = attende pressione tasto per ciascuna finestra
+
+    pcb::CvComponentDetector detector;
+
+    std::vector<fs::path> board_paths;
+    for (const auto& entry : fs::directory_iterator(input_base_dir)) {
+        if (entry.is_directory()) {
+            board_paths.push_back(entry.path());
+        }
+    }
+
+    if (board_paths.empty()) {
+        std::cout << "Nessuna sottocartella scheda trovata in " << input_base_dir << "." << std::endl;
+        return true;
+    }
+
+    std::sort(board_paths.begin(), board_paths.end());
+
+    auto processSideCvDetection = [&](const fs::path& side_dir, const std::string& board_name, const std::string& side) {
+        fs::path out_side_dir = fs::path(detection_output_base_dir) / board_name / side;
+        fs::create_directories(out_side_dir);
+
+        std::vector<std::string> valid_exts = {".bmp", ".png", ".jpg", ".jpeg", ".tiff", ".tif"};
+        std::vector<fs::path> image_files;
+        for (const auto& entry : fs::directory_iterator(side_dir)) {
+            if (entry.is_regular_file()) {
+                std::string ext = entry.path().extension().string();
+                std::transform(ext.begin(), ext.end(), ext.begin(), [](unsigned char c){ return static_cast<char>(std::tolower(c)); });
+                if (std::find(valid_exts.begin(), valid_exts.end(), ext) != valid_exts.end()) {
+                    image_files.push_back(entry.path());
+                }
+            }
+        }
+
+        std::sort(image_files.begin(), image_files.end());
+        if (image_files.empty()) {
+            std::cout << "Nessuna immagine trovata in " << side_dir << "." << std::endl;
+            return;
+        }
+
+        std::cout << "\nElaborazione Computer Vision per " << board_name << " [" << side << "] ("
+                  << image_files.size() << " immagini)..." << std::endl;
+
+        for (const auto& img_path : image_files) {
+            std::cout << "\n-> Analisi filtri e bordi su: " << img_path.filename().string() << " ..." << std::endl;
+            cv::Mat img = cv::imread(img_path.string());
+            if (img.empty()) {
+                std::cerr << "ERRORE: Impossibile leggere l'immagine " << img_path << std::endl;
+                continue;
+            }
+
+            // Esecuzione pipeline Computer Vision
+            auto result = detector.detect(img, config);
+            std::string stem = img_path.stem().string();
+
+            // Salvataggio dei risultati (immagine annotata, maschere filtri, CSV, JSON)
+            detector.saveResults(out_side_dir.string(), stem, img, result, true);
+
+            std::cout << "   Componenti totali trovati: " << result.components.size() << std::endl;
+            std::cout << "     - Rettangoli orientati/ruotati: " << result.num_rectangles << std::endl;
+            std::cout << "     - Cerchi: " << result.num_circles << std::endl;
+
+            // Mostra la finestra con il risultato (se abilitato)
+            if (config.show_windows) {
+                std::string win_title = "Riconoscimento CV Componenti: " + board_name + " [" + side + "] - " + stem;
+                detector.displayResult(win_title, result, config.wait_key_delay);
+            }
+        }
+
+        std::cout << "Risultati salvati in: " << out_side_dir << std::endl;
+    };
+
+    for (const auto& bpath : board_paths) {
+        std::string bname = bpath.filename().string();
+        std::cout << "\n--- Elaborazione CV Componenti per scheda: " << bname << " ---" << std::endl;
+
+        fs::path top_dir = bpath / "TOP";
+        fs::path bot_dir = bpath / "BOTTOM";
+
+        if (fs::exists(top_dir) && !fs::is_empty(top_dir)) {
+            processSideCvDetection(top_dir, bname, "TOP");
+        }
+        if (fs::exists(bot_dir) && !fs::is_empty(bot_dir)) {
+            processSideCvDetection(bot_dir, bname, "BOTTOM");
+        }
+    }
+
+    std::cout << "\n========================================================" << std::endl;
+    std::cout << "Rilevamento CV classica completato con successo!" << std::endl;
+    std::cout << "Immagini annotate, maschere, CSV e JSON salvati in:\n  " << detection_output_base_dir << std::endl;
+    std::cout << "========================================================" << std::endl;
+
+    return true;
+}
+
 int main() {
     if (!runRobotCameraCalibration()) {
         return -1;
@@ -283,6 +613,46 @@ int main() {
         return -1;
     }
 
-    std::cout << "\nOperazione completata con successo." << std::endl;
+    std::cout << "\n========================================================" << std::endl;
+    std::cout << "        MODALITÀ DI RILEVAMENTO COMPONENTI PCB          " << std::endl;
+    std::cout << "========================================================" << std::endl;
+    std::cout << "1) Computer Vision Classica (Filtro verde PCB, bordi, rettangoli ruotati e cerchi)" << std::endl;
+    std::cout << "2) Deep Learning YOLO (Modello a 2 stadi)" << std::endl;
+    std::cout << "3) Entrambi (prima CV Classica, poi YOLO)" << std::endl;
+    std::cout << "Seleziona un'opzione (1 / 2 / 3, default 1): ";
+
+    std::string choice_str;
+    int mode_choice = 1;
+    if (std::cin >> choice_str) {
+        try {
+            mode_choice = std::stoi(choice_str);
+        } catch (...) {
+            mode_choice = 1;
+        }
+    }
+
+    bool show_windows = true;
+    std::cout << "\nVuoi mostrare le finestre a schermo con i risultati per ciascuna scheda? (S/N, default S): ";
+    std::string win_ans;
+    if (std::cin >> win_ans) {
+        std::transform(win_ans.begin(), win_ans.end(), win_ans.begin(), [](unsigned char c){ return static_cast<char>(std::toupper(c)); });
+        if (win_ans == "N" || win_ans == "NO") {
+            show_windows = false;
+        }
+    }
+
+    if (mode_choice == 1 || mode_choice == 3) {
+        if (!runPcbCvComponentDetection(show_windows)) {
+            return -1;
+        }
+    }
+
+    if (mode_choice == 2 || mode_choice == 3) {
+        if (!runPcbComponentDetection()) {
+            return -1;
+        }
+    }
+
+    std::cout << "\nPipeline complessiva completata con successo." << std::endl;
     return 0;
 }

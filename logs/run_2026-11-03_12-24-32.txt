@@ -1,0 +1,95 @@
+======================================================
+ Avvio run.sh: 2026-11-03 12:24:33
+ Log file: logs/run_2026-11-03_12-24-32.txt
+======================================================
+-- OpenCV versione trovata: 4.9.0
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/build
+Consolidate compiler generated dependencies of target component_detection
+Consolidate compiler generated dependencies of target calibration
+[ 28%] Built target component_detection
+[ 71%] Built target calibration
+Consolidate compiler generated dependencies of target pcb_app
+[100%] Built target pcb_app
+
+=== ESECUZIONE ===
+=== AVVIO CALIBRAZIONE TELECAMERA ===
+
+--- Elaborazione in corso ---
+
+======================================================
+CALIBRAZIONE GIA' EFFETTUATA PER: ../data/inputs/calib_images/calib_images_robot
+Parametri trovati in: ../data/parameters/camera_params_robot.yml
+Salto la fase di calibrazione.
+======================================================
+
+========================================================
+Calibrazione completata con successo!
+Parametri salvati in: ../data/parameters/camera_params_robot.yml
+========================================================
+
+=== AVVIO RADDRIZZAMENTO IMMAGINI ROBOT ===
+
+Trovata un'unica scheda: A. Procedo automaticamente.
+
+Per la scheda A, quale lato vuoi elaborare? (1 / TOP oppure 2 / BOTTOM): 
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/A/TOP. Salto la telecamera.
+
+Vuoi analizzare anche l'altro lato (BOTTOM) per la scheda A? (S/N): 
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/A/BOTTOM. Salto la telecamera.
+Scheda A completata.
+
+=== AVVIO RICONOSCIMENTO COMPONENTI PCB ===
+
+Inizializzazione del rilevatore componenti PCB...
+- Pesi 'any' (localizzazione): ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.pt
+- Pesi 'fine' (classificazione 13 classi): ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.pt
+[ComponentDetector] Trovato modello ONNX già esportato: "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx"
+[ComponentDetector] Caricamento rete ANY: ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx ...
+[ComponentDetector] Modello ANY caricato con successo.
+[ComponentDetector] Trovato modello ONNX già esportato: "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx"
+[ComponentDetector] Caricamento rete FINE: ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx ...
+[ComponentDetector] Modello FINE caricato con successo (13 classi configurate).
+
+--- Elaborazione componenti per scheda: A ---
+
+Elaborazione di 1 immagini per A [TOP]...
+
+-> Esecuzione rilevamento su: A_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_summary.json
+   Trovati 26 componenti.
+   Dettaglio classi:
+     - ?: 16
+     - Capacitor: 1
+     - Diode: 1
+     - Electrolytic Capacitor: 1
+     - IC: 6
+     - Inductor: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/A/TOP"
+
+Elaborazione di 1 immagini per A [BOTTOM]...
+
+-> Esecuzione rilevamento su: A_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_summary.json
+   Trovati 5 componenti.
+   Dettaglio classi:
+     - ?: 1
+     - Electrolytic Capacitor: 3
+     - IC: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/A/BOTTOM"
+
+========================================================
+Rilevamento componenti completato con successo!
+Immagini, CSV e riepiloghi JSON salvati in: ../data/outputs/pcb_component_detection
+========================================================
+
+Pipeline complessiva completata con successo.
+
+=== PROGRAMMA TERMINATO (Codice: 0) ===
