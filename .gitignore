@@ -1,0 +1,23 @@
+# Build directory
+build/
+bin/
+lib/*.a
+lib/*.so
+lib/*.dylib
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*~
+*.bmp
+*.jpg
+*.png
+*.jepg
