@@ -10,6 +10,7 @@ target_include_directories(component_detection
 
 target_link_libraries(component_detection
     PUBLIC
+        pcb::common
         ${OpenCV_LIBS}
 )
 

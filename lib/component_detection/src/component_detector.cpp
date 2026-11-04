@@ -1,4 +1,5 @@
 #include "component_detector.hpp"
+#include "common_utils.hpp"
 
 #include <fstream>
 #include <sstream>
@@ -168,29 +169,11 @@ ComponentDetector::ComponentDetector(const std::string& any_weights_path,
 }
 
 std::vector<std::string> ComponentDetector::getDefaultClasses() {
-    return {
-        "Resistor",
-        "Capacitor",
-        "Electrolytic Capacitor",
-        "IC",
-        "Inductor",
-        "Diode",
-        "LED",
-        "Transistor",
-        "Oscillator",
-        "Connector",
-        "Switch/Button",
-        "Other",
-        "Marker"
-    };
+    return pcb::common::getDefaultClasses();
 }
 
 std::string ComponentDetector::getShortLabel(const std::string& full_label) {
-    auto it = SHORT_MAP.find(full_label);
-    if (it != SHORT_MAP.end()) {
-        return it->second;
-    }
-    return (full_label.size() >= 3) ? full_label.substr(0, 3) : full_label;
+    return pcb::common::getShortLabel(full_label);
 }
 
 std::map<std::string, cv::Scalar> ComponentDetector::getPalette(const std::vector<std::string>& labels) {
@@ -358,25 +341,8 @@ bool ComponentDetector::loadFineModel(const std::string& weights_path,
     }
 }
 
-void ComponentDetector::setFineClassNames(const std::vector<std::string>& names) {
-    fine_classes_ = names;
-}
-
 float ComponentDetector::calculateIoU(const cv::Rect2f& a, const cv::Rect2f& b) {
-    float x1 = std::max(a.x, b.x);
-    float y1 = std::max(a.y, b.y);
-    float x2 = std::min(a.x + a.width, b.x + b.width);
-    float y2 = std::min(a.y + a.height, b.y + b.height);
-
-    float inter_w = std::max(0.0f, x2 - x1);
-    float inter_h = std::max(0.0f, y2 - y1);
-    float inter_area = inter_w * inter_h;
-
-    float area_a = a.width * a.height;
-    float area_b = b.width * b.height;
-    float union_area = area_a + area_b - inter_area;
-
-    return (union_area > 0.0f) ? (inter_area / union_area) : 0.0f;
+    return pcb::common::calculateIoU(a, b);
 }
 
 void ComponentDetector::inferTile(

@@ -36,10 +36,6 @@ struct AlignmentResult {
      */
     cv::Point2f pixelToMillimeter(const cv::Point2f& ptPx) const;
 
-    /**
-     * @brief Converte un punto millimetrico del disegno Gerber in coordinate pixel dell'immagine.
-     */
-    cv::Point2f millimeterToPixel(const cv::Point2f& ptMm) const;
 };
 
 /**

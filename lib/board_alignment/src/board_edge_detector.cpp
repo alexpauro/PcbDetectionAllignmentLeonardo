@@ -65,35 +65,6 @@ cv::Mat BoardEdgeDetector::combineMultiExposure(const std::vector<cv::Mat>& imag
     return result;
 }
 
-cv::Mat BoardEdgeDetector::computeMaxGradient(const std::vector<cv::Mat>& images) const {
-    if (images.empty()) return cv::Mat();
-
-    cv::Mat maxGrad = cv::Mat::zeros(images[0].size(), CV_32F);
-    for (const auto& img : images) {
-        cv::Mat gray, gx, gy, mag;
-        if (img.channels() == 3) {
-            cv::cvtColor(img, gray, cv::COLOR_BGR2GRAY);
-        } else {
-            gray = img;
-        }
-        cv::GaussianBlur(gray, gray, cv::Size(3, 3), 1.0);
-        cv::Sobel(gray, gx, CV_32F, 1, 0, 3);
-        cv::Sobel(gray, gy, CV_32F, 0, 1, 3);
-        cv::magnitude(gx, gy, mag);
-        cv::max(maxGrad, mag, maxGrad);
-    }
-
-    double minV, maxV;
-    cv::minMaxLoc(maxGrad, &minV, &maxV);
-    cv::Mat normGrad;
-    if (maxV > 0) {
-        maxGrad.convertTo(normGrad, CV_8UC1, 255.0 / maxV);
-    } else {
-        normGrad = cv::Mat::zeros(images[0].size(), CV_8UC1);
-    }
-    return normGrad;
-}
-
 cv::Mat BoardEdgeDetector::computeSubstrateMask(const cv::Mat& fusedImg) const {
     cv::Mat hsv;
     cv::cvtColor(fusedImg, hsv, cv::COLOR_BGR2HSV);

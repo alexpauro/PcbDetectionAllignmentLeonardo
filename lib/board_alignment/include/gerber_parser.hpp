@@ -75,30 +75,8 @@ public:
      */
     static GerberBoardOutline findAndParseForBoard(const std::string& gerberBaseDir, const std::string& boardName);
 
-    /**
-     * @brief Estrae tutte le piazzole di saldatura (pads SMD) flashate (D03) da un file Gerber specifico.
-     * @param gerberFilePath Percorso del file Gerber (es. SolderpasteTop o SoldermaskTop).
-     * @return Lista delle piazzole con coordinate e dimensioni in millimetri.
-     */
-    static std::vector<GerberPad> parseSolderPads(const std::string& gerberFilePath);
-
-    /**
-     * @brief Trova ed estrae automaticamente le piazzole di saldatura per una specifica scheda e lato (TOP / BOTTOM),
-     * cercando i layer di pasta saldante (SolderpasteTop/M5 per TOP, SolderpasteBottom/M6 per BOTTOM) o soldermask/rame.
-     * @param gerberBaseDir Cartella base contenente i file Gerber.
-     * @param boardName Nome scheda (es. "A").
-     * @param side Lato scheda ("TOP" o "BOTTOM").
-     * @return Lista delle piazzole estratte in millimetri.
-     */
-    static std::vector<GerberPad> extractSolderPadsForBoard(
-        const std::string& gerberBaseDir,
-        const std::string& boardName,
-        const std::string& side);
-
-
 private:
     static bool parseSingleFile(const std::string& filePath, std::vector<GerberContour>& outContours);
-    static double parseCoordinate(const std::string& token, int numDecimals, bool leadingZerosOmitted);
 };
 
 } // namespace pcb

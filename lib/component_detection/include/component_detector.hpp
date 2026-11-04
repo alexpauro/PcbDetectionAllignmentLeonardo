@@ -89,15 +89,6 @@ public:
                        const std::vector<std::string>& class_names = {},
                        int imgsz = 1024);
 
-    /**
-     * @brief Imposta le classi per il modello fine.
-     */
-    void setFineClassNames(const std::vector<std::string>& names);
-
-    /**
-     * @brief Restituisce i nomi delle classi attuali.
-     */
-    const std::vector<std::string>& getFineClassNames() const { return fine_classes_; }
 
     /**
      * @brief Esegue il rilevamento dei componenti su un'immagine.

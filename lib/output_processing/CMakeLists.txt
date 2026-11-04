@@ -1,5 +1,10 @@
 add_library(output_processing
     src/output_processor.cpp
+    src/output_merger.cpp
+    src/output_classifier.cpp
+    src/output_fusion.cpp
+    src/output_similarity.cpp
+    src/output_rendering.cpp
 )
 
 target_include_directories(output_processing
@@ -10,10 +15,10 @@ target_include_directories(output_processing
 
 target_link_libraries(output_processing
     PUBLIC
+        pcb::common
         pcb::component_detection
         pcb::cv_component_detection
         ${OpenCV_LIBS}
 )
 
 add_library(pcb::output_processing ALIAS output_processing)
-

@@ -1,4 +1,5 @@
 #include "calibration.hpp"
+#include "common_utils.hpp"
 #include <opencv2/opencv.hpp>
 #include <opencv2/aruco/charuco.hpp>
 #include <cctype>
@@ -12,31 +13,9 @@
 #include <future>
 #include <thread>
 
-// Funzione per spostare un file in una sottocartella "ok" della cartella sorgente dopo avere usato la foto per la calibrazione
+// Funzione unificata per spostare un file in una sottocartella "ok"
 bool moveToOkFolder(const std::filesystem::path& sourcePath) {
-    const std::filesystem::path okFolder = sourcePath.parent_path() / "ok";
-    const std::filesystem::path destination = okFolder / sourcePath.filename();
-    std::error_code error;
-
-    std::filesystem::create_directories(okFolder, error);
-    if (error) {
-        std::cerr << "ERRORE: impossibile creare la cartella " << okFolder
-                  << ": " << error.message() << std::endl;
-        return false;
-    }
-    if (std::filesystem::exists(destination)) {
-        std::cerr << "ERRORE: esiste già un file in " << destination
-                  << "; l'originale non verrà spostato." << std::endl;
-        return false;
-    }
-
-    std::filesystem::rename(sourcePath, destination, error);
-    if (error) {
-        std::cerr << "ERRORE: impossibile spostare " << sourcePath
-                  << " in " << destination << ": " << error.message() << std::endl;
-        return false;
-    }
-    return true;
+    return pcb::common::moveToOkFolder(sourcePath);
 }
 
 namespace {

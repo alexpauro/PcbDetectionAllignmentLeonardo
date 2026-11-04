@@ -80,10 +80,6 @@ struct AoiAlignmentTransform {
      */
     cv::Point2f aoiToPixel(double x_mm, double y_mm) const;
 
-    /**
-     * @brief Converte un punto pixel dell'immagine nelle coordinate millimetriche del file AOI.
-     */
-    cv::Point2f pixelToAoi(const cv::Point2f& ptPx) const;
 };
 
 /**
@@ -200,15 +196,6 @@ public:
                                           bool interactive = true);
 
     /**
-     * @brief Calcola le dimensioni fisiche dell'ingombro dei componenti a partire dalle piazzole di saldatura
-     * del file Gerber (estratte tramite GerberParser). Raggruppa e armonizza per codice componente:
-     * tutti i componenti con lo stesso part_number avranno rigorosamente le stesse dimensioni di riquadro!
-     */
-    static std::map<std::string, std::pair<double, double>> computePartNumberDimensionsFromGerber(
-        const std::vector<AoiComponent>& aoiComps,
-        const std::vector<GerberPad>& pads);
-
-    /**
      * @brief Trova la trasformazione geometrica di base per l'origine (R, tx, ty) e successivamente
      * stima il modello di correzione distorsione ottica (omografia proiettiva 3x3) per mappare esattamente
      * le coordinate su tutta l'estensione dell'immagine.
@@ -247,17 +234,6 @@ public:
         const std::vector<AoiComponent>& aoiComps,
         const std::vector<FinalComponent>& detections,
         const std::vector<CvComponent>& allCvSuperposition,
-        const AoiAlignmentTransform& transform,
-        double tolerance_mm = 3.0) const;
-
-    /**
-     * @brief Overload di compatibilità per verifyAndClassify.
-     */
-    AoiVerificationResult verifyAndClassify(
-        const cv::Mat& pcbImage,
-        const std::vector<AoiComponent>& aoiComps,
-        const std::vector<FinalComponent>& detections,
-        const std::vector<GerberPad>& gerberPads,
         const AoiAlignmentTransform& transform,
         double tolerance_mm = 3.0) const;
 

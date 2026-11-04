@@ -1,5 +1,10 @@
 add_library(aoi_verification
     src/aoi_verification.cpp
+    src/aoi_parser.cpp
+    src/aoi_gerber_matcher.cpp
+    src/aoi_geometric_alignment.cpp
+    src/aoi_engine.cpp
+    src/aoi_rendering.cpp
 )
 
 target_include_directories(aoi_verification
@@ -10,6 +15,7 @@ target_include_directories(aoi_verification
 
 target_link_libraries(aoi_verification
     PUBLIC
+        pcb::common
         pcb::output_processing
         pcb::board_alignment
         pcb::component_detection
@@ -18,4 +24,3 @@ target_link_libraries(aoi_verification
 )
 
 add_library(pcb::aoi_verification ALIAS aoi_verification)
-

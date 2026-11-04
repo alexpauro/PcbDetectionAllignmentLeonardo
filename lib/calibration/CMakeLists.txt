@@ -11,6 +11,7 @@ target_include_directories(calibration
 
 target_link_libraries(calibration
     PUBLIC
+        pcb::common
         ${OpenCV_LIBS}
 )
 

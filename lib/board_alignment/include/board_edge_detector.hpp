@@ -89,7 +89,6 @@ public:
 private:
     BoardEdgeConfig config_;
 
-    cv::Mat computeMaxGradient(const std::vector<cv::Mat>& images) const;
     cv::Mat computeSubstrateMask(const cv::Mat& fusedImg) const;
     cv::Mat unifyDisconnectedEdges(const cv::Mat& greenMask) const;
 };

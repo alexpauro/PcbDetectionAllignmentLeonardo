@@ -28,22 +28,6 @@ cv::Point2f AlignmentResult::pixelToMillimeter(const cv::Point2f& ptPx) const {
                        ptPx.y * static_cast<float>(mm_per_pixel));
 }
 
-cv::Point2f AlignmentResult::millimeterToPixel(const cv::Point2f& ptMm) const {
-    if (!homography_mm_to_px.empty()) {
-        std::vector<cv::Point2f> src = {ptMm};
-        std::vector<cv::Point2f> dst;
-        cv::perspectiveTransform(src, dst, homography_mm_to_px);
-        return dst[0];
-    } else if (!affine_mm_to_px.empty()) {
-        cv::Mat ptMat = (cv::Mat_<double>(3, 1) << ptMm.x, ptMm.y, 1.0);
-        cv::Mat resMat = affine_mm_to_px * ptMat;
-        return cv::Point2f(static_cast<float>(resMat.at<double>(0, 0)),
-                           static_cast<float>(resMat.at<double>(1, 0)));
-    }
-    return cv::Point2f(ptMm.x * static_cast<float>(pixels_per_mm),
-                       ptMm.y * static_cast<float>(pixels_per_mm));
-}
-
 AlignmentResult BoardAlignmentProcessor::computeAlignment(
     const std::vector<cv::Mat>& images,
     const GerberBoardOutline& gerberOutline,

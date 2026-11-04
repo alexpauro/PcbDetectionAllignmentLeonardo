@@ -1,7 +1,7 @@
+add_subdirectory(common)
 add_subdirectory(calibration)
 add_subdirectory(board_alignment)
 add_subdirectory(component_detection)
 add_subdirectory(cv_component_detection)
 add_subdirectory(output_processing)
 add_subdirectory(aoi_verification)
-
