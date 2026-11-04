@@ -164,6 +164,11 @@ public:
      */
     static std::vector<std::string> getDefaultClasses();
 
+    /**
+     * @brief Calcola l'Intersection over Union (IoU) tra due rettangoli.
+     */
+    static float calculateIoU(const cv::Rect2f& a, const cv::Rect2f& b);
+
 private:
     cv::dnn::Net net_any_;
     cv::dnn::Net net_fine_;
@@ -199,9 +204,6 @@ private:
         std::vector<cv::Rect2f>& out_boxes,
         std::vector<float>& out_scores,
         std::vector<int>& out_classes);
-
-    // Calcolo IoU tra due rettangoli
-    static float calculateIoU(const cv::Rect2f& a, const cv::Rect2f& b);
 };
 
 } // namespace pcb

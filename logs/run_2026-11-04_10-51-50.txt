@@ -1,0 +1,1354 @@
+======================================================
+ Avvio run.sh: 2026-11-04 10:51:50
+ Log file: logs/run_2026-11-04_10-51-50.txt
+======================================================
+-- OpenCV versione trovata: 4.9.0
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/build
+Consolidate compiler generated dependencies of target cv_component_detection
+Consolidate compiler generated dependencies of target component_detection
+Consolidate compiler generated dependencies of target calibration
+[ 18%] Built target component_detection
+[ 36%] Built target cv_component_detection
+[ 63%] Built target calibration
+Consolidate compiler generated dependencies of target output_processing
+[ 81%] Built target output_processing
+Consolidate compiler generated dependencies of target pcb_app
+[100%] Built target pcb_app
+
+=== ESECUZIONE ===
+=== AVVIO CALIBRAZIONE TELECAMERA ===
+
+--- Elaborazione in corso ---
+
+======================================================
+CALIBRAZIONE GIA' EFFETTUATA PER: ../data/inputs/calib_images/calib_images_robot
+Parametri trovati in: ../data/parameters/camera_params_robot.yml
+Salto la fase di calibrazione.
+======================================================
+
+========================================================
+Calibrazione completata con successo!
+Parametri salvati in: ../data/parameters/camera_params_robot.yml
+========================================================
+
+=== AVVIO RADDRIZZAMENTO IMMAGINI ROBOT ===
+
+Modalità di elaborazione raddrizzamento:
+1) Fai tutto (elabora automaticamente tutte le schede e tutti i lati)
+2) Una scheda alla volta e un lato alla volta
+Seleziona un'opzione (1 / 2): 
+========================================
+           SCHEDE DISPONIBILI           
+========================================
+1) C
+2) E
+3) G
+4) A
+5) D
+6) B
+7) F
+0) Termina / Esci
+Seleziona il numero della scheda da analizzare: 
+--- Elaborazione scheda: A ---
+
+Per la scheda A, quale lato vuoi elaborare? (1 / TOP oppure 2 / BOTTOM): 
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/A/TOP. Salto la telecamera.
+
+Vuoi analizzare anche l'altro lato (BOTTOM) per la scheda A? (S/N): Scheda A completata e rimossa dalla lista delle schede da elaborare.
+
+========================================
+           SCHEDE DISPONIBILI           
+========================================
+1) C
+2) E
+3) G
+4) D
+5) B
+6) F
+0) Termina / Esci
+Seleziona il numero della scheda da analizzare: Uscita dal menu di raddrizzamento.
+
+========================================================
+        MODALITÀ DI RILEVAMENTO COMPONENTI PCB          
+========================================================
+1) Computer Vision Classica (Filtro verde PCB, bordi, rettangoli ruotati e cerchi)
+2) Deep Learning YOLO (Modello a 2 stadi)
+3) Entrambi (prima CV Classica, poi YOLO)
+4) Pipeline Completa con Elaborazione e Fusione Output (CONSIGLIATO: CV + DL + Fusione)
+5) Solo Elaborazione e Fusione Output (sui risultati gia' rilevati)
+Seleziona un'opzione (1 / 2 / 3 / 4 / 5, default 4): 
+Vuoi mostrare le finestre a schermo con i risultati per ciascuna scheda? (S/N, default S): 
+========================================================
+=== AVVIO RILEVAMENTO COMPONENTI PCB (COMPUTER VISION) ===
+========================================================
+
+--- Elaborazione CV Componenti per scheda: A ---
+
+Elaborazione Computer Vision per A [TOP] (10 immagini)...
+
+-> Analisi filtri e bordi su: A_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_001_components_cv.json
+   Componenti totali trovati: 1
+     - Rettangoli orientati/ruotati: 1
+     - Cerchi: 0
+
+-> Analisi filtri e bordi su: A_TOP_002.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_002_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_002_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_002_components_cv.json
+   Componenti totali trovati: 1
+     - Rettangoli orientati/ruotati: 0
+     - Cerchi: 1
+
+-> Analisi filtri e bordi su: A_TOP_003.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.json
+   Componenti totali trovati: 423
+     - Rettangoli orientati/ruotati: 300
+     - Cerchi: 123
+
+-> Analisi filtri e bordi su: A_TOP_004.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_004_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_004_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_004_components_cv.json
+   Componenti totali trovati: 1
+     - Rettangoli orientati/ruotati: 1
+     - Cerchi: 0
+
+-> Analisi filtri e bordi su: A_TOP_005.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_005_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_005_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_005_components_cv.json
+   Componenti totali trovati: 0
+     - Rettangoli orientati/ruotati: 0
+     - Cerchi: 0
+
+-> Analisi filtri e bordi su: A_TOP_006.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_006_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_006_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_006_components_cv.json
+   Componenti totali trovati: 282
+     - Rettangoli orientati/ruotati: 204
+     - Cerchi: 78
+
+-> Analisi filtri e bordi su: A_TOP_007.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_007_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_007_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_007_components_cv.json
+   Componenti totali trovati: 0
+     - Rettangoli orientati/ruotati: 0
+     - Cerchi: 0
+
+-> Analisi filtri e bordi su: A_TOP_008.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_008_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_008_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_008_components_cv.json
+   Componenti totali trovati: 0
+     - Rettangoli orientati/ruotati: 0
+     - Cerchi: 0
+
+-> Analisi filtri e bordi su: A_TOP_009.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_009_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_009_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_009_components_cv.json
+   Componenti totali trovati: 1
+     - Rettangoli orientati/ruotati: 1
+     - Cerchi: 0
+
+-> Analisi filtri e bordi su: A_TOP_010.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_010_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_010_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_010_components_cv.json
+   Componenti totali trovati: 1
+     - Rettangoli orientati/ruotati: 1
+     - Cerchi: 0
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/A/TOP"
+
+Elaborazione Computer Vision per A [BOTTOM] (1 immagini)...
+
+-> Analisi filtri e bordi su: A_BOTTOM_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/BOTTOM/A_BOTTOM_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/BOTTOM/A_BOTTOM_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/BOTTOM/A_BOTTOM_001_components_cv.json
+   Componenti totali trovati: 1
+     - Rettangoli orientati/ruotati: 1
+     - Cerchi: 0
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/A/BOTTOM"
+
+--- Elaborazione CV Componenti per scheda: B ---
+
+Elaborazione Computer Vision per B [TOP] (1 immagini)...
+
+-> Analisi filtri e bordi su: B_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/B/TOP/B_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/B/TOP/B_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/B/TOP/B_TOP_001_components_cv.json
+   Componenti totali trovati: 6
+     - Rettangoli orientati/ruotati: 6
+     - Cerchi: 0
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/B/TOP"
+
+Elaborazione Computer Vision per B [BOTTOM] (1 immagini)...
+
+-> Analisi filtri e bordi su: B_BOTTOM_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/B/BOTTOM/B_BOTTOM_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/B/BOTTOM/B_BOTTOM_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/B/BOTTOM/B_BOTTOM_001_components_cv.json
+   Componenti totali trovati: 1
+     - Rettangoli orientati/ruotati: 1
+     - Cerchi: 0
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/B/BOTTOM"
+
+--- Elaborazione CV Componenti per scheda: C ---
+
+Elaborazione Computer Vision per C [TOP] (1 immagini)...
+
+-> Analisi filtri e bordi su: C_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/C/TOP/C_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/C/TOP/C_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/C/TOP/C_TOP_001_components_cv.json
+   Componenti totali trovati: 6
+     - Rettangoli orientati/ruotati: 6
+     - Cerchi: 0
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/C/TOP"
+
+Elaborazione Computer Vision per C [BOTTOM] (1 immagini)...
+
+-> Analisi filtri e bordi su: C_BOTTOM_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/C/BOTTOM/C_BOTTOM_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/C/BOTTOM/C_BOTTOM_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/C/BOTTOM/C_BOTTOM_001_components_cv.json
+   Componenti totali trovati: 7
+     - Rettangoli orientati/ruotati: 6
+     - Cerchi: 1
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/C/BOTTOM"
+
+--- Elaborazione CV Componenti per scheda: D ---
+
+Elaborazione Computer Vision per D [TOP] (1 immagini)...
+
+-> Analisi filtri e bordi su: D_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/D/TOP/D_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/D/TOP/D_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/D/TOP/D_TOP_001_components_cv.json
+   Componenti totali trovati: 6
+     - Rettangoli orientati/ruotati: 5
+     - Cerchi: 1
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/D/TOP"
+
+Elaborazione Computer Vision per D [BOTTOM] (1 immagini)...
+
+-> Analisi filtri e bordi su: D_BOTTOM_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/D/BOTTOM/D_BOTTOM_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/D/BOTTOM/D_BOTTOM_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/D/BOTTOM/D_BOTTOM_001_components_cv.json
+   Componenti totali trovati: 2
+     - Rettangoli orientati/ruotati: 2
+     - Cerchi: 0
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/D/BOTTOM"
+
+--- Elaborazione CV Componenti per scheda: E ---
+
+Elaborazione Computer Vision per E [TOP] (1 immagini)...
+
+-> Analisi filtri e bordi su: E_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/E/TOP/E_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/E/TOP/E_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/E/TOP/E_TOP_001_components_cv.json
+   Componenti totali trovati: 156
+     - Rettangoli orientati/ruotati: 145
+     - Cerchi: 11
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/E/TOP"
+
+Elaborazione Computer Vision per E [BOTTOM] (1 immagini)...
+
+-> Analisi filtri e bordi su: E_BOTTOM_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/E/BOTTOM/E_BOTTOM_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/E/BOTTOM/E_BOTTOM_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/E/BOTTOM/E_BOTTOM_001_components_cv.json
+   Componenti totali trovati: 17
+     - Rettangoli orientati/ruotati: 15
+     - Cerchi: 2
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/E/BOTTOM"
+
+--- Elaborazione CV Componenti per scheda: F ---
+
+Elaborazione Computer Vision per F [TOP] (1 immagini)...
+
+-> Analisi filtri e bordi su: F_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/F/TOP/F_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/F/TOP/F_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/F/TOP/F_TOP_001_components_cv.json
+   Componenti totali trovati: 9
+     - Rettangoli orientati/ruotati: 8
+     - Cerchi: 1
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/F/TOP"
+
+--- Elaborazione CV Componenti per scheda: G ---
+
+Elaborazione Computer Vision per G [TOP] (1 immagini)...
+
+-> Analisi filtri e bordi su: G_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/G/TOP/G_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/G/TOP/G_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/G/TOP/G_TOP_001_components_cv.json
+   Componenti totali trovati: 7
+     - Rettangoli orientati/ruotati: 6
+     - Cerchi: 1
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/G/TOP"
+
+Elaborazione Computer Vision per G [BOTTOM] (1 immagini)...
+
+-> Analisi filtri e bordi su: G_BOTTOM_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/G/BOTTOM/G_BOTTOM_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/G/BOTTOM/G_BOTTOM_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/G/BOTTOM/G_BOTTOM_001_components_cv.json
+   Componenti totali trovati: 6
+     - Rettangoli orientati/ruotati: 5
+     - Cerchi: 1
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/G/BOTTOM"
+
+========================================================
+Rilevamento CV classica completato con successo!
+Immagini annotate, maschere, CSV e JSON salvati in:
+  ../data/outputs/pcb_cv_component_detection
+========================================================
+
+=== AVVIO RICONOSCIMENTO COMPONENTI PCB ===
+
+Inizializzazione del rilevatore componenti PCB...
+- Pesi 'any' (localizzazione): ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.pt
+- Pesi 'fine' (classificazione 13 classi): ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.pt
+[ComponentDetector] Trovato modello ONNX già esportato: "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx"
+[ComponentDetector] Caricamento rete ANY: ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx ...
+[ComponentDetector] Modello ANY caricato con successo.
+[ComponentDetector] Trovato modello ONNX già esportato: "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx"
+[ComponentDetector] Caricamento rete FINE: ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx ...
+[ComponentDetector] Modello FINE caricato con successo (13 classi configurate).
+
+--- Elaborazione componenti per scheda: C ---
+
+Elaborazione di 1 immagini per C [TOP]...
+
+-> Esecuzione rilevamento su: C_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/C/TOP/C_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/C/TOP/C_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/C/TOP/C_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/C/TOP/C_TOP_001_summary.json
+   Trovati 9 componenti.
+   Dettaglio classi:
+     - ?: 8
+     - IC: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/C/TOP"
+
+Elaborazione di 1 immagini per C [BOTTOM]...
+
+-> Esecuzione rilevamento su: C_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/C/BOTTOM/C_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/C/BOTTOM/C_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/C/BOTTOM/C_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/C/BOTTOM/C_BOTTOM_001_summary.json
+   Trovati 1 componenti.
+   Dettaglio classi:
+     - IC: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/C/BOTTOM"
+
+--- Elaborazione componenti per scheda: E ---
+
+Elaborazione di 1 immagini per E [TOP]...
+
+-> Esecuzione rilevamento su: E_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/E/TOP/E_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/E/TOP/E_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/E/TOP/E_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/E/TOP/E_TOP_001_summary.json
+   Trovati 153 componenti.
+   Dettaglio classi:
+     - ?: 95
+     - Capacitor: 43
+     - Connector: 1
+     - IC: 9
+     - Resistor: 5
+Risultati salvati in: "../data/outputs/pcb_component_detection/E/TOP"
+
+Elaborazione di 1 immagini per E [BOTTOM]...
+
+-> Esecuzione rilevamento su: E_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/E/BOTTOM/E_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/E/BOTTOM/E_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/E/BOTTOM/E_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/E/BOTTOM/E_BOTTOM_001_summary.json
+   Trovati 17 componenti.
+   Dettaglio classi:
+     - ?: 6
+     - IC: 11
+Risultati salvati in: "../data/outputs/pcb_component_detection/E/BOTTOM"
+
+--- Elaborazione componenti per scheda: G ---
+
+Elaborazione di 1 immagini per G [TOP]...
+
+-> Esecuzione rilevamento su: G_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/G/TOP/G_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/G/TOP/G_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/G/TOP/G_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/G/TOP/G_TOP_001_summary.json
+   Trovati 45 componenti.
+   Dettaglio classi:
+     - ?: 18
+     - Capacitor: 11
+     - IC: 12
+     - Resistor: 4
+Risultati salvati in: "../data/outputs/pcb_component_detection/G/TOP"
+
+Elaborazione di 1 immagini per G [BOTTOM]...
+
+-> Esecuzione rilevamento su: G_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/G/BOTTOM/G_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/G/BOTTOM/G_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/G/BOTTOM/G_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/G/BOTTOM/G_BOTTOM_001_summary.json
+   Trovati 44 componenti.
+   Dettaglio classi:
+     - ?: 15
+     - Capacitor: 7
+     - IC: 20
+     - Resistor: 1
+     - Transistor: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/G/BOTTOM"
+
+--- Elaborazione componenti per scheda: A ---
+
+Elaborazione di 10 immagini per A [TOP]...
+
+-> Esecuzione rilevamento su: A_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_summary.json
+   Trovati 20 componenti.
+   Dettaglio classi:
+     - ?: 13
+     - Electrolytic Capacitor: 1
+     - IC: 6
+
+-> Esecuzione rilevamento su: A_TOP_002.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_002_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_002_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_002_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_002_summary.json
+   Trovati 15 componenti.
+   Dettaglio classi:
+     - ?: 5
+     - Capacitor: 1
+     - IC: 3
+     - Resistor: 6
+
+-> Esecuzione rilevamento su: A_TOP_003.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_003_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_003_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_003_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_003_summary.json
+   Trovati 152 componenti.
+   Dettaglio classi:
+     - ?: 41
+     - Capacitor: 31
+     - Connector: 3
+     - Diode: 2
+     - IC: 20
+     - Marker: 3
+     - Other: 3
+     - Resistor: 46
+     - Transistor: 3
+
+-> Esecuzione rilevamento su: A_TOP_004.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_004_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_004_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_004_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_004_summary.json
+   Trovati 130 componenti.
+   Dettaglio classi:
+     - ?: 25
+     - Capacitor: 17
+     - Diode: 1
+     - Electrolytic Capacitor: 5
+     - IC: 17
+     - Inductor: 2
+     - LED: 2
+     - Marker: 4
+     - Oscillator: 1
+     - Other: 32
+     - Resistor: 23
+     - Switch/Button: 1
+
+-> Esecuzione rilevamento su: A_TOP_005.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_005_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_005_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_005_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_005_summary.json
+   Trovati 29 componenti.
+   Dettaglio classi:
+     - ?: 12
+     - Capacitor: 8
+     - IC: 8
+     - Resistor: 1
+
+-> Esecuzione rilevamento su: A_TOP_006.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_006_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_006_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_006_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_006_summary.json
+   Trovati 83 componenti.
+   Dettaglio classi:
+     - ?: 8
+     - Capacitor: 15
+     - Diode: 1
+     - Electrolytic Capacitor: 2
+     - IC: 21
+     - Inductor: 3
+     - LED: 1
+     - Marker: 2
+     - Other: 19
+     - Resistor: 8
+     - Switch/Button: 3
+
+-> Esecuzione rilevamento su: A_TOP_007.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_007_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_007_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_007_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_007_summary.json
+   Trovati 73 componenti.
+   Dettaglio classi:
+     - ?: 9
+     - Capacitor: 7
+     - Electrolytic Capacitor: 3
+     - IC: 21
+     - Inductor: 2
+     - LED: 1
+     - Marker: 2
+     - Oscillator: 1
+     - Other: 19
+     - Resistor: 6
+     - Transistor: 2
+
+-> Esecuzione rilevamento su: A_TOP_008.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_008_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_008_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_008_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_008_summary.json
+   Trovati 75 componenti.
+   Dettaglio classi:
+     - ?: 46
+     - Capacitor: 6
+     - Connector: 1
+     - Diode: 3
+     - IC: 10
+     - Marker: 1
+     - Resistor: 7
+     - Transistor: 1
+
+-> Esecuzione rilevamento su: A_TOP_009.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_009_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_009_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_009_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_009_summary.json
+   Trovati 19 componenti.
+   Dettaglio classi:
+     - ?: 12
+     - IC: 6
+     - Resistor: 1
+
+-> Esecuzione rilevamento su: A_TOP_010.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_010_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_010_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_010_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_010_summary.json
+   Trovati 19 componenti.
+   Dettaglio classi:
+     - ?: 10
+     - IC: 8
+     - Resistor: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/A/TOP"
+
+Elaborazione di 1 immagini per A [BOTTOM]...
+
+-> Esecuzione rilevamento su: A_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/BOTTOM/A_BOTTOM_001_summary.json
+   Trovati 43 componenti.
+   Dettaglio classi:
+     - ?: 21
+     - Capacitor: 3
+     - Diode: 1
+     - IC: 15
+     - Resistor: 2
+     - Transistor: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/A/BOTTOM"
+
+--- Elaborazione componenti per scheda: D ---
+
+Elaborazione di 1 immagini per D [TOP]...
+
+-> Esecuzione rilevamento su: D_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/D/TOP/D_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/D/TOP/D_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/D/TOP/D_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/D/TOP/D_TOP_001_summary.json
+   Trovati 29 componenti.
+   Dettaglio classi:
+     - ?: 26
+     - Capacitor: 2
+     - IC: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/D/TOP"
+
+Elaborazione di 1 immagini per D [BOTTOM]...
+
+-> Esecuzione rilevamento su: D_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/D/BOTTOM/D_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/D/BOTTOM/D_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/D/BOTTOM/D_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/D/BOTTOM/D_BOTTOM_001_summary.json
+   Trovati 104 componenti.
+   Dettaglio classi:
+     - ?: 41
+     - Capacitor: 25
+     - Diode: 1
+     - IC: 23
+     - Resistor: 13
+     - Transistor: 1
+Risultati salvati in: "../data/outputs/pcb_component_detection/D/BOTTOM"
+
+--- Elaborazione componenti per scheda: B ---
+
+Elaborazione di 1 immagini per B [TOP]...
+
+-> Esecuzione rilevamento su: B_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/B/TOP/B_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/B/TOP/B_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/B/TOP/B_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/B/TOP/B_TOP_001_summary.json
+   Trovati 10 componenti.
+   Dettaglio classi:
+     - ?: 7
+     - IC: 3
+Risultati salvati in: "../data/outputs/pcb_component_detection/B/TOP"
+
+Elaborazione di 1 immagini per B [BOTTOM]...
+
+-> Esecuzione rilevamento su: B_BOTTOM_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/B/BOTTOM/B_BOTTOM_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/B/BOTTOM/B_BOTTOM_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/B/BOTTOM/B_BOTTOM_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/B/BOTTOM/B_BOTTOM_001_summary.json
+   Trovati 2 componenti.
+   Dettaglio classi:
+     - IC: 2
+Risultati salvati in: "../data/outputs/pcb_component_detection/B/BOTTOM"
+
+--- Elaborazione componenti per scheda: F ---
+
+Elaborazione di 1 immagini per F [TOP]...
+
+-> Esecuzione rilevamento su: F_TOP_001.bmp ...
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/F/TOP/F_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/F/TOP/F_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/F/TOP/F_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/F/TOP/F_TOP_001_summary.json
+   Trovati 55 componenti.
+   Dettaglio classi:
+     - ?: 22
+     - Capacitor: 11
+     - IC: 16
+     - Resistor: 6
+Risultati salvati in: "../data/outputs/pcb_component_detection/F/TOP"
+
+========================================================
+Rilevamento componenti completato con successo!
+Immagini, CSV e riepiloghi JSON salvati in: ../data/outputs/pcb_component_detection
+========================================================
+
+========================================================
+=== AVVIO ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE ===
+========================================================
+[ComponentDetector] Trovato modello ONNX già esportato: "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx"
+[ComponentDetector] Caricamento rete ANY: ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx ...
+[ComponentDetector] Modello ANY caricato con successo.
+[ComponentDetector] Trovato modello ONNX già esportato: "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx"
+[ComponentDetector] Caricamento rete FINE: ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx ...
+[ComponentDetector] Modello FINE caricato con successo (13 classi configurate).
+
+Vuoi selezionare manualmente la foto base per il rendering grafico di ciascun lato? (S/N, default S): 
+--- Elaborazione output per scheda: A ---
+
+========================================================
+ ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE        
+ Scheda: A | Lato: TOP
+========================================================
+
+-> Foto consigliata (piu' componenti rilevati): A_TOP_003 (152 componenti DL)
+
+========================================================
+ SCELTA IMMAGINE BASE PER IL RENDERING GRAFICO FINALE   
+ Scheda: A | Lato: TOP
+========================================================
+Tutte le foto sono state scattate dalla medesima posizione del robot.
+A livello di riconoscimento non cambia, cambia solo l'aspetto grafico finale.
+Foto disponibili per questo lato:
+  1) A_TOP_001.bmp (20 rilevamenti DL)
+  2) A_TOP_002.bmp (15 rilevamenti DL)
+  3) A_TOP_003.bmp (152 rilevamenti DL)  <-- [CONSIGLIATA - PIÙ COMPONENTI]
+  4) A_TOP_004.bmp (130 rilevamenti DL)
+  5) A_TOP_005.bmp (29 rilevamenti DL)
+  6) A_TOP_006.bmp (83 rilevamenti DL)
+  7) A_TOP_007.bmp (73 rilevamenti DL)
+  8) A_TOP_008.bmp (75 rilevamenti DL)
+  9) A_TOP_009.bmp (19 rilevamenti DL)
+  10) A_TOP_010.bmp (19 rilevamenti DL)
+Quale foto vuoi utilizzare come sfondo grafico? (Inserisci 1-10 oppure premi INVIO per la consigliata [A_TOP_003]): -> Immagine base selezionata per il rendering: A_TOP_001
+
+--- STEP 1: Fusione rilevamenti DL multi-esposizione ---
+   Componenti DL unificati totali: 181
+   Dettaglio classi (priorita' no-? e voti di maggioranza):
+     - ?: 17
+     - Capacitor: 25
+     - Connector: 3
+     - Electrolytic Capacitor: 6
+     - IC: 32
+     - Inductor: 2
+     - LED: 1
+     - Marker: 2
+     - Oscillator: 1
+     - Other: 28
+     - Resistor: 62
+     - Switch/Button: 1
+     - Transistor: 1
+
+--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---
+   Caricati 423 componenti CV da ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.csv
+   Componenti CV classificati totali: 423
+   Dettaglio classi CV riconosciute con pesi DL:
+     - ?: 271
+     - Capacitor: 11
+     - Connector: 53
+     - IC: 48
+     - Inductor: 1
+     - Marker: 1
+     - Oscillator: 1
+     - Other: 11
+     - Resistor: 25
+     - Transistor: 1
+
+--- STEP 3: Fusione finale completa (DL multi-esposizione + CV classificato) ---
+   Totale componenti finali unificati: 358
+   Ripartizione per fonte:
+     - CV_ONLY: 212
+     - DL_ONLY: 96
+     - FUSED_DL_CV: 50
+   Riepilogo finale classi:
+     - ?: 149
+     - Capacitor: 17
+     - Connector: 52
+     - Electrolytic Capacitor: 6
+     - IC: 48
+     - Inductor: 1
+     - LED: 1
+     - Marker: 1
+     - Oscillator: 1
+     - Other: 25
+     - Resistor: 56
+     - Switch/Button: 1
+
+[OutputProcessor] Salvataggio passaggi intermedi in: ../data/outputs/pcb_processed_output/A/TOP
+  -> [Step 1] Immagine elementi DL: ../data/outputs/pcb_processed_output/A/TOP/step1_merged_dl_elements.jpg
+  -> [Step 1] Immagine tipi DL: ../data/outputs/pcb_processed_output/A/TOP/step1_merged_dl_types.jpg
+  -> [Step 1] Report CSV: ../data/outputs/pcb_processed_output/A/TOP/step1_merged_dl_detections.csv
+  -> [Step 1] Riepilogo JSON: ../data/outputs/pcb_processed_output/A/TOP/step1_merged_dl_summary.json
+  -> [Step 2] Immagine elementi CV: ../data/outputs/pcb_processed_output/A/TOP/step2_cv_dl_elements.jpg
+  -> [Step 2] Immagine CV classificati DL: ../data/outputs/pcb_processed_output/A/TOP/step2_cv_dl_classified.jpg
+  -> [Step 2] Report CSV: ../data/outputs/pcb_processed_output/A/TOP/step2_cv_dl_detections.csv
+  -> [Step 2] Riepilogo JSON: ../data/outputs/pcb_processed_output/A/TOP/step2_cv_dl_summary.json
+  -> [Step 3] Immagine finale elementi: ../data/outputs/pcb_processed_output/A/TOP/step3_final_fused_elements.jpg
+  -> [Step 3] Immagine finale tipi con legenda: ../data/outputs/pcb_processed_output/A/TOP/step3_final_fused_types.jpg
+  -> [Step 3] Immagine finale geometrica per fonti: ../data/outputs/pcb_processed_output/A/TOP/step3_final_fused_geometric.jpg
+  -> [Step 3] Report CSV Finale Completo: ../data/outputs/pcb_processed_output/A/TOP/final_fused_components.csv
+  -> [Step 3] Riepilogo JSON Finale Completo: ../data/outputs/pcb_processed_output/A/TOP/final_fused_summary.json
+
+========================================================
+ ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE        
+ Scheda: A | Lato: BOTTOM
+========================================================
+
+-> Foto consigliata (piu' componenti rilevati): A_BOTTOM_001 (43 componenti DL)
+
+--- STEP 1: Fusione rilevamenti DL multi-esposizione ---
+   Componenti DL unificati totali: 41
+   Dettaglio classi (priorita' no-? e voti di maggioranza):
+     - ?: 19
+     - Capacitor: 3
+     - Diode: 1
+     - IC: 15
+     - Resistor: 2
+     - Transistor: 1
+
+--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---
+   Caricati 1 componenti CV da ../data/outputs/pcb_cv_component_detection/A/BOTTOM/A_BOTTOM_001_components_cv.csv
+   Componenti CV classificati totali: 1
+   Dettaglio classi CV riconosciute con pesi DL:
+     - ?: 1
+
+--- STEP 3: Fusione finale completa (DL multi-esposizione + CV classificato) ---
+   Totale componenti finali unificati: 41
+   Ripartizione per fonte:
+     - DL_ONLY: 41
+   Riepilogo finale classi:
+     - ?: 19
+     - Capacitor: 3
+     - Diode: 1
+     - IC: 15
+     - Resistor: 2
+     - Transistor: 1
+
+[OutputProcessor] Salvataggio passaggi intermedi in: ../data/outputs/pcb_processed_output/A/BOTTOM
+  -> [Step 1] Immagine elementi DL: ../data/outputs/pcb_processed_output/A/BOTTOM/step1_merged_dl_elements.jpg
+  -> [Step 1] Immagine tipi DL: ../data/outputs/pcb_processed_output/A/BOTTOM/step1_merged_dl_types.jpg
+  -> [Step 1] Report CSV: ../data/outputs/pcb_processed_output/A/BOTTOM/step1_merged_dl_detections.csv
+  -> [Step 1] Riepilogo JSON: ../data/outputs/pcb_processed_output/A/BOTTOM/step1_merged_dl_summary.json
+  -> [Step 2] Immagine elementi CV: ../data/outputs/pcb_processed_output/A/BOTTOM/step2_cv_dl_elements.jpg
+  -> [Step 2] Immagine CV classificati DL: ../data/outputs/pcb_processed_output/A/BOTTOM/step2_cv_dl_classified.jpg
+  -> [Step 2] Report CSV: ../data/outputs/pcb_processed_output/A/BOTTOM/step2_cv_dl_detections.csv
+  -> [Step 2] Riepilogo JSON: ../data/outputs/pcb_processed_output/A/BOTTOM/step2_cv_dl_summary.json
+  -> [Step 3] Immagine finale elementi: ../data/outputs/pcb_processed_output/A/BOTTOM/step3_final_fused_elements.jpg
+  -> [Step 3] Immagine finale tipi con legenda: ../data/outputs/pcb_processed_output/A/BOTTOM/step3_final_fused_types.jpg
+  -> [Step 3] Immagine finale geometrica per fonti: ../data/outputs/pcb_processed_output/A/BOTTOM/step3_final_fused_geometric.jpg
+  -> [Step 3] Report CSV Finale Completo: ../data/outputs/pcb_processed_output/A/BOTTOM/final_fused_components.csv
+  -> [Step 3] Riepilogo JSON Finale Completo: ../data/outputs/pcb_processed_output/A/BOTTOM/final_fused_summary.json
+
+--- Elaborazione output per scheda: B ---
+
+========================================================
+ ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE        
+ Scheda: B | Lato: TOP
+========================================================
+
+-> Foto consigliata (piu' componenti rilevati): B_TOP_001 (10 componenti DL)
+
+--- STEP 1: Fusione rilevamenti DL multi-esposizione ---
+   Componenti DL unificati totali: 10
+   Dettaglio classi (priorita' no-? e voti di maggioranza):
+     - ?: 7
+     - IC: 3
+
+--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---
+   Caricati 6 componenti CV da ../data/outputs/pcb_cv_component_detection/B/TOP/B_TOP_001_components_cv.csv
+   Componenti CV classificati totali: 6
+   Dettaglio classi CV riconosciute con pesi DL:
+     - ?: 6
+
+--- STEP 3: Fusione finale completa (DL multi-esposizione + CV classificato) ---
+   Totale componenti finali unificati: 14
+   Ripartizione per fonte:
+     - CV_ONLY: 4
+     - DL_ONLY: 10
+   Riepilogo finale classi:
+     - ?: 11
+     - IC: 3
+
+[OutputProcessor] Salvataggio passaggi intermedi in: ../data/outputs/pcb_processed_output/B/TOP
+  -> [Step 1] Immagine elementi DL: ../data/outputs/pcb_processed_output/B/TOP/step1_merged_dl_elements.jpg
+  -> [Step 1] Immagine tipi DL: ../data/outputs/pcb_processed_output/B/TOP/step1_merged_dl_types.jpg
+  -> [Step 1] Report CSV: ../data/outputs/pcb_processed_output/B/TOP/step1_merged_dl_detections.csv
+  -> [Step 1] Riepilogo JSON: ../data/outputs/pcb_processed_output/B/TOP/step1_merged_dl_summary.json
+  -> [Step 2] Immagine elementi CV: ../data/outputs/pcb_processed_output/B/TOP/step2_cv_dl_elements.jpg
+  -> [Step 2] Immagine CV classificati DL: ../data/outputs/pcb_processed_output/B/TOP/step2_cv_dl_classified.jpg
+  -> [Step 2] Report CSV: ../data/outputs/pcb_processed_output/B/TOP/step2_cv_dl_detections.csv
+  -> [Step 2] Riepilogo JSON: ../data/outputs/pcb_processed_output/B/TOP/step2_cv_dl_summary.json
+  -> [Step 3] Immagine finale elementi: ../data/outputs/pcb_processed_output/B/TOP/step3_final_fused_elements.jpg
+  -> [Step 3] Immagine finale tipi con legenda: ../data/outputs/pcb_processed_output/B/TOP/step3_final_fused_types.jpg
+  -> [Step 3] Immagine finale geometrica per fonti: ../data/outputs/pcb_processed_output/B/TOP/step3_final_fused_geometric.jpg
+  -> [Step 3] Report CSV Finale Completo: ../data/outputs/pcb_processed_output/B/TOP/final_fused_components.csv
+  -> [Step 3] Riepilogo JSON Finale Completo: ../data/outputs/pcb_processed_output/B/TOP/final_fused_summary.json
+
+========================================================
+ ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE        
+ Scheda: B | Lato: BOTTOM
+========================================================
+
+-> Foto consigliata (piu' componenti rilevati): B_BOTTOM_001 (2 componenti DL)
+
+--- STEP 1: Fusione rilevamenti DL multi-esposizione ---
+   Componenti DL unificati totali: 2
+   Dettaglio classi (priorita' no-? e voti di maggioranza):
+     - IC: 2
+
+--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---
+   Caricati 1 componenti CV da ../data/outputs/pcb_cv_component_detection/B/BOTTOM/B_BOTTOM_001_components_cv.csv
+   Componenti CV classificati totali: 1
+   Dettaglio classi CV riconosciute con pesi DL:
+     - ?: 1
+
+--- STEP 3: Fusione finale completa (DL multi-esposizione + CV classificato) ---
+   Totale componenti finali unificati: 3
+   Ripartizione per fonte:
+     - CV_ONLY: 1
+     - DL_ONLY: 2
+   Riepilogo finale classi:
+     - ?: 1
+     - IC: 2
+
+[OutputProcessor] Salvataggio passaggi intermedi in: ../data/outputs/pcb_processed_output/B/BOTTOM
+  -> [Step 1] Immagine elementi DL: ../data/outputs/pcb_processed_output/B/BOTTOM/step1_merged_dl_elements.jpg
+  -> [Step 1] Immagine tipi DL: ../data/outputs/pcb_processed_output/B/BOTTOM/step1_merged_dl_types.jpg
+  -> [Step 1] Report CSV: ../data/outputs/pcb_processed_output/B/BOTTOM/step1_merged_dl_detections.csv
+  -> [Step 1] Riepilogo JSON: ../data/outputs/pcb_processed_output/B/BOTTOM/step1_merged_dl_summary.json
+  -> [Step 2] Immagine elementi CV: ../data/outputs/pcb_processed_output/B/BOTTOM/step2_cv_dl_elements.jpg
+  -> [Step 2] Immagine CV classificati DL: ../data/outputs/pcb_processed_output/B/BOTTOM/step2_cv_dl_classified.jpg
+  -> [Step 2] Report CSV: ../data/outputs/pcb_processed_output/B/BOTTOM/step2_cv_dl_detections.csv
+  -> [Step 2] Riepilogo JSON: ../data/outputs/pcb_processed_output/B/BOTTOM/step2_cv_dl_summary.json
+  -> [Step 3] Immagine finale elementi: ../data/outputs/pcb_processed_output/B/BOTTOM/step3_final_fused_elements.jpg
+  -> [Step 3] Immagine finale tipi con legenda: ../data/outputs/pcb_processed_output/B/BOTTOM/step3_final_fused_types.jpg
+  -> [Step 3] Immagine finale geometrica per fonti: ../data/outputs/pcb_processed_output/B/BOTTOM/step3_final_fused_geometric.jpg
+  -> [Step 3] Report CSV Finale Completo: ../data/outputs/pcb_processed_output/B/BOTTOM/final_fused_components.csv
+  -> [Step 3] Riepilogo JSON Finale Completo: ../data/outputs/pcb_processed_output/B/BOTTOM/final_fused_summary.json
+
+--- Elaborazione output per scheda: C ---
+
+========================================================
+ ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE        
+ Scheda: C | Lato: TOP
+========================================================
+
+-> Foto consigliata (piu' componenti rilevati): C_TOP_001 (9 componenti DL)
+
+--- STEP 1: Fusione rilevamenti DL multi-esposizione ---
+   Componenti DL unificati totali: 9
+   Dettaglio classi (priorita' no-? e voti di maggioranza):
+     - ?: 8
+     - IC: 1
+
+--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---
+   Caricati 6 componenti CV da ../data/outputs/pcb_cv_component_detection/C/TOP/C_TOP_001_components_cv.csv
+   Componenti CV classificati totali: 6
+   Dettaglio classi CV riconosciute con pesi DL:
+     - ?: 6
+
+--- STEP 3: Fusione finale completa (DL multi-esposizione + CV classificato) ---
+   Totale componenti finali unificati: 11
+   Ripartizione per fonte:
+     - CV_ONLY: 2
+     - DL_ONLY: 9
+   Riepilogo finale classi:
+     - ?: 10
+     - IC: 1
+
+[OutputProcessor] Salvataggio passaggi intermedi in: ../data/outputs/pcb_processed_output/C/TOP
+  -> [Step 1] Immagine elementi DL: ../data/outputs/pcb_processed_output/C/TOP/step1_merged_dl_elements.jpg
+  -> [Step 1] Immagine tipi DL: ../data/outputs/pcb_processed_output/C/TOP/step1_merged_dl_types.jpg
+  -> [Step 1] Report CSV: ../data/outputs/pcb_processed_output/C/TOP/step1_merged_dl_detections.csv
+  -> [Step 1] Riepilogo JSON: ../data/outputs/pcb_processed_output/C/TOP/step1_merged_dl_summary.json
+  -> [Step 2] Immagine elementi CV: ../data/outputs/pcb_processed_output/C/TOP/step2_cv_dl_elements.jpg
+  -> [Step 2] Immagine CV classificati DL: ../data/outputs/pcb_processed_output/C/TOP/step2_cv_dl_classified.jpg
+  -> [Step 2] Report CSV: ../data/outputs/pcb_processed_output/C/TOP/step2_cv_dl_detections.csv
+  -> [Step 2] Riepilogo JSON: ../data/outputs/pcb_processed_output/C/TOP/step2_cv_dl_summary.json
+  -> [Step 3] Immagine finale elementi: ../data/outputs/pcb_processed_output/C/TOP/step3_final_fused_elements.jpg
+  -> [Step 3] Immagine finale tipi con legenda: ../data/outputs/pcb_processed_output/C/TOP/step3_final_fused_types.jpg
+  -> [Step 3] Immagine finale geometrica per fonti: ../data/outputs/pcb_processed_output/C/TOP/step3_final_fused_geometric.jpg
+  -> [Step 3] Report CSV Finale Completo: ../data/outputs/pcb_processed_output/C/TOP/final_fused_components.csv
+  -> [Step 3] Riepilogo JSON Finale Completo: ../data/outputs/pcb_processed_output/C/TOP/final_fused_summary.json
+
+========================================================
+ ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE        
+ Scheda: C | Lato: BOTTOM
+========================================================
+
+-> Foto consigliata (piu' componenti rilevati): C_BOTTOM_001 (1 componenti DL)
+
+--- STEP 1: Fusione rilevamenti DL multi-esposizione ---
+   Componenti DL unificati totali: 1
+   Dettaglio classi (priorita' no-? e voti di maggioranza):
+     - IC: 1
+
+--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---
+   Caricati 7 componenti CV da ../data/outputs/pcb_cv_component_detection/C/BOTTOM/C_BOTTOM_001_components_cv.csv
+   Componenti CV classificati totali: 7
+   Dettaglio classi CV riconosciute con pesi DL:
+     - ?: 7
+
+--- STEP 3: Fusione finale completa (DL multi-esposizione + CV classificato) ---
+   Totale componenti finali unificati: 3
+   Ripartizione per fonte:
+     - CV_ONLY: 2
+     - DL_ONLY: 1
+   Riepilogo finale classi:
+     - ?: 2
+     - IC: 1
+
+[OutputProcessor] Salvataggio passaggi intermedi in: ../data/outputs/pcb_processed_output/C/BOTTOM
+  -> [Step 1] Immagine elementi DL: ../data/outputs/pcb_processed_output/C/BOTTOM/step1_merged_dl_elements.jpg
+  -> [Step 1] Immagine tipi DL: ../data/outputs/pcb_processed_output/C/BOTTOM/step1_merged_dl_types.jpg
+  -> [Step 1] Report CSV: ../data/outputs/pcb_processed_output/C/BOTTOM/step1_merged_dl_detections.csv
+  -> [Step 1] Riepilogo JSON: ../data/outputs/pcb_processed_output/C/BOTTOM/step1_merged_dl_summary.json
+  -> [Step 2] Immagine elementi CV: ../data/outputs/pcb_processed_output/C/BOTTOM/step2_cv_dl_elements.jpg
+  -> [Step 2] Immagine CV classificati DL: ../data/outputs/pcb_processed_output/C/BOTTOM/step2_cv_dl_classified.jpg
+  -> [Step 2] Report CSV: ../data/outputs/pcb_processed_output/C/BOTTOM/step2_cv_dl_detections.csv
+  -> [Step 2] Riepilogo JSON: ../data/outputs/pcb_processed_output/C/BOTTOM/step2_cv_dl_summary.json
+  -> [Step 3] Immagine finale elementi: ../data/outputs/pcb_processed_output/C/BOTTOM/step3_final_fused_elements.jpg
+  -> [Step 3] Immagine finale tipi con legenda: ../data/outputs/pcb_processed_output/C/BOTTOM/step3_final_fused_types.jpg
+  -> [Step 3] Immagine finale geometrica per fonti: ../data/outputs/pcb_processed_output/C/BOTTOM/step3_final_fused_geometric.jpg
+  -> [Step 3] Report CSV Finale Completo: ../data/outputs/pcb_processed_output/C/BOTTOM/final_fused_components.csv
+  -> [Step 3] Riepilogo JSON Finale Completo: ../data/outputs/pcb_processed_output/C/BOTTOM/final_fused_summary.json
+
+--- Elaborazione output per scheda: D ---
+
+========================================================
+ ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE        
+ Scheda: D | Lato: TOP
+========================================================
+
+-> Foto consigliata (piu' componenti rilevati): D_TOP_001 (29 componenti DL)
+
+--- STEP 1: Fusione rilevamenti DL multi-esposizione ---
+   Componenti DL unificati totali: 29
+   Dettaglio classi (priorita' no-? e voti di maggioranza):
+     - ?: 26
+     - Capacitor: 2
+     - IC: 1
+
+--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---
+   Caricati 6 componenti CV da ../data/outputs/pcb_cv_component_detection/D/TOP/D_TOP_001_components_cv.csv
+   Componenti CV classificati totali: 6
+   Dettaglio classi CV riconosciute con pesi DL:
+     - ?: 6
+
+--- STEP 3: Fusione finale completa (DL multi-esposizione + CV classificato) ---
+   Totale componenti finali unificati: 32
+   Ripartizione per fonte:
+     - CV_ONLY: 3
+     - DL_ONLY: 29
+   Riepilogo finale classi:
+     - ?: 29
+     - Capacitor: 2
+     - IC: 1
+
+[OutputProcessor] Salvataggio passaggi intermedi in: ../data/outputs/pcb_processed_output/D/TOP
+  -> [Step 1] Immagine elementi DL: ../data/outputs/pcb_processed_output/D/TOP/step1_merged_dl_elements.jpg
+  -> [Step 1] Immagine tipi DL: ../data/outputs/pcb_processed_output/D/TOP/step1_merged_dl_types.jpg
+  -> [Step 1] Report CSV: ../data/outputs/pcb_processed_output/D/TOP/step1_merged_dl_detections.csv
+  -> [Step 1] Riepilogo JSON: ../data/outputs/pcb_processed_output/D/TOP/step1_merged_dl_summary.json
+  -> [Step 2] Immagine elementi CV: ../data/outputs/pcb_processed_output/D/TOP/step2_cv_dl_elements.jpg
+  -> [Step 2] Immagine CV classificati DL: ../data/outputs/pcb_processed_output/D/TOP/step2_cv_dl_classified.jpg
+  -> [Step 2] Report CSV: ../data/outputs/pcb_processed_output/D/TOP/step2_cv_dl_detections.csv
+  -> [Step 2] Riepilogo JSON: ../data/outputs/pcb_processed_output/D/TOP/step2_cv_dl_summary.json
+  -> [Step 3] Immagine finale elementi: ../data/outputs/pcb_processed_output/D/TOP/step3_final_fused_elements.jpg
+  -> [Step 3] Immagine finale tipi con legenda: ../data/outputs/pcb_processed_output/D/TOP/step3_final_fused_types.jpg
+  -> [Step 3] Immagine finale geometrica per fonti: ../data/outputs/pcb_processed_output/D/TOP/step3_final_fused_geometric.jpg
+  -> [Step 3] Report CSV Finale Completo: ../data/outputs/pcb_processed_output/D/TOP/final_fused_components.csv
+  -> [Step 3] Riepilogo JSON Finale Completo: ../data/outputs/pcb_processed_output/D/TOP/final_fused_summary.json
+
+========================================================
+ ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE        
+ Scheda: D | Lato: BOTTOM
+========================================================
+
+-> Foto consigliata (piu' componenti rilevati): D_BOTTOM_001 (104 componenti DL)
+
+--- STEP 1: Fusione rilevamenti DL multi-esposizione ---
+   Componenti DL unificati totali: 104
+   Dettaglio classi (priorita' no-? e voti di maggioranza):
+     - ?: 41
+     - Capacitor: 25
+     - Diode: 1
+     - IC: 23
+     - Resistor: 13
+     - Transistor: 1
+
+--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---
+   Caricati 2 componenti CV da ../data/outputs/pcb_cv_component_detection/D/BOTTOM/D_BOTTOM_001_components_cv.csv
+   Componenti CV classificati totali: 2
+   Dettaglio classi CV riconosciute con pesi DL:
+     - ?: 2
+
+--- STEP 3: Fusione finale completa (DL multi-esposizione + CV classificato) ---
+   Totale componenti finali unificati: 106
+   Ripartizione per fonte:
+     - CV_ONLY: 2
+     - DL_ONLY: 104
+   Riepilogo finale classi:
+     - ?: 43
+     - Capacitor: 25
+     - Diode: 1
+     - IC: 23
+     - Resistor: 13
+     - Transistor: 1
+
+[OutputProcessor] Salvataggio passaggi intermedi in: ../data/outputs/pcb_processed_output/D/BOTTOM
+  -> [Step 1] Immagine elementi DL: ../data/outputs/pcb_processed_output/D/BOTTOM/step1_merged_dl_elements.jpg
+  -> [Step 1] Immagine tipi DL: ../data/outputs/pcb_processed_output/D/BOTTOM/step1_merged_dl_types.jpg
+  -> [Step 1] Report CSV: ../data/outputs/pcb_processed_output/D/BOTTOM/step1_merged_dl_detections.csv
+  -> [Step 1] Riepilogo JSON: ../data/outputs/pcb_processed_output/D/BOTTOM/step1_merged_dl_summary.json
+  -> [Step 2] Immagine elementi CV: ../data/outputs/pcb_processed_output/D/BOTTOM/step2_cv_dl_elements.jpg
+  -> [Step 2] Immagine CV classificati DL: ../data/outputs/pcb_processed_output/D/BOTTOM/step2_cv_dl_classified.jpg
+  -> [Step 2] Report CSV: ../data/outputs/pcb_processed_output/D/BOTTOM/step2_cv_dl_detections.csv
+  -> [Step 2] Riepilogo JSON: ../data/outputs/pcb_processed_output/D/BOTTOM/step2_cv_dl_summary.json
+  -> [Step 3] Immagine finale elementi: ../data/outputs/pcb_processed_output/D/BOTTOM/step3_final_fused_elements.jpg
+  -> [Step 3] Immagine finale tipi con legenda: ../data/outputs/pcb_processed_output/D/BOTTOM/step3_final_fused_types.jpg
+  -> [Step 3] Immagine finale geometrica per fonti: ../data/outputs/pcb_processed_output/D/BOTTOM/step3_final_fused_geometric.jpg
+  -> [Step 3] Report CSV Finale Completo: ../data/outputs/pcb_processed_output/D/BOTTOM/final_fused_components.csv
+  -> [Step 3] Riepilogo JSON Finale Completo: ../data/outputs/pcb_processed_output/D/BOTTOM/final_fused_summary.json
+
+--- Elaborazione output per scheda: E ---
+
+========================================================
+ ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE        
+ Scheda: E | Lato: TOP
+========================================================
+
+-> Foto consigliata (piu' componenti rilevati): E_TOP_001 (153 componenti DL)
+
+--- STEP 1: Fusione rilevamenti DL multi-esposizione ---
+   Componenti DL unificati totali: 153
+   Dettaglio classi (priorita' no-? e voti di maggioranza):
+     - ?: 95
+     - Capacitor: 43
+     - Connector: 1
+     - IC: 9
+     - Resistor: 5
+
+--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---
+   Caricati 156 componenti CV da ../data/outputs/pcb_cv_component_detection/E/TOP/E_TOP_001_components_cv.csv
+   Componenti CV classificati totali: 156
+   Dettaglio classi CV riconosciute con pesi DL:
+     - ?: 156
+
+--- STEP 3: Fusione finale completa (DL multi-esposizione + CV classificato) ---
+   Totale componenti finali unificati: 217
+   Ripartizione per fonte:
+     - CV_ONLY: 64
+     - DL_ONLY: 153
+   Riepilogo finale classi:
+     - ?: 159
+     - Capacitor: 43
+     - Connector: 1
+     - IC: 9
+     - Resistor: 5
+
+[OutputProcessor] Salvataggio passaggi intermedi in: ../data/outputs/pcb_processed_output/E/TOP
+  -> [Step 1] Immagine elementi DL: ../data/outputs/pcb_processed_output/E/TOP/step1_merged_dl_elements.jpg
+  -> [Step 1] Immagine tipi DL: ../data/outputs/pcb_processed_output/E/TOP/step1_merged_dl_types.jpg
+  -> [Step 1] Report CSV: ../data/outputs/pcb_processed_output/E/TOP/step1_merged_dl_detections.csv
+  -> [Step 1] Riepilogo JSON: ../data/outputs/pcb_processed_output/E/TOP/step1_merged_dl_summary.json
+  -> [Step 2] Immagine elementi CV: ../data/outputs/pcb_processed_output/E/TOP/step2_cv_dl_elements.jpg
+  -> [Step 2] Immagine CV classificati DL: ../data/outputs/pcb_processed_output/E/TOP/step2_cv_dl_classified.jpg
+  -> [Step 2] Report CSV: ../data/outputs/pcb_processed_output/E/TOP/step2_cv_dl_detections.csv
+  -> [Step 2] Riepilogo JSON: ../data/outputs/pcb_processed_output/E/TOP/step2_cv_dl_summary.json
+  -> [Step 3] Immagine finale elementi: ../data/outputs/pcb_processed_output/E/TOP/step3_final_fused_elements.jpg
+  -> [Step 3] Immagine finale tipi con legenda: ../data/outputs/pcb_processed_output/E/TOP/step3_final_fused_types.jpg
+  -> [Step 3] Immagine finale geometrica per fonti: ../data/outputs/pcb_processed_output/E/TOP/step3_final_fused_geometric.jpg
+  -> [Step 3] Report CSV Finale Completo: ../data/outputs/pcb_processed_output/E/TOP/final_fused_components.csv
+  -> [Step 3] Riepilogo JSON Finale Completo: ../data/outputs/pcb_processed_output/E/TOP/final_fused_summary.json
+
+========================================================
+ ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE        
+ Scheda: E | Lato: BOTTOM
+========================================================
+
+-> Foto consigliata (piu' componenti rilevati): E_BOTTOM_001 (17 componenti DL)
+
+--- STEP 1: Fusione rilevamenti DL multi-esposizione ---
+   Componenti DL unificati totali: 17
+   Dettaglio classi (priorita' no-? e voti di maggioranza):
+     - ?: 6
+     - IC: 11
+
+--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---
+   Caricati 17 componenti CV da ../data/outputs/pcb_cv_component_detection/E/BOTTOM/E_BOTTOM_001_components_cv.csv
+   Componenti CV classificati totali: 17
+   Dettaglio classi CV riconosciute con pesi DL:
+     - ?: 17
+
+--- STEP 3: Fusione finale completa (DL multi-esposizione + CV classificato) ---
+   Totale componenti finali unificati: 21
+   Ripartizione per fonte:
+     - CV_ONLY: 4
+     - DL_ONLY: 17
+   Riepilogo finale classi:
+     - ?: 10
+     - IC: 11
+
+[OutputProcessor] Salvataggio passaggi intermedi in: ../data/outputs/pcb_processed_output/E/BOTTOM
+  -> [Step 1] Immagine elementi DL: ../data/outputs/pcb_processed_output/E/BOTTOM/step1_merged_dl_elements.jpg
+  -> [Step 1] Immagine tipi DL: ../data/outputs/pcb_processed_output/E/BOTTOM/step1_merged_dl_types.jpg
+  -> [Step 1] Report CSV: ../data/outputs/pcb_processed_output/E/BOTTOM/step1_merged_dl_detections.csv
+  -> [Step 1] Riepilogo JSON: ../data/outputs/pcb_processed_output/E/BOTTOM/step1_merged_dl_summary.json
+  -> [Step 2] Immagine elementi CV: ../data/outputs/pcb_processed_output/E/BOTTOM/step2_cv_dl_elements.jpg
+  -> [Step 2] Immagine CV classificati DL: ../data/outputs/pcb_processed_output/E/BOTTOM/step2_cv_dl_classified.jpg
+  -> [Step 2] Report CSV: ../data/outputs/pcb_processed_output/E/BOTTOM/step2_cv_dl_detections.csv
+  -> [Step 2] Riepilogo JSON: ../data/outputs/pcb_processed_output/E/BOTTOM/step2_cv_dl_summary.json
+  -> [Step 3] Immagine finale elementi: ../data/outputs/pcb_processed_output/E/BOTTOM/step3_final_fused_elements.jpg
+  -> [Step 3] Immagine finale tipi con legenda: ../data/outputs/pcb_processed_output/E/BOTTOM/step3_final_fused_types.jpg
+  -> [Step 3] Immagine finale geometrica per fonti: ../data/outputs/pcb_processed_output/E/BOTTOM/step3_final_fused_geometric.jpg
+  -> [Step 3] Report CSV Finale Completo: ../data/outputs/pcb_processed_output/E/BOTTOM/final_fused_components.csv
+  -> [Step 3] Riepilogo JSON Finale Completo: ../data/outputs/pcb_processed_output/E/BOTTOM/final_fused_summary.json
+
+--- Elaborazione output per scheda: F ---
+
+========================================================
+ ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE        
+ Scheda: F | Lato: TOP
+========================================================
+
+-> Foto consigliata (piu' componenti rilevati): F_TOP_001 (55 componenti DL)
+
+--- STEP 1: Fusione rilevamenti DL multi-esposizione ---
+   Componenti DL unificati totali: 55
+   Dettaglio classi (priorita' no-? e voti di maggioranza):
+     - ?: 22
+     - Capacitor: 11
+     - IC: 16
+     - Resistor: 6
+
+--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---
+   Caricati 9 componenti CV da ../data/outputs/pcb_cv_component_detection/F/TOP/F_TOP_001_components_cv.csv
+   Componenti CV classificati totali: 9
+   Dettaglio classi CV riconosciute con pesi DL:
+     - ?: 9
+
+--- STEP 3: Fusione finale completa (DL multi-esposizione + CV classificato) ---
+   Totale componenti finali unificati: 59
+   Ripartizione per fonte:
+     - CV_ONLY: 4
+     - DL_ONLY: 55
+   Riepilogo finale classi:
+     - ?: 26
+     - Capacitor: 11
+     - IC: 16
+     - Resistor: 6
+
+[OutputProcessor] Salvataggio passaggi intermedi in: ../data/outputs/pcb_processed_output/F/TOP
+  -> [Step 1] Immagine elementi DL: ../data/outputs/pcb_processed_output/F/TOP/step1_merged_dl_elements.jpg
+  -> [Step 1] Immagine tipi DL: ../data/outputs/pcb_processed_output/F/TOP/step1_merged_dl_types.jpg
+  -> [Step 1] Report CSV: ../data/outputs/pcb_processed_output/F/TOP/step1_merged_dl_detections.csv
+  -> [Step 1] Riepilogo JSON: ../data/outputs/pcb_processed_output/F/TOP/step1_merged_dl_summary.json
+  -> [Step 2] Immagine elementi CV: ../data/outputs/pcb_processed_output/F/TOP/step2_cv_dl_elements.jpg
+  -> [Step 2] Immagine CV classificati DL: ../data/outputs/pcb_processed_output/F/TOP/step2_cv_dl_classified.jpg
+  -> [Step 2] Report CSV: ../data/outputs/pcb_processed_output/F/TOP/step2_cv_dl_detections.csv
+  -> [Step 2] Riepilogo JSON: ../data/outputs/pcb_processed_output/F/TOP/step2_cv_dl_summary.json
+  -> [Step 3] Immagine finale elementi: ../data/outputs/pcb_processed_output/F/TOP/step3_final_fused_elements.jpg
+  -> [Step 3] Immagine finale tipi con legenda: ../data/outputs/pcb_processed_output/F/TOP/step3_final_fused_types.jpg
+  -> [Step 3] Immagine finale geometrica per fonti: ../data/outputs/pcb_processed_output/F/TOP/step3_final_fused_geometric.jpg
+  -> [Step 3] Report CSV Finale Completo: ../data/outputs/pcb_processed_output/F/TOP/final_fused_components.csv
+  -> [Step 3] Riepilogo JSON Finale Completo: ../data/outputs/pcb_processed_output/F/TOP/final_fused_summary.json
+
+--- Elaborazione output per scheda: G ---
+
+========================================================
+ ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE        
+ Scheda: G | Lato: TOP
+========================================================
+
+-> Foto consigliata (piu' componenti rilevati): G_TOP_001 (45 componenti DL)
+
+--- STEP 1: Fusione rilevamenti DL multi-esposizione ---
+   Componenti DL unificati totali: 45
+   Dettaglio classi (priorita' no-? e voti di maggioranza):
+     - ?: 18
+     - Capacitor: 11
+     - IC: 12
+     - Resistor: 4
+
+--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---
+   Caricati 7 componenti CV da ../data/outputs/pcb_cv_component_detection/G/TOP/G_TOP_001_components_cv.csv
+   Componenti CV classificati totali: 7
+   Dettaglio classi CV riconosciute con pesi DL:
+     - ?: 7
+
+--- STEP 3: Fusione finale completa (DL multi-esposizione + CV classificato) ---
+   Totale componenti finali unificati: 48
+   Ripartizione per fonte:
+     - CV_ONLY: 3
+     - DL_ONLY: 45
+   Riepilogo finale classi:
+     - ?: 21
+     - Capacitor: 11
+     - IC: 12
+     - Resistor: 4
+
+[OutputProcessor] Salvataggio passaggi intermedi in: ../data/outputs/pcb_processed_output/G/TOP
+  -> [Step 1] Immagine elementi DL: ../data/outputs/pcb_processed_output/G/TOP/step1_merged_dl_elements.jpg
+  -> [Step 1] Immagine tipi DL: ../data/outputs/pcb_processed_output/G/TOP/step1_merged_dl_types.jpg
+  -> [Step 1] Report CSV: ../data/outputs/pcb_processed_output/G/TOP/step1_merged_dl_detections.csv
+  -> [Step 1] Riepilogo JSON: ../data/outputs/pcb_processed_output/G/TOP/step1_merged_dl_summary.json
+  -> [Step 2] Immagine elementi CV: ../data/outputs/pcb_processed_output/G/TOP/step2_cv_dl_elements.jpg
+  -> [Step 2] Immagine CV classificati DL: ../data/outputs/pcb_processed_output/G/TOP/step2_cv_dl_classified.jpg
+  -> [Step 2] Report CSV: ../data/outputs/pcb_processed_output/G/TOP/step2_cv_dl_detections.csv
+  -> [Step 2] Riepilogo JSON: ../data/outputs/pcb_processed_output/G/TOP/step2_cv_dl_summary.json
+  -> [Step 3] Immagine finale elementi: ../data/outputs/pcb_processed_output/G/TOP/step3_final_fused_elements.jpg
+  -> [Step 3] Immagine finale tipi con legenda: ../data/outputs/pcb_processed_output/G/TOP/step3_final_fused_types.jpg
+  -> [Step 3] Immagine finale geometrica per fonti: ../data/outputs/pcb_processed_output/G/TOP/step3_final_fused_geometric.jpg
+  -> [Step 3] Report CSV Finale Completo: ../data/outputs/pcb_processed_output/G/TOP/final_fused_components.csv
+  -> [Step 3] Riepilogo JSON Finale Completo: ../data/outputs/pcb_processed_output/G/TOP/final_fused_summary.json
+
+========================================================
+ ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE        
+ Scheda: G | Lato: BOTTOM
+========================================================
+
+-> Foto consigliata (piu' componenti rilevati): G_BOTTOM_001 (44 componenti DL)
+
+--- STEP 1: Fusione rilevamenti DL multi-esposizione ---
+   Componenti DL unificati totali: 44
+   Dettaglio classi (priorita' no-? e voti di maggioranza):
+     - ?: 15
+     - Capacitor: 7
+     - IC: 20
+     - Resistor: 1
+     - Transistor: 1
+
+--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---
+   Caricati 6 componenti CV da ../data/outputs/pcb_cv_component_detection/G/BOTTOM/G_BOTTOM_001_components_cv.csv
+   Componenti CV classificati totali: 6
+   Dettaglio classi CV riconosciute con pesi DL:
+     - ?: 6
+
+--- STEP 3: Fusione finale completa (DL multi-esposizione + CV classificato) ---
+   Totale componenti finali unificati: 47
+   Ripartizione per fonte:
+     - CV_ONLY: 3
+     - DL_ONLY: 44
+   Riepilogo finale classi:
+     - ?: 18
+     - Capacitor: 7
+     - IC: 20
+     - Resistor: 1
+     - Transistor: 1
+
+[OutputProcessor] Salvataggio passaggi intermedi in: ../data/outputs/pcb_processed_output/G/BOTTOM
+  -> [Step 1] Immagine elementi DL: ../data/outputs/pcb_processed_output/G/BOTTOM/step1_merged_dl_elements.jpg
+  -> [Step 1] Immagine tipi DL: ../data/outputs/pcb_processed_output/G/BOTTOM/step1_merged_dl_types.jpg
+  -> [Step 1] Report CSV: ../data/outputs/pcb_processed_output/G/BOTTOM/step1_merged_dl_detections.csv
+  -> [Step 1] Riepilogo JSON: ../data/outputs/pcb_processed_output/G/BOTTOM/step1_merged_dl_summary.json
+  -> [Step 2] Immagine elementi CV: ../data/outputs/pcb_processed_output/G/BOTTOM/step2_cv_dl_elements.jpg
+  -> [Step 2] Immagine CV classificati DL: ../data/outputs/pcb_processed_output/G/BOTTOM/step2_cv_dl_classified.jpg
+  -> [Step 2] Report CSV: ../data/outputs/pcb_processed_output/G/BOTTOM/step2_cv_dl_detections.csv
+  -> [Step 2] Riepilogo JSON: ../data/outputs/pcb_processed_output/G/BOTTOM/step2_cv_dl_summary.json
+  -> [Step 3] Immagine finale elementi: ../data/outputs/pcb_processed_output/G/BOTTOM/step3_final_fused_elements.jpg
+  -> [Step 3] Immagine finale tipi con legenda: ../data/outputs/pcb_processed_output/G/BOTTOM/step3_final_fused_types.jpg
+  -> [Step 3] Immagine finale geometrica per fonti: ../data/outputs/pcb_processed_output/G/BOTTOM/step3_final_fused_geometric.jpg
+  -> [Step 3] Report CSV Finale Completo: ../data/outputs/pcb_processed_output/G/BOTTOM/final_fused_components.csv
+  -> [Step 3] Riepilogo JSON Finale Completo: ../data/outputs/pcb_processed_output/G/BOTTOM/final_fused_summary.json
+
+========================================================
+Elaborazione output e fusione completata con successo!
+Tutti i passaggi intermedi salvati in:
+  ../data/outputs/pcb_processed_output
+========================================================
+
+Pipeline complessiva completata con successo.
+
+=== PROGRAMMA TERMINATO (Codice: 0) ===

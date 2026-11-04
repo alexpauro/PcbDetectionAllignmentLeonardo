@@ -51,7 +51,7 @@ struct CvDetectionConfig {
     double bilateral_sigma_space = 35.0;///< Sigma spazio coordinate
 
     bool use_clahe = true;              ///< Contrasto adattivo locale CLAHE
-    double clahe_clip_limit = 2.0;      ///< Limite soglia contrasto CLAHE
+    double clahe_clip_limit = 2.5;      ///< Limite soglia contrasto CLAHE
     int clahe_grid_size = 8;            ///< Dimensione griglia tessere CLAHE
 
     bool use_canny = true;              ///< Riconoscimento bordi Canny
@@ -59,13 +59,30 @@ struct CvDetectionConfig {
     double canny_thresh2 = 110.0;       ///< Soglia superiore Canny
     bool auto_canny = true;             ///< Calcola automaticamente le soglie Canny in base alla mediana
 
+    bool use_color_gradient = true;     ///< Rilevamento bordi cromatici multi-canale (anche con stessa luminanza)
+    bool use_scharr_gradient = true;    ///< Operatore di Scharr per micro-bordi ad altissima precisione
+    bool use_laplacian_sharp = true;    ///< Esaltazione dettagli ad alta frequenza (Unsharp Masking)
+
     bool use_morph_hats = true;         ///< Top-Hat (parti riflettenti/chiare) e Black-Hat (chip scuri)
     int hat_kernel_size = 5;            ///< Dimensione del kernel per Top-Hat e Black-Hat (es. 5x5)
-    int hat_threshold = 20;             ///< Soglia di binarizzazione per Top-Hat / Black-Hat
+    int hat_threshold = 18;             ///< Soglia di binarizzazione per Top-Hat / Black-Hat
+
+    // --- Banco Filtri Colore per Componenti Multi-Colore ---
+    bool use_multi_color_filters = true;///< Attiva il banco filtri colore differenziati per componenti
+    bool detect_dark_chips = true;      ///< Chip neri IC, resistori SMD, diodi, SOIC/QFP (bassa luminosità)
+    bool detect_silver_metal = true;    ///< Saldature a stagno, pin argentati lucidi, quarzi metallici
+    bool detect_ceramic_capacitors = true; ///< Condensatori ceramici SMD (beige, marroncino, ocra, giallo)
+    bool detect_gold_pads = true;       ///< Piazzole dorate/rame (ENIG, testpoint, connettori)
+    bool detect_blue_components = true; ///< Componenti blu/azzurri (condensatori, resistenze di precisione)
+    bool detect_red_components = true;  ///< Componenti rossi/arancio (condensatori al tantalio, diodi, LED)
+    bool detect_white_components = true;///< Componenti ceramici bianchi e connettori chiari
 
     // --- Pulizia e Connessione Morfologica ---
     int open_kernel_size = 3;           ///< Kernel di apertura (Open): elimina piste di rame sottili (1-2 px)
     int close_kernel_size = 3;          ///< Kernel di chiusura (Close): raggruppa pin/saldature al corpo del componente
+    bool filter_thin_traces = true;     ///< Rimuove piste di rame residue (rapporto d'aspetto allungato e spessore sottile)
+    float max_trace_aspect_ratio = 6.0f;///< Rapporto lunghezza/larghezza massimo per identificare una pista (non componente)
+    float max_trace_thickness = 3.5f;   ///< Spessore massimo in px per considerare un elemento come pista
 
     // --- Selezione Dimensioni Componenti ---
     float min_area = 12.0f;             ///< Area minima (px^2) per includere componenti piccolissimi (SMD 0402/0603)
@@ -94,7 +111,9 @@ struct CvDetectionResult {
 
     cv::Mat annotated_image;             ///< Immagine con riquadri ruotati, cerchi e ID sovrimpressi
     cv::Mat green_substrate_mask;        ///< Maschera binaria del substrato verdognolo del PCB
-    cv::Mat edges_mask;                  ///< Maschera binaria dei bordi (Canny / Morph / HATS)
+    cv::Mat multi_color_mask;            ///< Maschera binaria dei componenti multi-colore (chip neri, ceramici, metallo, ecc.)
+    cv::Mat gradient_mask;               ///< Maschera dei gradienti cromatici e micro-bordi Scharr/Canny
+    cv::Mat edges_mask;                  ///< Maschera combinata di tutti i bordi
     cv::Mat components_mask;             ///< Maschera binaria pulita e chiusa dei componenti
 };
 

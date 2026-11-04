@@ -110,7 +110,63 @@ CvDetectionResult CvComponentDetector::detect(const cv::Mat& input_image,
     cv::bitwise_not(green_substrate_mask, non_substrate);
 
     // =========================================================================
-    // STEP 3: Filtro Bordi e Gradienti (Canny, Top-Hat, Black-Hat)
+    // STEP 2B: Banco Filtri Colore Differenziati per Componenti (Multi-Color)
+    // =========================================================================
+    cv::Mat multi_color_mask = cv::Mat::zeros(input_image.size(), CV_8UC1);
+
+    if (config.use_multi_color_filters) {
+        // a) Chip neri IC / SMD resistor scuri (bassa luminosità o Lab L molto basso)
+        if (config.detect_dark_chips) {
+            cv::Mat dark_mask;
+            cv::inRange(hsv, cv::Scalar(0, 0, 0), cv::Scalar(180, 255, 60), dark_mask);
+            cv::bitwise_or(multi_color_mask, dark_mask, multi_color_mask);
+        }
+        // b) Parti metalliche lucide, stagno, pin argentati e quarzi metallici
+        if (config.detect_silver_metal) {
+            cv::Mat silver_mask;
+            cv::inRange(hsv, cv::Scalar(0, 0, 160), cv::Scalar(180, 50, 255), silver_mask);
+            cv::bitwise_or(multi_color_mask, silver_mask, multi_color_mask);
+        }
+        // c) Condensatori ceramici (tan, marroncino, ocra, giallo)
+        if (config.detect_ceramic_capacitors) {
+            cv::Mat ceramic_mask;
+            cv::inRange(hsv, cv::Scalar(8, 30, 50), cv::Scalar(38, 255, 235), ceramic_mask);
+            cv::bitwise_or(multi_color_mask, ceramic_mask, multi_color_mask);
+        }
+        // d) Piazzole dorate e rame (testpoint, ENIG, connettori)
+        if (config.detect_gold_pads) {
+            cv::Mat gold_mask;
+            cv::inRange(hsv, cv::Scalar(15, 60, 75), cv::Scalar(45, 255, 255), gold_mask);
+            cv::bitwise_or(multi_color_mask, gold_mask, multi_color_mask);
+        }
+        // e) Componenti blu / azzurri (condensatori a film, resistori blu di precisione)
+        if (config.detect_blue_components) {
+            cv::Mat blue_mask;
+            cv::inRange(hsv, cv::Scalar(90, 45, 35), cv::Scalar(135, 255, 255), blue_mask);
+            cv::bitwise_or(multi_color_mask, blue_mask, multi_color_mask);
+        }
+        // f) Componenti rossi / viola (LED, tantalio, diodi)
+        if (config.detect_red_components) {
+            cv::Mat red1, red2, red_mask;
+            cv::inRange(hsv, cv::Scalar(0, 50, 40), cv::Scalar(12, 255, 255), red1);
+            cv::inRange(hsv, cv::Scalar(165, 50, 40), cv::Scalar(180, 255, 255), red2);
+            cv::bitwise_or(red1, red2, red_mask);
+            cv::bitwise_or(multi_color_mask, red_mask, multi_color_mask);
+        }
+        // g) Componenti ceramici bianchi e connettori chiari
+        if (config.detect_white_components) {
+            cv::Mat white_mask;
+            cv::inRange(hsv, cv::Scalar(0, 0, 195), cv::Scalar(180, 35, 255), white_mask);
+            cv::bitwise_or(multi_color_mask, white_mask, multi_color_mask);
+        }
+
+        // I componenti colorati non devono appartenere al substrato verde
+        cv::bitwise_and(multi_color_mask, non_substrate, multi_color_mask);
+    }
+    result.multi_color_mask = multi_color_mask.clone();
+
+    // =========================================================================
+    // STEP 3: Filtro Bordi e Gradienti Avanzati (Canny, Scharr, Morph HATS)
     // =========================================================================
     cv::Mat edges = cv::Mat::zeros(input_image.size(), CV_8UC1);
     if (config.use_canny) {
@@ -121,6 +177,35 @@ CvDetectionResult CvComponentDetector::detect(const cv::Mat& input_image,
         }
         cv::Canny(gray_clahe, edges, lower_th, upper_th);
     }
+
+    // Gradiente cromatico multi-canale (rileva transizioni di colore nette anche a parità di luminanza)
+    cv::Mat color_gradient = cv::Mat::zeros(input_image.size(), CV_8UC1);
+    if (config.use_color_gradient) {
+        cv::Mat grad_max = cv::Mat::zeros(input_image.size(), CV_32F);
+        std::vector<cv::Mat> channels;
+        cv::split(denoised, channels);
+
+        for (int ch = 0; ch < 3; ++ch) {
+            cv::Mat gx, gy, mag;
+            if (config.use_scharr_gradient) {
+                cv::Scharr(channels[ch], gx, CV_32F, 1, 0);
+                cv::Scharr(channels[ch], gy, CV_32F, 0, 1);
+            } else {
+                cv::Sobel(channels[ch], gx, CV_32F, 1, 0, 3);
+                cv::Sobel(channels[ch], gy, CV_32F, 0, 1, 3);
+            }
+            cv::magnitude(gx, gy, mag);
+            cv::max(grad_max, mag, grad_max);
+        }
+
+        double minVal, maxVal;
+        cv::minMaxLoc(grad_max, &minVal, &maxVal);
+        if (maxVal > 0) {
+            grad_max.convertTo(color_gradient, CV_8UC1, 255.0 / maxVal);
+        }
+        cv::threshold(color_gradient, color_gradient, 30, 255, cv::THRESH_BINARY);
+    }
+    result.gradient_mask = color_gradient.clone();
 
     // Top-Hat (evidenzia saldature a stagno e pin argentati/metallici lucidi)
     // Black-Hat (evidenzia chip IC neri e componenti ceramici scuri)
@@ -138,17 +223,23 @@ CvDetectionResult CvComponentDetector::detect(const cv::Mat& input_image,
         cv::threshold(blackhat, blackhat_bin, config.hat_threshold, 255, cv::THRESH_BINARY);
     }
 
-    // Maschera combinata dei bordi
+    // Maschera combinata di tutti i bordi e gradienti
     cv::Mat combined_edges;
     cv::bitwise_or(edges, tophat_bin, combined_edges);
     cv::bitwise_or(combined_edges, blackhat_bin, combined_edges);
+    if (config.use_color_gradient) {
+        cv::bitwise_or(combined_edges, color_gradient, combined_edges);
+    }
     result.edges_mask = combined_edges.clone();
 
     // =========================================================================
-    // STEP 4: Fusione Prove (Non-Verde + Bordi) & Pulizia Piste Sottili
+    // STEP 4: Fusione Prove (Non-Verde + Multi-Colore + Bordi) & Pulizia Piste
     // =========================================================================
     cv::Mat candidate_mask;
     cv::bitwise_or(non_substrate, combined_edges, candidate_mask);
+    if (config.use_multi_color_filters) {
+        cv::bitwise_or(candidate_mask, multi_color_mask, candidate_mask);
+    }
 
     // Azzeriamo i pixel lungo il bordo perimetrale estremo dell'immagine (3 px)
     // per impedire che il contorno dell'inquadratura racchiuda tutti i componenti
@@ -196,8 +287,19 @@ CvDetectionResult CvComponentDetector::detect(const cv::Mat& input_image,
         cv::RotatedRect rrect = cv::minAreaRect(contour);
         float rw = rrect.size.width;
         float rh = rrect.size.height;
-        if (std::min(rw, rh) < config.min_dimension) {
+        float min_side = std::min(rw, rh);
+        float max_side = std::max(rw, rh);
+
+        if (min_side < config.min_dimension) {
             continue; // Ignora rumore lineare 1D
+        }
+
+        // Filtra piste sottili allungate di rame che non sono componenti
+        if (config.filter_thin_traces) {
+            float trace_ar = max_side / (min_side + 1e-4f);
+            if (trace_ar > config.max_trace_aspect_ratio && min_side < config.max_trace_thickness) {
+                continue;
+            }
         }
 
         // Calcolo del cerchio minimo circoscritto
@@ -390,6 +492,12 @@ void CvComponentDetector::saveResults(const std::string& output_dir,
     if (save_debug_masks) {
         if (!result.green_substrate_mask.empty()) {
             cv::imwrite(output_dir + "/" + image_stem + "_mask_green_substrate.png", result.green_substrate_mask);
+        }
+        if (!result.multi_color_mask.empty()) {
+            cv::imwrite(output_dir + "/" + image_stem + "_mask_multi_color.png", result.multi_color_mask);
+        }
+        if (!result.gradient_mask.empty()) {
+            cv::imwrite(output_dir + "/" + image_stem + "_mask_gradient.png", result.gradient_mask);
         }
         if (!result.edges_mask.empty()) {
             cv::imwrite(output_dir + "/" + image_stem + "_mask_edges.png", result.edges_mask);

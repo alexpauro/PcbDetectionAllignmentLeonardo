@@ -7,6 +7,7 @@ target_link_libraries(pcb_app
         pcb::calibration
         pcb::component_detection
         pcb::cv_component_detection
+        pcb::output_processing
         ${OpenCV_LIBS}
 )
 

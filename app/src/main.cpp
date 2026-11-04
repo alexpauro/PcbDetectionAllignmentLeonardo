@@ -2,6 +2,7 @@
 #include "undistort.hpp"
 #include "component_detector.hpp"
 #include "cv_component_detector.hpp"
+#include "output_processor.hpp"
 #include <string>
 #include <iostream>
 #include <filesystem>
@@ -604,6 +605,104 @@ bool runPcbCvComponentDetection(bool interactive_windows = true) {
     return true;
 }
 
+// Funzione per eseguire l'elaborazione output avanzata:
+// 1. Identifica la foto con più componenti rilevati.
+// 2. Unisce i componenti DL multi-esposizione (priorità senza '?', voto di maggioranza).
+// 3. Classifica i componenti CV con i pesi DL.
+// 4. Fonde i risultati in un unico output completo e salva tutti i passaggi intermedi.
+bool runPcbOutputProcessing(bool show_windows = true) {
+    std::cout << "\n========================================================" << std::endl;
+    std::cout << "=== AVVIO ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE ===" << std::endl;
+    std::cout << "========================================================" << std::endl;
+
+    std::string undistorted_base_dir = "../data/outputs/pcb_images_undistorted";
+    std::string raw_base_dir = "../data/inputs/pcb_images";
+    std::string dl_output_base_dir = "../data/outputs/pcb_component_detection";
+    std::string cv_output_base_dir = "../data/outputs/pcb_cv_component_detection";
+    std::string processed_output_base_dir = "../data/outputs/pcb_processed_output";
+
+    std::string input_base_dir = undistorted_base_dir;
+    if (!fs::exists(input_base_dir) || fs::is_empty(input_base_dir)) {
+        input_base_dir = raw_base_dir;
+    }
+
+    if (!fs::exists(input_base_dir)) {
+        std::cerr << "ERRORE: Cartella immagini PCB non trovata: " << input_base_dir << std::endl;
+        return false;
+    }
+
+    // Carica il rilevatore DL per eventuale patch inference
+    std::string any_weights = "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.pt";
+    std::string fine_weights = "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.pt";
+
+    std::unique_ptr<pcb::ComponentDetector> dl_detector = std::make_unique<pcb::ComponentDetector>();
+    if (fs::exists(any_weights) && fs::exists(fine_weights)) {
+        dl_detector->loadAnyModel(any_weights, 1024);
+        dl_detector->loadFineModel(fine_weights, pcb::ComponentDetector::getDefaultClasses(), 1024);
+    }
+
+    std::unique_ptr<pcb::CvComponentDetector> cv_detector = std::make_unique<pcb::CvComponentDetector>();
+
+    pcb::OutputProcessor processor;
+    pcb::OutputProcessingConfig config;
+    config.output_base_dir = processed_output_base_dir;
+    config.save_intermediate_images = true;
+
+    std::cout << "\nVuoi selezionare manualmente la foto base per il rendering grafico di ciascun lato? (S/N, default S): ";
+    std::string sel_ans;
+    config.interactive_image_selection = true;
+    if (std::cin >> sel_ans) {
+        std::transform(sel_ans.begin(), sel_ans.end(), sel_ans.begin(), [](unsigned char c){ return static_cast<char>(std::toupper(c)); });
+        if (sel_ans == "N" || sel_ans == "NO") {
+            config.interactive_image_selection = false;
+        }
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+
+    std::vector<fs::path> board_paths;
+    for (const auto& entry : fs::directory_iterator(input_base_dir)) {
+        if (entry.is_directory()) {
+            board_paths.push_back(entry.path());
+        }
+    }
+    std::sort(board_paths.begin(), board_paths.end());
+
+    for (const auto& bpath : board_paths) {
+        std::string bname = bpath.filename().string();
+        std::cout << "\n--- Elaborazione output per scheda: " << bname << " ---" << std::endl;
+
+        for (const std::string side : {"TOP", "BOTTOM"}) {
+            fs::path side_dir = bpath / side;
+            if (!fs::exists(side_dir) || fs::is_empty(side_dir)) continue;
+
+            std::string dl_side_dir = (fs::path(dl_output_base_dir) / bname / side).string();
+            std::string cv_side_dir = (fs::path(cv_output_base_dir) / bname / side).string();
+
+            auto result = processor.processBoardSide(
+                bname, side, side_dir.string(),
+                dl_side_dir, cv_side_dir,
+                dl_detector.get(), cv_detector.get(), config);
+
+            if (show_windows && !result.step3_final_types_vis.empty()) {
+                std::string win_title = "Risultato Finale Fuso: " + bname + " [" + side + "]";
+                cv::namedWindow(win_title, cv::WINDOW_NORMAL);
+                cv::resizeWindow(win_title, 1400, 950);
+                cv::imshow(win_title, result.step3_final_types_vis);
+                std::cout << "\nPremi un tasto sulla finestra OpenCV per continuare..." << std::endl;
+                cv::waitKey(0);
+                cv::destroyWindow(win_title);
+            }
+        }
+    }
+
+    std::cout << "\n========================================================" << std::endl;
+    std::cout << "Elaborazione output e fusione completata con successo!" << std::endl;
+    std::cout << "Tutti i passaggi intermedi salvati in:\n  " << processed_output_base_dir << std::endl;
+    std::cout << "========================================================" << std::endl;
+
+    return true;
+}
+
 int main() {
     if (!runRobotCameraCalibration()) {
         return -1;
@@ -619,15 +718,17 @@ int main() {
     std::cout << "1) Computer Vision Classica (Filtro verde PCB, bordi, rettangoli ruotati e cerchi)" << std::endl;
     std::cout << "2) Deep Learning YOLO (Modello a 2 stadi)" << std::endl;
     std::cout << "3) Entrambi (prima CV Classica, poi YOLO)" << std::endl;
-    std::cout << "Seleziona un'opzione (1 / 2 / 3, default 1): ";
+    std::cout << "4) Pipeline Completa con Elaborazione e Fusione Output (CONSIGLIATO: CV + DL + Fusione)" << std::endl;
+    std::cout << "5) Solo Elaborazione e Fusione Output (sui risultati gia' rilevati)" << std::endl;
+    std::cout << "Seleziona un'opzione (1 / 2 / 3 / 4 / 5, default 4): ";
 
     std::string choice_str;
-    int mode_choice = 1;
+    int mode_choice = 4;
     if (std::cin >> choice_str) {
         try {
             mode_choice = std::stoi(choice_str);
         } catch (...) {
-            mode_choice = 1;
+            mode_choice = 4;
         }
     }
 
@@ -641,14 +742,20 @@ int main() {
         }
     }
 
-    if (mode_choice == 1 || mode_choice == 3) {
+    if (mode_choice == 1 || mode_choice == 3 || mode_choice == 4) {
         if (!runPcbCvComponentDetection(show_windows)) {
             return -1;
         }
     }
 
-    if (mode_choice == 2 || mode_choice == 3) {
+    if (mode_choice == 2 || mode_choice == 3 || mode_choice == 4) {
         if (!runPcbComponentDetection()) {
+            return -1;
+        }
+    }
+
+    if (mode_choice == 3 || mode_choice == 4 || mode_choice == 5) {
+        if (!runPcbOutputProcessing(show_windows)) {
             return -1;
         }
     }
