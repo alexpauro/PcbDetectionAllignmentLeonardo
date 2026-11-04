@@ -27,6 +27,7 @@ Questo documento costituisce il manuale tecnico di riferimento completo per l'in
   - [Tipi: Modulo CV Component Detection (CV classica)](#tipi-modulo-cv-component-detection-cv-classica)
   - [Tipi: Modulo Output Processing](#tipi-modulo-output-processing)
   - [Tipi: Modulo AOI Verification](#tipi-modulo-aoi-verification)
+  - [Tipi: Modulo Component Segmentation](#tipi-modulo-component-segmentation)
 - [5. Documentazione Approfondita delle Librerie](#5-documentazione-approfondita-delle-librerie)
   - [Libreria 1: `common` (Modulo Condiviso)](#libreria-1-common-modulo-condiviso)
     - [`common_utils.hpp` / `common_utils.cpp`](#common_utilshpp--common_utilscpp)
@@ -55,9 +56,12 @@ Questo documento costituisce il manuale tecnico di riferimento completo per l'in
     - [`aoi_geometric_alignment.cpp` (Allineamento e Omografia 3x3)](#aoi_geometric_alignmentcpp-allineamento-e-omografia-3x3)
     - [`aoi_engine.cpp` (Motore di Verifica, Correzione e Risoluzione Conflitti)](#aoi_enginecpp-motore-di-verifica-correzione-e-risoluzione-conflitti)
     - [`aoi_rendering.cpp` (Overlay Grafici e Legende Diagnostiche)](#aoi_renderingcpp-overlay-grafici-e-legende-diagnostiche)
+  - [Libreria 8: `component_segmentation`](#libreria-8-component_segmentation)
+    - [`component_segmentation.hpp` / `component_segmentation.cpp`](#component_segmentationhpp--component_segmentationcpp)
 - [6. Documentazione dei Moduli Applicativi](#6-documentazione-dei-moduli-applicativi)
   - [Punto di Ingresso: `app/src/main.cpp`](#punto-di-ingresso-appsrcmaincpp)
   - [Test Standalone: `app/src/test_aoi_verification.cpp`](#test-standalone-appsrctest_aoi_verificationcpp)
+  - [Test Standalone: `app/src/test_component_segmentation.cpp`](#test-standalone-appsrctest_component_segmentationcpp)
 - [7. Linee Guida per l'Estensione e Nuove Librerie](#7-linee-guida-per-lestensione-e-nuove-librerie)
   - [Servizi Centralizzati Riutilizzabili (`lib/common`)](#servizi-centralizzati-riutilizzabili-libcommon)
   - [Standard di Codifica e Convenzioni di Naming](#standard-di-codifica-e-convenzioni-di-naming)
@@ -71,7 +75,7 @@ Questo documento costituisce il manuale tecnico di riferimento completo per l'in
 Il sistema **PCB Detection and Alignment** è un framework integrato C++17 per l'ispezione metrologica automatica di circuiti stampati (PCB). Il progetto combina computer vision classica (OpenCV), modelli neurali di object detection (YOLOv8 esportati in formato ONNX) e dati CAD/produzione (file Gerber RS-274X e report macchine AOI - Automated Optical Inspection). L'obiettivo è rilevare con precisione sub-millimetrica ogni componente presente sul PCB, classificarne la tipologia, associarlo univocamente al riferimento schema elettrico (Reference Designator, es. `R12`, `C4`, `U1`), correggerne l'inquadratura prospettica e validarlo rispetto alle specifiche teoriche di fabbricazione.
 
 ### Pipeline di Elaborazione Completa
-Il flusso di lavoro attraversa 7 fasi sequenziali:
+Il flusso di lavoro attraversa 8 fasi sequenziali:
 
 1. **Calibrazione Telecamera (`calibration`)**:
    Stima della matrice intrinseca della fotocamera e dei coefficienti di distorsione radiale/tangenziale tramite pattern scacchiera (checkerboard). Rimozione della distorsione da tutte le immagini acquisite dal braccio robotico con bilanciamento dell'illuminazione (rimozione riflessi speculari metallici su pad e piste).
@@ -89,8 +93,16 @@ Il flusso di lavoro attraversa 7 fasi sequenziali:
    - *Step 4*: armonizzazione per similarità visiva (istogrammi colore HSV e template matching) e propagazione globale delle classi sul PCB.
 6. **Verifica e Certificazione AOI (`aoi_verification`)**:
    Associazione delle coordinate teoriche dal file macchina AOI (`.asc`) ai componenti rilevati. Stima di un modello di omografia $3 \times 3$ con correzione locale della distorsione ottica residua, correzione delle classi errate del DL ("il file AOI certifica la classe"), recupero dei componenti mancanti tramite la sovrapposizione multi-foto CV o part number e rimozione di componenti estranei.
-7. **Esportazione e Rendering Grafico**:
-   Salvataggio dei risultati in formati aperti (immagini ad alta risoluzione con etichette ref_des, file CSV per tracciabilità e file JSON/YAML per integrazione robotica).
+7. **Segmentazione Precisa e Modellazione Reale (`component_segmentation`)**:
+   Rifinitura metrologica ad altissima precisione eseguita componente per componente:
+   - Elaborazione ordinata per area decrescente (dai componenti più grandi a quelli più piccoli);
+   - Segmentazione CV locale nell'intorno del riquadro per estrarre il contorno reale ed esatto del componente (filtraggio solder mask verde, componenti scuri, pin metallici e condensatori ceramici);
+   - Espansione automatica dell'ROI di ricerca in caso di mancato rilevamento iniziale; eliminazione dei componenti non trovati o ricadenti su aree già catalogate;
+   - Armonizzazione dimensionale per codice produttore: componenti con medesimo part number hanno lo stesso package e assumono l'ingombro canonico identico;
+   - Raccordo del contorno in un rettangolo minimo aderente senza spazi vuoti (uso esclusivo di rettangoli, no cerchi);
+   - Calcolo della reale posizione millimetrica corretta con l'inversa dell'omografia di distorsione ottica $3 \times 3$ e determinazione degli errori di posizione $(\Delta x, \Delta y, \Delta d)$ e rotazione $(\Delta \theta)$.
+8. **Esportazione e Rendering Grafico**:
+   Salvataggio dei risultati in formati aperti (immagini ad alta risoluzione con contorni sottili e colorati, rettangoli minimi, etichette RefDes, file CSV per tracciabilità e file JSON/YAML per integrazione robotica).
 
 ### Mappa dei Moduli e Dipendenze Reali
 
@@ -103,13 +115,16 @@ graph TD
     CVD["pcb::cv_component_detection"]
     OUT["pcb::output_processing"]
     AOI["pcb::aoi_verification"]
+    SEG["pcb::component_segmentation"]
     APP["pcb_app (main.cpp)"]
-    TEST["test_aoi_verification"]
+    TEST1["test_aoi_verification"]
+    TEST2["test_component_segmentation"]
 
     CAL --> COM
     DET --> COM
     OUT --> COM
     AOI --> COM
+    SEG --> COM
 
     BAL --> CAL
     DET --> BAL
@@ -121,15 +136,23 @@ graph TD
     AOI --> DET
     AOI --> CVD
 
+    SEG --> AOI
+    SEG --> OUT
+    SEG --> BAL
+    SEG --> CVD
+
     APP --> CAL
     APP --> BAL
     APP --> DET
     APP --> CVD
     APP --> OUT
     APP --> AOI
+    APP --> SEG
 
-    TEST --> AOI
+    TEST1 --> AOI
+    TEST2 --> SEG
 ```
+
 
 ---
 
@@ -181,7 +204,8 @@ PcbDetectionAllignmentLeonardo/
 │   ├── CMakeLists.txt
 │   └── src/
 │       ├── main.cpp
-│       └── test_aoi_verification.cpp
+│       ├── test_aoi_verification.cpp
+│       └── test_component_segmentation.cpp
 ├── doc/
 │   └── description_of_project.md
 ├── data/
@@ -197,7 +221,8 @@ PcbDetectionAllignmentLeonardo/
 │       ├── pcb_component_detection/
 │       ├── pcb_cv_component_detection/
 │       ├── pcb_output_processing/
-│       └── pcb_aoi_verification/
+│       ├── pcb_aoi_verification/
+│       └── pcb_component_segmentation/
 └── lib/
     ├── CMakeLists.txt
     ├── common/
@@ -242,6 +267,10 @@ PcbDetectionAllignmentLeonardo/
             ├── aoi_geometric_alignment.cpp
             ├── aoi_engine.cpp
             └── aoi_rendering.cpp
+    └── component_segmentation/
+        ├── CMakeLists.txt
+        ├── include/component_segmentation.hpp
+        └── src/component_segmentation.cpp
 ```
 
 ### Cartelle di Input (`data/inputs/`)
@@ -272,6 +301,11 @@ PcbDetectionAllignmentLeonardo/
   - `<STEM>_best_alignment.jpg`: proiezione ortogonale delle coordinate AOI sui componenti reali;
   - `<STEM>_verified_types.jpg`: immagine pulita con soli codici componente (es. `R301`) e legenda classi;
   - `<STEM>_verified_elements.jpg`: visualizzazione semaforica (Verde = Match DL esatto, Arancione = Classe corretta con AOI, Ciano = Recuperato da sovrapposizione CV).
+- **`pcb_component_segmentation/<BOARD>/<SIDE>/`**:
+  - `<STEM>_precise_segmented_components.csv`: tracciamento dettagliato per componente di `componente_codice`, `tipologia_classe`, `codice_produttore`, `package_outline`, dimensioni box in px e mm, coordinate pixel $(u, v, \theta)$, reale posizione cartesiana millimetrica $(X, Y, \theta)$ corretta con distorsione ottica ed errori metrologici di posizionamento $(\Delta x, \Delta y, \Delta d)$ e rotazione residua $(\Delta \theta)$;
+  - `<STEM>_precise_segmented_summary.json`: statistiche complessive, distribuzione per classe, conteggio segmentati/eliminati ed ingombri canonici armonizzati per codice produttore;
+  - `<STEM>_segmented_contours.jpg`: immagine ad alta definizione con il contorno reale esatto di ciascun componente tracciato con bordi sottili e colorati in base alla classe con etichette RefDes e legenda laterale;
+  - `<STEM>_precise_bounding_boxes.jpg`: immagine con i rettangoli minimi orientati aderenti senza spazi circoscritti attorno a ciascun componente conRefDes e legenda laterale.
 
 ---
 
@@ -354,6 +388,45 @@ PcbDetectionAllignmentLeonardo/
   - `inlier_count`, `inlier_ratio`: metriche di validità RANSAC;
   - `avg_error_px`, `avg_error_mm`: residuo medio di allineamento metrologico.
 - **`pcb::VerifiedPcbComponent`**: Struttura unificata finale esportata nel report CSV/JSON e rappresentata a video.
+
+### Tipi: Modulo Component Segmentation
+- **`pcb::SegmentedComponent`**: Rappresentazione completa del componente dopo segmentazione fine e fit del rettangolo:
+  - `id`: identificatore intero univoco;
+  - `ref_des`: codice componente (es. `R301`, `IC204`, `C12`);
+  - `label`: tipologia/classe associata (es. `resistor`, `ic`, `capacitor_smd`);
+  - `part_number`: codice produttore / distinta base;
+  - `outline`: codice footprint/package CAD (es. `SOT553`, `0603`);
+  - `contour`: vettore `std::vector<cv::Point>` contenente i punti del contorno reale estratto;
+  - `found`: flag booleano di esito positivo della segmentazione;
+  - `search_expansion_level`: livello di espansione ROI (`0` = ROI base, `1` = ROI espansa);
+  - `rotated_box`: rettangolo minimo orientato circoscritto (`cv::RotatedRect`);
+  - `bounding_box`: bounding box allineato agli assi (`cv::Rect2f`);
+  - `pixel_center`: centroide in pixel $(u, v)$;
+  - `box_width_px`, `box_height_px`: dimensioni del rettangolo in pixel (armonizzate per codice produttore);
+  - `box_width_mm`, `box_height_mm`: dimensioni millimetriche reali dell'ingombro del package;
+  - `pixel_angle_deg`: orientamento geometrico in pixel (gradi);
+  - `area_px`: area poligonale del contorno reale;
+  - `nominal_x_mm`, `nominal_y_mm`, `nominal_rot_deg`: coordinate teoriche CAD;
+  - `nominal_center_px`: centro nominale proiettato sull'immagine;
+  - `real_x_mm`, `real_y_mm`: reale posizione millimetrica corretta tramite l'inversa dell'omografia di distorsione ottica;
+  - `real_rot_deg`: reale orientamento angolare in gradi nel sistema CAD;
+  - `error_x_mm`, `error_y_mm`: componenti cartesiane dell'errore di posizionamento $(\text{reale} - \text{nominale})$;
+  - `error_dist_mm`, `error_dist_px`: errore euclideo assoluto di posizionamento $(\approx 0.1 \div 0.3\text{ mm})$;
+  - `error_rot_deg`: errore angolare di rotazione rispetto alla specifica nominale $(\approx 0^\circ \div 2^\circ)$;
+  - `notes`: tracciamento diagnostico.
+- **`pcb::ComponentSegmentationConfig`**: Parametri operativi di segmentazione:
+  - `initial_margin_ratio`: margine relativo ROI iniziale (default: `0.25`);
+  - `expanded_margin_ratio`: margine relativo per casella espansa (default: `0.70`);
+  - `min_contour_area`: soglia minima superficie in pixel (default: `8.0`);
+  - `max_overlap_with_cataloged`: soglia massima di sovrapposizione su aree già catalogate (default: `0.55`);
+  - `harmonize_part_number_sizes`: flag per forzare stesso ingombro per componenti con medesimo part number (default: `true`);
+  - `contour_thickness`: spessore linea dei contorni colorati nel render (default: `1`);
+  - `show_windows`: flag visualizzazione interattiva finestre GUI.
+- **`pcb::ComponentSegmentationSummary`**: Metriche statistiche complessive:
+  - `total_input_components`, `successfully_segmented`, `found_in_initial_roi`, `found_in_expanded_roi`, `rejected_not_found`, `rejected_overlap_cataloged`;
+  - `mean_error_dist_mm`, `mean_error_dist_px`, `mean_error_rot_deg`;
+  - `canonical_part_sizes_px`, `canonical_part_sizes_mm`, `class_distribution`.
+- **`pcb::ComponentSegmentationResult`**: Oggetto risultato con vettori componenti, statistiche e immagini rendering.
 
 ---
 
@@ -628,10 +701,18 @@ La libreria `cv_component_detection` (`lib/cv_component_detection/`) individua i
 La libreria `output_processing` (`lib/output_processing/`) integra, armonizza e consolida i risultati di Deep Learning e Computer Vision classica. È strutturata in moduli specialistici.
 
 #### `output_processor.hpp` / `output_processor.cpp` (Orchestratore e I/O)
-- **`sourceToString`**: converte l'enum `DetectionSource` in stringa esplicativa per report CSV.
+- **`sourceToString`**: converte l'enum `DetectionSource` in stringa esplicativa per report CSV (`DL_ONLY`, `CV_ONLY`, `FUSED`, `SIMILARITY_MATCH`, `RECOVERED_AOI`).
 - **`calculateIoU` e `calculateOverlap`**: forwarder ai metodi centralizzati di `pcb::common`.
-- **`loadDlDetectionsCsv` / `loadCvComponentsCsv`**: parser robusti per il caricamento dei file CSV intermedi prodotti dagli step precedenti.
-- **`saveAllStepResults`**: serializza su disco i file CSV di ciascuno dei 4 step (`step1_...`, `step2_...`, `step3_...`, `final_fused_components.csv`) e il file di riepilogo `final_fused_summary.json`.
+- **`loadDlDetectionsCsv`**:
+  - *Descrizione Qualitativa*: Carica in memoria i rilevamenti eseguiti dalla rete neurale YOLOv8 esportati in formato CSV da `ComponentDetector::saveResults`.
+  - *Dettagli Tecnici*: Esegue il parsing elastico e robusto del file `*_detections.csv` a 8 colonne (`id, label, box_conf, label_conf, x0, y0, x1, y1`). Effettua il trim dei whitespace, converte le coordinate cartesiane $(x_0, y_0, x_1, y_1)$ nel rettangolo `cv::Rect2f(x0, y0, std::max(0.0f, x1 - x0), std::max(0.0f, y1 - y0))` e legge le confidenze del riquadro e della classe semantica. Supporta retro-compatibilità con formati alternativi o colonne opzionali.
+- **`loadCvComponentsCsv`**:
+  - *Descrizione Qualitativa*: Carica in memoria i componenti geometrici individuati dalla Computer Vision classica esportati da `CvComponentDetector::saveResults`.
+  - *Dettagli Tecnici*: Esegue il parsing del file `*_components_cv.csv` a 10 colonne (`id, shape, center_x, center_y, width, height, angle_deg, radius, area, circularity`). Determina la forma (`ShapeType::CIRCLE` o `ShapeType::RECTANGLE`), istanzia il rettangolo orientato circoscritto `cv::RotatedRect(center, Size2f(w, h), angle)` e il bounding box allineato agli assi, calcola l'aspect ratio e carica raggio, area e indice di circolarità.
+- **`loadAllDlDetectionsInDir`**:
+  - *Descrizione Qualitativa*: Scansiona ricorsivamente una directory ed estrae tutti i file CSV dei rilevamenti DL associati a ciascuna esposizione.
+  - *Dettagli Tecnici*: Identifica i file con suffisso `_detections.csv`, estrae lo stem del file immagine corrispondente (es. `A_TOP_003`) e popola una mappa indicizzata `std::map<std::string, std::vector<ComponentDetection>>`.
+- **`saveAllStepResults`**: serializza su disco i file CSV di ciascuno dei 4 step (`step1_merged_dl_detections.csv`, `step2_cv_dl_detections.csv`, `final_fused_components.csv`) e i rispettivi riepiloghi JSON (`step1_merged_dl_summary.json`, `step2_cv_dl_summary.json`, `final_fused_summary.json`).
 - **`processBoardSide`**: metodo principale che esegue la sequenza completa dei 4 step di elaborazione su tutte le foto della scheda, gestisce la selezione dell'immagine di sfondo da parte dell'utente e salva i rendering.
 
 #### `output_merger.cpp` (Step 1: Fusione Multi-Esposizione DL)
@@ -710,6 +791,97 @@ La libreria `aoi_verification` (`lib/aoi_verification/`) esegue la verifica metr
 
 ---
 
+### Libreria 8: `component_segmentation`
+
+La libreria `component_segmentation` (`lib/component_segmentation/`) implementa l'algoritmo di segmentazione fine per l'estrazione del contorno reale dei componenti, il raccordo geometrico in rettangoli minimi circoscritti aderenti senza spazi vuoti, l'armonizzazione fisica del package per codice produttore e la verifica metrologica con correzione della distorsione ottica.
+
+#### `component_segmentation.hpp` / `component_segmentation.cpp`
+
+##### 1. Pipeline di Segmentazione Multi-Esposizione e Rifinitura Bordi
+- **Descrizione Qualitativa**:
+  Prende in carico tutti i componenti precedentemente individuati e verificati, ordina l'elaborazione dai componenti con area maggiore a quelli minori, e per ciascun componente analizza l'intorno del box trovato applicando direttamente la catena completa dei filtri di Computer Vision classica di `pcb::CvComponentDetector`. Sfrutta le immagini a esposizione multipla per fondere le maschere dei componenti senza ombre o riflessi speculari. Estrae il bordo esatto del componente presente all'interno del riquadro (con margine di tolleranza iniziale ed espanso), senza eliminare o scartare i componenti già individuati.
+- **Dettagli Tecnici**:
+  - *Riutilizzo di `CvComponentDetector`*: non duplica codice ma invoca direttamente `CvComponentDetector::detect` con l'intero banco filtri (filtro solder mask verde, contrasto adattivo bilaterale e CLAHE, Canny adattivo, Scharr, gradienti colore, Top-Hat/Black-Hat e filtri multi-colore per chip scuri, metallo/saldature e condensatori ceramici).
+  - *Fusione Multi-Esposizione*: in `processBoardSide`, itera su tutte le esposizioni fotografiche disponibili (`_001.bmp` ... `_010.bmp`), accumulando con operatore logico OR le maschere binarie `components_mask` per garantire la massima continuità dei bordi.
+  - *Rifinitura Locale con Margine di Tolleranza*: per ciascun box componente, estrae i punti di contorno appartenenti alla maschera CV entro il margine di tolleranza iniziale (default `0.25` della dimensione del box) o espanso (default `0.70`). Calcola il convex hull dei punti appartenenti al componente, ottenendo il perimetro reale e aderente. Se in casi estremi il bordo non è segmentabile, preserva il riquadro originale validato, garantendo la conservazione del 100% dei componenti individuati.
+- **Firma e Parametri**:
+  ```cpp
+  ComponentSegmentationResult process(
+      const cv::Mat& pcbImage,
+      const std::vector<VerifiedPcbComponent>& inputComponents,
+      const AoiAlignmentTransform& transform,
+      const ComponentSegmentationConfig& config = ComponentSegmentationConfig(),
+      const cv::Mat& precomputedComponentsMask = cv::Mat());
+  ```
+  - *Input*: immagine PCB non distorta, vettore componenti verificati AOI, trasformazione proiettiva con modello di distorsione omografica, configurazione, eventuale maschera componenti multi-esposizione precalcolata.
+  - *Output*: oggetto `ComponentSegmentationResult` contenente la totalità dei componenti rifiniti e confermati, statistiche e immagini diagnostiche.
+
+##### 2. Rettangolo Minimo Aderente (Solo Rettangoli, No Cerchi)
+- **Descrizione Qualitativa**:
+  Circoscrive il contorno reale estratto all'interno di un rettangolo orientato minimo senza spazi vuoti (`cv::minAreaRect`), escludendo tassativamente approssimazioni circolari.
+- **Dettagli Tecnici**:
+  Applica l'algoritmo di Rotating Calipers per individuare il rettangolo ad area minima passante per il convex hull del contorno. Normalizza l'angolo $\theta$ e le dimensioni $(W, H)$ in conformità con la convenzione geometrica standard.
+
+##### 3. Armonizzazione Package per Codice Produttore
+- **Descrizione Qualitativa**:
+  Applica il principio fisico vincolante secondo cui componenti recanti il medesimo codice produttore (`part_number`) condividono identico package e devono possedere lo stesso ingombro geometrico sulla scheda.
+- **Dettagli Tecnici**:
+  Raggruppa tutti i componenti validati per `part_number`. Calcola la mediana robusta delle larghezze e altezze misurate:
+  $$W_{\text{canon}} = \text{mediana}(\{W_i\}), \quad H_{\text{canon}} = \text{mediana}(\{H_i\})$$
+  Riassegna $(W_{\text{canon}}, H_{\text{canon}})$ a ciascun componente del gruppo preservandone il centroide reale $(u, v)$ e l'inclinazione $\theta$, garantendo uniformità geometrica assoluta e azzerando le fluttuazioni di segmentazione.
+
+##### 4. Mappatura Metrologica Inversa con Omografia e Calcolo Errori
+- **Descrizione Qualitativa**:
+  Proietta la posizione in pixel $(u, v)$ del componente nel sistema millimetrico reale del circuito stampato, compensando la distorsione ottica residua della fotocamera e l'errore prospettico mediante l'inversa della matrice di omografia $3 \times 3$ ($\mathbf{H}^{-1}$). Calcola l'errore di traslazione e di rotazione rispetto alle specifiche teoriche nominali.
+- **Dettagli Tecnici**:
+  - *Conversione pixel $\to$ mm*:
+    $$\begin{bmatrix} X' \\ Y' \\ W \end{bmatrix} = \mathbf{H}_{3 \times 3}^{-1} \begin{bmatrix} u \\ v \\ 1 \end{bmatrix}, \quad x_{\text{reale}} = \frac{X'}{W}, \quad y_{\text{reale}} = \frac{Y'}{W}$$
+  - *Errori cartesiani ed euclidei*:
+    $$\Delta x = x_{\text{reale}} - x_{\text{nominale}}, \quad \Delta y = y_{\text{reale}} - y_{\text{nominale}}, \quad \Delta d = \sqrt{\Delta x^2 + \Delta y^2}$$
+    (il residuo tipico riscontrato su componenti montati da robot è di circa $1 \div 3$ decimi di millimetro).
+  - *Errore di rotazione*:
+    $$\Delta \theta = \text{normalizeAngleDiff}(\theta_{\text{reale\_img}}, \theta_{\text{nominale\_img}})$$
+    normalizzato tenendo conto delle simmetrie a $180^\circ$ e $90^\circ$ dei package rettangolari, con scostamento residuo tipico $< 2^\circ$.
+- **Firme e Parametri**:
+  ```cpp
+  static cv::Point2d pixelToAoi(const cv::Point2f& pt_px, const AoiAlignmentTransform& transform);
+  static cv::Point2f aoiToPixel(const cv::Point2d& pt_mm, const AoiAlignmentTransform& transform);
+  static double normalizeAngleDiff(double realAngleDeg, double nominalAngleDeg);
+  ```
+
+##### 5. Salvataggio ed Esportazione Risultati
+- **Descrizione Qualitativa**:
+  Serializza i dati metrologici in formato CSV e JSON, e genera le immagini di visualizzazione ad alta risoluzione con contorni sottili e colorati e rettangoli minimi.
+- **Firma e Parametri**:
+  ```cpp
+  bool saveResults(
+      const std::string& outputDir,
+      const std::string& fileStem,
+      const ComponentSegmentationResult& result);
+  ```
+  - *Output Prodotti*:
+    - `<STEM>_precise_segmented_components.csv`
+    - `<STEM>_precise_segmented_summary.json`
+    - `<STEM>_segmented_contours.jpg`
+    - `<STEM>_precise_bounding_boxes.jpg`
+
+##### 6. Elaborazione ad Alto Livello Scheda e Lato
+- **Descrizione Qualitativa**:
+  Interfaccia di alto livello che coordina l'acquisizione automatica delle foto non distorte, dei parametri di allineamento YAML e dei componenti verificati AOI, eseguendo l'intera pipeline e salvando i risultati.
+- **Firma e Parametri**:
+  ```cpp
+  ComponentSegmentationResult processBoardSide(
+      const std::string& boardName,
+      const std::string& side,
+      const std::string& undistortedDir,
+      const std::string& aoiVerificationDir,
+      const std::string& paramsDir,
+      const std::string& outputBaseDir,
+      const ComponentSegmentationConfig& config = ComponentSegmentationConfig());
+  ```
+
+---
+
 ## 6. Documentazione dei Moduli Applicativi
 
 ### Punto di Ingresso: `app/src/main.cpp`
@@ -724,7 +896,8 @@ Il file `main.cpp` orchestra la pipeline end-to-end con interfaccia interattiva 
 6. **`runPcbCvComponentDetection`**: esegue il rilevamento contorni geometrici CV.
 7. **`runPcbOutputProcessing`**: esegue i 4 step di fusione e memorizza l'immagine di riferimento scelta dall'utente.
 8. **`runPcbAoiVerification`**: esegue la verifica metrologica AOI e genera le immagini finali certificate.
-9. **`main`**: funzione di ingresso che gestisce gli argomenti a riga di comando (`--board`, `--side`, `--skip-calib`, `--all`) e concatena le fasi.
+9. **`runPcbComponentSegmentation`**: esegue la segmentazione precisa dei contorni reali dei componenti, l'adattamento dei rettangoli minimi circoscritti aderenti senza spazi, l'armonizzazione fisica dei package per medesimo codice produttore, il calcolo della reale posizione millimetrica corretta per la distorsione e l'esportazione dei file CSV e rendering grafici.
+10. **`main`**: funzione di ingresso che gestisce gli argomenti a riga di comando (`--board`, `--side`, `--skip-calib`, `--all`) e concatena tutte le 8 fasi della pipeline.
 
 ### Test Standalone: `app/src/test_aoi_verification.cpp`
 Applicazione autonoma per il test e il benchmark del modulo AOI:
@@ -732,6 +905,14 @@ Applicazione autonoma per il test e il benchmark del modulo AOI:
 - Carica direttamente i dati già elaborati della scheda specificata (default `A [TOP]`);
 - Esegue `parseAoiFile`, `loadAllCvDetectionsForBoardSide`, `findBestOriginAndDistortionAlignment`, `verifyAndClassify` e `saveResults`;
 - Valida l'accuratezza metrologica, il numero di inlier agganciati e l'integrità dei file di output generati.
+
+### Test Standalone: `app/src/test_component_segmentation.cpp`
+Applicazione autonoma per il test, collaudo e benchmark del modulo di segmentazione precisa:
+- Esegue in modalità batch senza blocchi GUI interattivi la segmentazione su `A [TOP]`;
+- Carica l'immagine non distorta `A_TOP_001.bmp`, il file dei componenti verificati AOI e i parametri del modello di distorsione omografica $3 \times 3$;
+- Esegue la segmentazione per area decrescente, il ritaglio ROI, il recupero con casella espansa, la reiezione di componenti sovrapposti e l'armonizzazione del package;
+- Calcola gli scostamenti reali sub-millimetrici e gli errori angolari di rotazione residua, serializzando i risultati in `data/outputs/pcb_component_segmentation/A/TOP/`;
+- Ritorna codice di uscita `0` se tutti i test di integrazione e segmentazione hanno esito positivo.
 
 ---
 

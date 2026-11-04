@@ -40,27 +40,50 @@ std::vector<ComponentDetection> OutputProcessor::loadDlDetectionsCsv(const std::
     std::string line;
     if (!std::getline(file, line)) return detections; // Salta intestazione
 
+    std::string header = toLower(line);
+    bool isStandardFmt = (header.find("x0") != std::string::npos && header.find("y0") != std::string::npos);
+
     while (std::getline(file, line)) {
         if (line.empty()) continue;
         std::stringstream ss(line);
         std::string token;
         std::vector<std::string> row;
         while (std::getline(ss, token, ',')) {
-            row.push_back(token);
+            size_t start = token.find_first_not_of(" \t\r\n");
+            size_t end = token.find_last_not_of(" \t\r\n");
+            row.push_back((start == std::string::npos) ? "" : token.substr(start, end - start + 1));
         }
-        if (row.size() >= 9) {
+        if (row.size() >= 8) {
             ComponentDetection d;
-            d.id = std::stoi(row[0]);
-            float x1 = std::stof(row[1]);
-            float y1 = std::stof(row[2]);
-            float x2 = std::stof(row[3]);
-            float y2 = std::stof(row[4]);
-            d.box = cv::Rect2f(x1, y1, std::max(0.0f, x2 - x1), std::max(0.0f, y2 - y1));
-            d.label = row[5];
-            d.box_conf = std::stof(row[6]);
-            d.label_conf = std::stof(row[7]);
-            d.class_id = std::stoi(row[8]);
-            detections.push_back(d);
+            try {
+                d.id = std::stoi(row[0]);
+                if (isStandardFmt || row[1].find_first_not_of("0123456789.-") != std::string::npos) {
+                    // Formato standard ComponentDetector: id,label,box_conf,label_conf,x0,y0,x1,y1
+                    d.label = row[1];
+                    d.box_conf = std::stof(row[2]);
+                    d.label_conf = std::stof(row[3]);
+                    float x0 = std::stof(row[4]);
+                    float y0 = std::stof(row[5]);
+                    float x1 = std::stof(row[6]);
+                    float y1 = std::stof(row[7]);
+                    d.box = cv::Rect2f(x0, y0, std::max(0.0f, x1 - x0), std::max(0.0f, y1 - y0));
+                    d.class_id = (row.size() >= 9) ? std::stoi(row[8]) : -1;
+                } else {
+                    // Formato alternativo con coordinate prima: id, x1, y1, x2, y2, label, box_conf, label_conf
+                    float x1 = std::stof(row[1]);
+                    float y1 = std::stof(row[2]);
+                    float x2 = std::stof(row[3]);
+                    float y2 = std::stof(row[4]);
+                    d.box = cv::Rect2f(x1, y1, std::max(0.0f, x2 - x1), std::max(0.0f, y2 - y1));
+                    d.label = row[5];
+                    d.box_conf = std::stof(row[6]);
+                    d.label_conf = std::stof(row[7]);
+                    d.class_id = (row.size() >= 9) ? std::stoi(row[8]) : -1;
+                }
+                detections.push_back(d);
+            } catch (...) {
+                continue;
+            }
         }
     }
     return detections;
@@ -80,25 +103,32 @@ std::vector<CvComponent> OutputProcessor::loadCvComponentsCsv(const std::string&
         std::string token;
         std::vector<std::string> row;
         while (std::getline(ss, token, ',')) {
-            row.push_back(token);
+            size_t start = token.find_first_not_of(" \t\r\n");
+            size_t end = token.find_last_not_of(" \t\r\n");
+            row.push_back((start == std::string::npos) ? "" : token.substr(start, end - start + 1));
         }
-        if (row.size() >= 12) {
+        if (row.size() >= 10) {
             CvComponent c;
-            c.id = std::stoi(row[0]);
-            std::string shape_str = toLower(row[1]);
-            c.shape = (shape_str == "circle") ? ShapeType::CIRCLE : ShapeType::RECTANGLE;
-            c.center.x = std::stof(row[2]);
-            c.center.y = std::stof(row[3]);
-            float w = std::stof(row[4]);
-            float h = std::stof(row[5]);
-            float angle = std::stof(row[6]);
-            c.rotated_box = cv::RotatedRect(c.center, cv::Size2f(w, h), angle);
-            c.radius = std::stof(row[7]);
-            c.area = std::stof(row[8]);
-            c.perimeter = std::stof(row[9]);
-            c.circularity = std::stof(row[10]);
-            c.aspect_ratio = std::stof(row[11]);
-            components.push_back(c);
+            try {
+                c.id = std::stoi(row[0]);
+                std::string shape_str = toLower(row[1]);
+                c.shape = (shape_str == "circle") ? ShapeType::CIRCLE : ShapeType::RECTANGLE;
+                c.center.x = std::stof(row[2]);
+                c.center.y = std::stof(row[3]);
+                float w = std::stof(row[4]);
+                float h = std::stof(row[5]);
+                float angle = std::stof(row[6]);
+                c.rotated_box = cv::RotatedRect(c.center, cv::Size2f(w, h), angle);
+                c.radius = std::stof(row[7]);
+                c.area = std::stof(row[8]);
+                c.circularity = std::stof(row[9]);
+                c.perimeter = (row.size() >= 11) ? std::stof(row[10]) : (2.0f * (w + h));
+                c.aspect_ratio = (row.size() >= 12) ? std::stof(row[11]) :
+                                 ((std::max(w, h) > 1e-4f) ? (std::min(w, h) / std::max(w, h)) : 1.0f);
+                components.push_back(c);
+            } catch (...) {
+                continue;
+            }
         }
     }
     return components;

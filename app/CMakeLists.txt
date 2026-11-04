@@ -10,6 +10,7 @@ target_link_libraries(pcb_app
         pcb::cv_component_detection
         pcb::output_processing
         pcb::aoi_verification
+        pcb::component_segmentation
         ${OpenCV_LIBS}
 )
 
@@ -23,6 +24,19 @@ add_executable(test_aoi_verification
 
 target_link_libraries(test_aoi_verification
     PRIVATE
+        pcb::aoi_verification
+        pcb::output_processing
+        pcb::board_alignment
+        ${OpenCV_LIBS}
+)
+
+add_executable(test_component_segmentation
+    src/test_component_segmentation.cpp
+)
+
+target_link_libraries(test_component_segmentation
+    PRIVATE
+        pcb::component_segmentation
         pcb::aoi_verification
         pcb::output_processing
         pcb::board_alignment

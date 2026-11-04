@@ -5,6 +5,7 @@
 #include "cv_component_detector.hpp"
 #include "output_processor.hpp"
 #include "aoi_verification.hpp"
+#include "component_segmentation.hpp"
 #include <string>
 #include <iostream>
 #include <filesystem>
@@ -875,6 +876,67 @@ bool runPcbAoiVerification(bool show_windows = true, const std::vector<BoardSide
     return true;
 }
 
+// Funzione per la segmentazione fine dei contorni reali dei componenti,
+// adattamento dei rettangoli minimi circoscritti, armonizzazione per codice produttore
+// e calcolo della reale posizione in mm con modello di distorsione ed errore.
+bool runPcbComponentSegmentation(bool show_windows = true, const std::vector<BoardSideTarget>& targets = {}) {
+    std::cout << "\n========================================================" << std::endl;
+    std::cout << "=== AVVIO SEGMENTAZIONE E MODELLAZIONE REALE COMPONENTI ===" << std::endl;
+    std::cout << "========================================================" << std::endl;
+
+    std::string undistorted_base_dir = "../data/outputs/pcb_images_undistorted";
+    std::string verification_output_base_dir = "../data/outputs/pcb_aoi_verification";
+    std::string params_dir = "../data/parameters";
+    std::string segmentation_output_base_dir = "../data/outputs/pcb_component_segmentation";
+
+    pcb::ComponentSegmentationProcessor segmenter;
+    pcb::ComponentSegmentationConfig config;
+    config.show_windows = show_windows;
+
+    auto processOneBoardSide = [&](const std::string& bname, const std::string& side) {
+        segmenter.processBoardSide(
+            bname, side, undistorted_base_dir,
+            verification_output_base_dir, params_dir,
+            segmentation_output_base_dir, config);
+    };
+
+    if (!targets.empty()) {
+        for (const auto& t : targets) {
+            std::cout << "\n--- Elaborazione segmentazione per scheda: " << t.board_name 
+                      << " [" << t.side << "] ---" << std::endl;
+            processOneBoardSide(t.board_name, t.side);
+        }
+    } else {
+        std::vector<fs::path> board_paths;
+        for (const auto& entry : fs::directory_iterator(verification_output_base_dir)) {
+            if (entry.is_directory()) {
+                board_paths.push_back(entry.path());
+            }
+        }
+        std::sort(board_paths.begin(), board_paths.end());
+
+        for (const auto& bpath : board_paths) {
+            std::string bname = bpath.filename().string();
+            std::cout << "\n--- Elaborazione segmentazione per scheda: " << bname << " ---" << std::endl;
+
+            for (const std::string side : {"TOP", "BOTTOM"}) {
+                fs::path side_dir = bpath / side;
+                if (!fs::exists(side_dir)) continue;
+
+                processOneBoardSide(bname, side);
+            }
+        }
+    }
+
+    std::cout << "\n========================================================" << std::endl;
+    std::cout << "Segmentazione e modellazione componenti completata con successo!" << std::endl;
+    std::cout << "Immagini e file CSV salvati in:\n  " 
+              << segmentation_output_base_dir << std::endl;
+    std::cout << "========================================================" << std::endl;
+
+    return true;
+}
+
 int main() {
     if (!runRobotCameraCalibration()) {
         return -1;
@@ -944,8 +1006,14 @@ int main() {
         }
     }
 
-    // Fase finale: Verifica con dati teorici AOI, allineamento origine, correzione classi e recupero componenti mancanti
+    // Fase: Verifica con dati teorici AOI, allineamento origine, correzione classi e recupero componenti mancanti
     if (!runPcbAoiVerification(show_windows, selected_targets)) {
+        return -1;
+    }
+
+    // Fase: Segmentazione precisa contorni reali, adattamento rettangoli aderenti,
+    // armonizzazione ingombri per codice produttore e calcolo posizione metrologica reale in mm con distorsione
+    if (!runPcbComponentSegmentation(show_windows, selected_targets)) {
         return -1;
     }
 
