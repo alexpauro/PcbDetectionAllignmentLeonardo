@@ -1,0 +1,12 @@
+%YAML:1.0
+---
+board_name: E
+side: BOTTOM
+pixels_per_mm: 10.
+mm_per_pixel: 1.0000000000000001e-01
+rotation_angle_deg: 0.
+aspect_ratio_error: 0.
+image_width_px: 1280.
+image_height_px: 960.
+image_area_px: 1228800.
+image_solidity: 1.

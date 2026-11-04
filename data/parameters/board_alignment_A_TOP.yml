@@ -1,0 +1,42 @@
+%YAML:1.0
+---
+board_name: A
+side: TOP
+pixels_per_mm: 1.1393262171764505e+01
+mm_per_pixel: 8.7771174306711081e-02
+rotation_angle_deg: 90.
+aspect_ratio_error: 1.0286893559242062e-02
+gerber_source_file: "AP9907898301M1.gdo"
+gerber_layer_name: "AP9907898301M1.gdo"
+gerber_width_mm: 1.0714693450927734e+02
+gerber_height_mm: 7.8429901123046875e+01
+gerber_area_mm2: 7.0619974202099347e+03
+gerber_aspect_ratio: 1.3661490448799236e+00
+image_width_px: 1227.
+image_height_px: 889.
+image_area_px: 1090803.
+image_solidity: 9.7999999999999998e-01
+homography_px_to_mm: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [ 8.7324315003486030e-02, 0., -1.2225404100488100e+00, 0.,
+       8.8222610937060658e-02, -4.2346853249789325e+00, 0., 0., 1. ]
+homography_mm_to_px: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [ 1.1451564205915380e+01, 0., 1.4000000000000066e+01, 0.,
+       1.1334962651620174e+01, 4.8000000000000242e+01, 0., 0., 1. ]
+affine_px_to_mm: !!opencv-matrix
+   rows: 2
+   cols: 3
+   dt: d
+   data: [ 8.7324315003486017e-02, 0., -1.2225404100488042e+00, 0.,
+       8.8222610937060603e-02, -4.2346853249789085e+00 ]
+affine_mm_to_px: !!opencv-matrix
+   rows: 2
+   cols: 3
+   dt: d
+   data: [ 1.1451564205915380e+01, 0., 1.3999999999999998e+01, 0.,
+       1.1334962651620179e+01, 4.7999999999999986e+01 ]

@@ -12,6 +12,7 @@ cmake_install.cmake
 Makefile
 compile_commands.json
 
+
 # IDEs
 .vscode/
 .idea/
@@ -25,3 +26,4 @@ compile_commands.json
 *.csv
 *.TMP
 pcb_component_detection/
+data/inputs/pcb_gerber

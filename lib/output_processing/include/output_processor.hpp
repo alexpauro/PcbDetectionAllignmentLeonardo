@@ -17,9 +17,10 @@ namespace fs = std::filesystem;
  * @brief Origine della rilevazione per il componente finale fuso.
  */
 enum class ComponentSource {
-    DL_ONLY,        ///< Individuato solo dal Deep Learning (non intercettato da CV)
-    CV_ONLY,        ///< Individuato solo da Computer Vision e classificato con pesi DL
-    FUSED_DL_CV     ///< Confermato sia da DL che da CV (geometria CV + classificazione DL)
+    DL_ONLY,                ///< Individuato solo dal Deep Learning (non intercettato da CV)
+    CV_ONLY,                ///< Individuato solo da Computer Vision e classificato con pesi DL
+    FUSED_DL_CV,            ///< Confermato sia da DL che da CV (geometria CV + classificazione DL)
+    SIMILARITY_DISCOVERED   ///< Scoperto tramite ricerca visiva globale su intera scheda
 };
 
 /**
@@ -77,6 +78,19 @@ struct FinalComponent {
 };
 
 /**
+ * @brief Informazioni su un cluster di componenti visivamente identici rilevati via Computer Vision.
+ */
+struct SimilarityClusterInfo {
+    int cluster_id = 0;                         ///< ID del cluster di similarità
+    std::string winning_label = "?";            ///< Classe vincente assegnata al cluster
+    float consensus_confidence = 0.0f;          ///< Confidenza di consenso
+    int member_count = 0;                       ///< Numero totale di componenti identici nel cluster
+    int harmonized_count = 0;                   ///< Quanti componenti hanno cambiato etichetta/sono stati promossi da '?'
+    std::vector<int> member_ids;                ///< ID dei componenti appartenenti a questo cluster
+    std::map<std::string, int> original_labels; ///< Conteggio etichette originali prima dell'armonizzazione
+};
+
+/**
  * @brief Configurazione della pipeline di elaborazione e fusione output.
  */
 struct OutputProcessingConfig {
@@ -87,6 +101,9 @@ struct OutputProcessingConfig {
     int patch_padding = 24;              ///< Pixel di padding attorno al componente per inferenza su crop
     int patch_target_size = 1024;        ///< Dimensione input YOLO per la patch
 
+    // Modalità di rilevamento (1 = Solo CV Classica, 2 = Solo Deep Learning YOLO, 3 = Entrambi)
+    int detection_mode = 3;              ///< Modalità attiva per l'elaborazione dei dati
+
     // Selezione immagine base
     bool interactive_image_selection = false; ///< Chiede all'utente quale immagine usare come base per l'output finale
     std::string preferred_base_image = "";    ///< Nome/stem dell'immagine base desiderata (se vuoto, usa la consigliata)
@@ -96,7 +113,19 @@ struct OutputProcessingConfig {
     float tiny_cv_max_dim = 7.5f;        ///< Dimensione massima (lato corto/lungo) per considerare un elemento minuscolo
 
     // Risoluzione componenti sovrapposti/inglobati (no sovrapposizioni su PCB)
-    float enclosure_overlap_thresh = 0.45f; ///< Soglia di sovrapposizione/inclusione oltre la quale c'è errore di sovrapposizione
+    float enclosure_overlap_thresh = 0.80f; ///< Soglia di inclusione per considerare un componente completamente compreso in un altro
+
+    // Armonizzazione componenti identici tramite Computer Vision (Fase 1: componenti noti)
+    bool enable_similarity_harmonization = true; ///< Attiva l'armonizzazione della classificazione per componenti identici
+    float similarity_geom_tol = 0.18f;           ///< Tolleranza percentuale sulle dimensioni geometriche (18%)
+    float similarity_ncc_thresh = 0.78f;         ///< Soglia minima di Normalized Cross-Correlation (NCC)
+    float similarity_hist_thresh = 0.35f;        ///< Soglia massima di distanza Bhattacharyya per istogramma colore HSV
+
+    // Ricerca visiva globale su intera scheda per scoprire nuovi componenti simili (Fase 2: estensione su scheda)
+    bool enable_whole_board_search = true;       ///< Cerca porzioni simili sull'intera scheda per scoprire nuovi componenti
+    float search_ncc_thresh = 0.78f;             ///< Soglia minima di correlazione NCC per la ricerca visiva globale
+    float search_hist_thresh = 0.38f;            ///< Soglia massima distanza Bhattacharyya per verifica colore
+    float search_max_existing_iou = 0.20f;       ///< IoU massimo con componenti esistenti per evitare duplicati
 
     bool save_intermediate_images = true;///< Se salvare tutte le immagini dei passaggi intermedi
     std::string output_base_dir = "../data/outputs/pcb_processed_output"; ///< Cartella base di salvataggio
@@ -127,10 +156,15 @@ struct OutputProcessingResult {
     // Step 3: Risultato finale unificato
     std::vector<FinalComponent> step3_final_components;
     std::map<std::string, int> step3_final_counts;
-    std::map<std::string, int> source_counts; // "FUSED_DL_CV", "DL_ONLY", "CV_ONLY"
+    std::map<std::string, int> source_counts; // "FUSED_DL_CV", "DL_ONLY", "CV_ONLY", "SIMILARITY_DISCOVERED"
     cv::Mat step3_final_elements_vis;
     cv::Mat step3_final_types_vis;
     cv::Mat step3_final_geometric_vis;
+
+    // Armonizzazione similarità visiva CV & Ricerca globale
+    std::vector<SimilarityClusterInfo> similarity_clusters; ///< Dettaglio cluster di componenti visivamente identici
+    int harmonized_components_count = 0;                    ///< Numero di componenti ri-classificati per consenso di similarità
+    int discovered_components_count = 0;                    ///< Numero di nuovi componenti scoperti dalla ricerca globale su scheda
 };
 
 /**
@@ -234,6 +268,46 @@ public:
         const std::string& label,
         float max_area = 45.0f,
         float max_dim = 7.5f);
+
+    /**
+     * @brief Identifica componenti visivamente e geometricamente identici usando esclusivamente
+     * Computer Vision (forma, dimensioni geometriche, istogramma colore HSV, template matching NCC con rotazione)
+     * e ne armonizza la classificazione assegnando a tutti la classe più probabile (consenso/maggioranza).
+     * @param comps Vettore di componenti finali (Step 3).
+     * @param image Immagine base di riferimento per l'estrazione dei crop visuali.
+     * @param geom_tol Tolleranza relativa sulle dimensioni geometriche (default 0.18 = 18%).
+     * @param ncc_thresh Soglia minima di correlazione normalizzata NCC (default 0.78).
+     * @param hist_thresh Soglia massima di distanza Bhattacharyya tra istogrammi colore (default 0.35).
+     * @param clusters_out Output opzionale per le informazioni dettagliate sui cluster identificati.
+     * @return Vettore di componenti con classificazioni armonizzate.
+     */
+    static std::vector<FinalComponent> harmonizeIdenticalComponents(
+        const std::vector<FinalComponent>& comps,
+        const cv::Mat& image,
+        float geom_tol = 0.18f,
+        float ncc_thresh = 0.78f,
+        float hist_thresh = 0.35f,
+        std::vector<SimilarityClusterInfo>* clusters_out = nullptr);
+
+    /**
+     * @brief Cerca porzioni visivamente identiche/simili ai cluster noti sull'intera superficie del PCB.
+     * Quando trova corrispondenze valide non ancora coperte da altri componenti, le classifica
+     * secondo la classe del cluster e introduce i nuovi componenti trovati.
+     * @param existing_comps Componenti già riconosciuti e armonizzati.
+     * @param image Immagine base di riferimento per la scansione.
+     * @param clusters Elenco dei cluster di componenti simili con classe vincente nota.
+     * @param search_ncc_thresh Soglia minima correlazione NCC (default 0.83).
+     * @param search_hist_thresh Soglia massima distanza Bhattacharyya istogramma colore (default 0.35).
+     * @param max_existing_iou IoU massimo per considerare una posizione già occupata da componenti noti.
+     * @return Vettore di nuovi componenti scoperti.
+     */
+    static std::vector<FinalComponent> searchSimilarComponentsOnBoard(
+        const std::vector<FinalComponent>& existing_comps,
+        const cv::Mat& image,
+        const std::vector<SimilarityClusterInfo>& clusters,
+        float search_ncc_thresh = 0.78f,
+        float search_hist_thresh = 0.38f,
+        float max_existing_iou = 0.20f);
 
     // =========================================================================
     // Salvataggio di tutti i passaggi intermedi

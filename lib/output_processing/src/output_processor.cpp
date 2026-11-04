@@ -22,10 +22,166 @@ std::string toLower(const std::string& str) {
 }
 
 // Colori fissi per la visualizzazione geometrica di Step 3
-const cv::Scalar COLOR_FUSED(0, 255, 0);     // Verde brillante: FUSED_DL_CV
-const cv::Scalar COLOR_DL_ONLY(255, 200, 0); // Ciano/Azzurro: DL_ONLY
-const cv::Scalar COLOR_CV_ONLY(255, 0, 255); // Magenta/Viola: CV_ONLY
-const cv::Scalar COLOR_ELEMENT(120, 255, 0); // Verde chiaro Step 1
+const cv::Scalar COLOR_FUSED(0, 255, 0);          // Verde brillante: FUSED_DL_CV
+const cv::Scalar COLOR_DL_ONLY(255, 200, 0);      // Ciano/Azzurro: DL_ONLY
+const cv::Scalar COLOR_CV_ONLY(255, 0, 255);      // Magenta/Viola: CV_ONLY
+const cv::Scalar COLOR_SIMILARITY(0, 165, 255);   // Arancione brillante: SIMILARITY_DISCOVERED
+const cv::Scalar COLOR_ELEMENT(120, 255, 0);      // Verde chiaro Step 1
+
+// Feature visuali estratte con Computer Vision per comparazione di componenti
+struct ComponentVisualFeature {
+    cv::Mat patch_gray;
+    cv::Mat hist_hsv;
+    float width = 0.0f;
+    float height = 0.0f;
+    float area = 0.0f;
+    ShapeType shape = ShapeType::RECTANGLE;
+    bool valid = false;
+};
+
+ComponentVisualFeature extractVisualFeature(const cv::Mat& image, const FinalComponent& comp) {
+    ComponentVisualFeature feat;
+    feat.shape = comp.shape;
+    if (image.empty()) return feat;
+
+    const int target_w = 48;
+    const int target_h = 48;
+    cv::Mat patch_bgr;
+
+    if (comp.shape == ShapeType::CIRCLE) {
+        float r = std::max(2.0f, comp.radius);
+        feat.width = r * 2.0f;
+        feat.height = r * 2.0f;
+        feat.area = (comp.area > 0.0f) ? comp.area : (static_cast<float>(CV_PI) * r * r);
+
+        int x0 = std::max(0, static_cast<int>(std::floor(comp.center.x - r)));
+        int y0 = std::max(0, static_cast<int>(std::floor(comp.center.y - r)));
+        int x1 = std::min(image.cols, static_cast<int>(std::ceil(comp.center.x + r)));
+        int y1 = std::min(image.rows, static_cast<int>(std::ceil(comp.center.y + r)));
+
+        if (x1 <= x0 || y1 <= y0) return feat;
+        cv::Rect roi(x0, y0, x1 - x0, y1 - y0);
+        cv::resize(image(roi), patch_bgr, cv::Size(target_w, target_h), 0, 0, cv::INTER_AREA);
+    } else {
+        // RECTANGLE
+        float w = comp.rotated_box.size.width;
+        float h = comp.rotated_box.size.height;
+        if (w <= 0.0f || h <= 0.0f) {
+            w = comp.box.width;
+            h = comp.box.height;
+        }
+        feat.width = std::max(w, h);
+        feat.height = std::min(w, h);
+        feat.area = (comp.area > 0.0f) ? comp.area : (feat.width * feat.height);
+
+        if (comp.rotated_box.size.width > 2.0f && comp.rotated_box.size.height > 2.0f) {
+            cv::Point2f pts[4];
+            comp.rotated_box.points(pts);
+            float d01 = static_cast<float>(cv::norm(pts[0] - pts[1]));
+            float d12 = static_cast<float>(cv::norm(pts[1] - pts[2]));
+
+            cv::Point2f src[4];
+            if (d01 >= d12) {
+                src[0] = pts[0]; src[1] = pts[1]; src[2] = pts[2]; src[3] = pts[3];
+            } else {
+                src[0] = pts[1]; src[1] = pts[2]; src[2] = pts[3]; src[3] = pts[0];
+            }
+            cv::Point2f dst[4] = {
+                cv::Point2f(0.0f, 0.0f),
+                cv::Point2f(static_cast<float>(target_w), 0.0f),
+                cv::Point2f(static_cast<float>(target_w), static_cast<float>(target_h)),
+                cv::Point2f(0.0f, static_cast<float>(target_h))
+            };
+            cv::Mat M = cv::getPerspectiveTransform(src, dst);
+            cv::warpPerspective(image, patch_bgr, M, cv::Size(target_w, target_h), cv::INTER_LINEAR, cv::BORDER_REPLICATE);
+        } else {
+            int x0 = std::max(0, static_cast<int>(std::floor(comp.box.x)));
+            int y0 = std::max(0, static_cast<int>(std::floor(comp.box.y)));
+            int x1 = std::min(image.cols, static_cast<int>(std::ceil(comp.box.x + comp.box.width)));
+            int y1 = std::min(image.rows, static_cast<int>(std::ceil(comp.box.y + comp.box.height)));
+            if (x1 <= x0 || y1 <= y0) return feat;
+            cv::Mat crop = image(cv::Rect(x0, y0, x1 - x0, y1 - y0));
+            if (crop.cols < crop.rows) {
+                cv::rotate(crop, crop, cv::ROTATE_90_CLOCKWISE);
+            }
+            cv::resize(crop, patch_bgr, cv::Size(target_w, target_h), 0, 0, cv::INTER_AREA);
+        }
+    }
+
+    if (patch_bgr.empty() || patch_bgr.cols != target_w || patch_bgr.rows != target_h) {
+        return feat;
+    }
+
+    // 1) Grayscale patch normalizzato con leggero smoothing
+    cv::cvtColor(patch_bgr, feat.patch_gray, cv::COLOR_BGR2GRAY);
+    cv::GaussianBlur(feat.patch_gray, feat.patch_gray, cv::Size(3, 3), 0.5);
+
+    // 2) Istogramma HSV 2D (Hue e Saturation)
+    cv::Mat hsv;
+    cv::cvtColor(patch_bgr, hsv, cv::COLOR_BGR2HSV);
+    int h_bins = 16, s_bins = 16;
+    int histSize[] = {h_bins, s_bins};
+    float h_ranges[] = {0.0f, 180.0f};
+    float s_ranges[] = {0.0f, 256.0f};
+    const float* ranges[] = {h_ranges, s_ranges};
+    int channels[] = {0, 1};
+    cv::calcHist(&hsv, 1, channels, cv::Mat(), feat.hist_hsv, 2, histSize, ranges, true, false);
+    cv::normalize(feat.hist_hsv, feat.hist_hsv, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
+
+    feat.valid = true;
+    return feat;
+}
+
+bool areFeaturesIdentical(const ComponentVisualFeature& f1,
+                          const ComponentVisualFeature& f2,
+                          float geom_tol,
+                          float ncc_thresh,
+                          float hist_thresh) {
+    if (!f1.valid || !f2.valid) return false;
+    if (f1.shape != f2.shape) return false;
+
+    // 1. Controllo geometrico
+    float max_w = std::max(f1.width, f2.width);
+    float max_h = std::max(f1.height, f2.height);
+    if (max_w <= 0.0f || max_h <= 0.0f) return false;
+
+    float diff_w = std::abs(f1.width - f2.width) / max_w;
+    float diff_h = std::abs(f1.height - f2.height) / max_h;
+    if (diff_w > geom_tol || diff_h > geom_tol) {
+        return false;
+    }
+
+    // Aspect ratio check
+    float ar1 = f1.width / std::max(1.0f, f1.height);
+    float ar2 = f2.width / std::max(1.0f, f2.height);
+    float max_ar = std::max(ar1, ar2);
+    if (std::abs(ar1 - ar2) / max_ar > geom_tol * 1.30f) {
+        return false;
+    }
+
+    // 2. Controllo istogramma colore HSV (distanza Bhattacharyya: 0 = identico, 1 = completamente diverso)
+    double bhatt = cv::compareHist(f1.hist_hsv, f2.hist_hsv, cv::HISTCMP_BHATTACHARYYA);
+    if (bhatt > hist_thresh) {
+        return false;
+    }
+
+    // 3. Normalized Cross Correlation (NCC) con orientamento standard (0°) e ruotato di 180°
+    cv::Mat match0, match180;
+    cv::matchTemplate(f1.patch_gray, f2.patch_gray, match0, cv::TM_CCOEFF_NORMED);
+    float ncc0 = match0.at<float>(0, 0);
+
+    cv::Mat f2_flipped;
+    cv::flip(f2.patch_gray, f2_flipped, -1);
+    cv::matchTemplate(f1.patch_gray, f2_flipped, match180, cv::TM_CCOEFF_NORMED);
+    float ncc180 = match180.at<float>(0, 0);
+
+    float best_ncc = std::max(ncc0, ncc180);
+    if (best_ncc < ncc_thresh) {
+        return false;
+    }
+
+    return true;
+}
 
 } // namespace
 
@@ -34,6 +190,7 @@ std::string OutputProcessor::sourceToString(ComponentSource src) {
         case ComponentSource::FUSED_DL_CV: return "FUSED_DL_CV";
         case ComponentSource::DL_ONLY: return "DL_ONLY";
         case ComponentSource::CV_ONLY: return "CV_ONLY";
+        case ComponentSource::SIMILARITY_DISCOVERED: return "SIMILARITY_DISCOVERED";
         default: return "UNKNOWN";
     }
 }
@@ -558,7 +715,6 @@ std::vector<FinalComponent> OutputProcessor::resolveEnclosingAndOverlaps(
 
             float overlap_a = inter_area / area_a;
             float overlap_b = inter_area / area_b;
-            float iou = inter_area / (area_a + area_b - inter_area);
 
             // Determina componente più piccolo vs più grande
             size_t idx_smaller = (area_a <= area_b) ? i : j;
@@ -568,28 +724,24 @@ std::vector<FinalComponent> OutputProcessor::resolveEnclosingAndOverlaps(
 
             bool center_inside = comps[idx_larger].box.contains(comps[idx_smaller].center);
 
-            // Condizione di sovrapposizione/inglobamento
-            bool has_conflict = (overlap_smaller >= enclosure_thresh) || (iou >= 0.35f) ||
-                                (center_inside && area_ratio >= 1.25f);
+            // REQUISITO UTENTE:
+            // "inoltre possono esserci componenti molto vicini, escludi solo i componenti che includono
+            // completamente componenti più piccoli (togli quello più grande, ricorda che il dl ha sempre ragione, il cv no)"
+            bool is_completely_enclosed = (overlap_smaller >= enclosure_thresh) ||
+                                          (center_inside && overlap_smaller >= 0.70f && area_ratio >= 1.5f);
 
-            if (has_conflict) {
-                const auto& s = comps[idx_smaller];
-                const auto& l = comps[idx_larger];
+            if (is_completely_enclosed) {
+                bool larger_is_dl  = (comps[idx_larger].source != ComponentSource::CV_ONLY);
+                bool smaller_is_dl = (comps[idx_smaller].source != ComponentSource::CV_ONLY);
 
-                // REQUISITO UTENTE:
-                // "se ci sono componenti più grandi che racchiudono componenti più piccoli allora c'è un errore:
-                // non ci sono componenti sovrapposti, possono essere molto vicini ma non sovrapposti:
-                // tieni gli elementi con maggiore confidenza e più piccoli"
-
-                if (l.label == "?" && s.label != "?") {
-                    // Il grande è un'etichetta sconosciuta '?' mentre il piccolo ha classe nota -> elimina il grande
-                    keep[idx_larger] = false;
-                } else if (s.label == "?" && l.label != "?" && l.confidence > (s.confidence + 0.35f) && overlap_smaller < 0.80f) {
-                    // Solo se il grande è classe nota ad altissima confidenza e non racchiude completamente il piccolo
+                if (larger_is_dl && !smaller_is_dl) {
+                    // DL ha sempre ragione, CV no -> togli CV (più piccolo)
                     keep[idx_smaller] = false;
+                } else if (!larger_is_dl && smaller_is_dl) {
+                    // DL ha sempre ragione, CV no -> togli CV (più grande)
+                    keep[idx_larger] = false;
                 } else {
-                    // In tutti i casi di inclusione / contenitore: privilegia il componente più piccolo
-                    // che aderisce fisicamente alla sagoma del componente reale sul PCB
+                    // Entrambi della stessa fonte (entrambi DL o entrambi CV): togli quello più grande
                     keep[idx_larger] = false;
                 }
             }
@@ -653,66 +805,70 @@ std::vector<FinalComponent> OutputProcessor::fuseDlAndCv(
         }
 
         FinalComponent fc;
-        if (best_iou >= match_iou_threshold && best_cv_idx >= 0 && !cv_used[best_cv_idx]) {
-            // FUSIONE: Entrambi i metodi hanno confermato la presenza del componente!
-            cv_used[best_cv_idx] = true;
-            const auto& cv_ref = classified_cv[best_cv_idx];
+        // REQUISITO UTENTE:
+        // "quello riconosciuto da dl è sempre più accurato, quindi mantieni ciò che ha riconosciuto."
+        fc.shape = ShapeType::RECTANGLE;
+        fc.box = dl.box;
+        fc.center = cv::Point2f(dl.box.x + dl.box.width * 0.5f, dl.box.y + dl.box.height * 0.5f);
+        fc.rotated_box = cv::RotatedRect(fc.center, dl.box.size(), 0.0f);
+        fc.radius = 0.0f;
+        fc.area = dl.box.width * dl.box.height;
+        fc.label = dl.label;
+        fc.confidence = (dl.label != "?") ? dl.label_conf : dl.box_conf;
 
+        if (best_iou >= match_iou_threshold && best_cv_idx >= 0) {
             fc.source = ComponentSource::FUSED_DL_CV;
-            fc.shape = cv_ref.cv_geom.shape;
-            fc.center = cv_ref.cv_geom.center;
-            fc.radius = cv_ref.cv_geom.radius;
-            fc.rotated_box = cv_ref.cv_geom.rotated_box;
-            fc.area = cv_ref.cv_geom.area;
-
-            if (fc.shape == ShapeType::CIRCLE) {
-                float r = fc.radius;
-                fc.box = cv::Rect2f(fc.center.x - r, fc.center.y - r, 2.0f * r, 2.0f * r);
-            } else {
-                fc.box = fc.rotated_box.boundingRect2f();
-            }
-
-            // Risoluzione etichetta: preferenza alla classe nota
-            if (dl.label != "?" && cv_ref.label != "?") {
-                if (dl.label == cv_ref.label) {
-                    fc.label = dl.label;
-                    fc.confidence = std::max(dl.label_conf, cv_ref.label_conf);
-                } else {
-                    // Se discordi, vince chi ha confidenza maggiore o maggioranza DL
-                    if (dl.vote_count >= 2 || dl.label_conf >= cv_ref.label_conf) {
-                        fc.label = dl.label;
-                        fc.confidence = dl.label_conf;
-                    } else {
-                        fc.label = cv_ref.label;
-                        fc.confidence = cv_ref.label_conf;
-                    }
-                }
-            } else if (dl.label != "?") {
-                fc.label = dl.label;
-                fc.confidence = dl.label_conf;
-            } else if (cv_ref.label != "?") {
+            const auto& cv_ref = classified_cv[best_cv_idx];
+            // Se DL non ha una classe specifica ('?') ma CV ne ha una riconosciuta dai pesi DL, usala
+            if (fc.label == "?" && cv_ref.label != "?") {
                 fc.label = cv_ref.label;
                 fc.confidence = cv_ref.label_conf;
-            } else {
-                fc.label = "?";
-                fc.confidence = dl.box_conf;
             }
-
-            fc.notes = "Confermato da DL (" + std::to_string(dl.vote_count) + " voti) e CV (" +
-                       (fc.shape == ShapeType::CIRCLE ? "Cerchio" : "Rettangolo ruotato") + ")";
+            fc.notes = "Riconosciuto da DL (" + std::to_string(dl.vote_count) + " voti) e confermato da CV";
         } else {
-            // DL_ONLY: Trovato solo dal modello Deep Learning
             fc.source = ComponentSource::DL_ONLY;
-            fc.shape = ShapeType::RECTANGLE;
-            fc.box = dl.box;
-            fc.center = cv::Point2f(dl.box.x + dl.box.width * 0.5f, dl.box.y + dl.box.height * 0.5f);
-            fc.rotated_box = cv::RotatedRect(fc.center, dl.box.size(), 0.0f);
-            fc.radius = 0.0f;
-            fc.area = dl.box.width * dl.box.height;
-            fc.label = dl.label;
-            fc.confidence = (dl.label != "?") ? dl.label_conf : dl.box_conf;
             fc.notes = "Solo DL (" + std::to_string(dl.vote_count) + " voti su " +
                        std::to_string(dl.total_observations) + " foto)";
+        }
+
+        // REQUISITO UTENTE:
+        // "se ciò che dl riconosce è sopra a cv, allora togli cv."
+        // Rimuoviamo qualsiasi componente CV che si trova sotto o si sovrappone a questo componente DL
+        for (size_t j = 0; j < classified_cv.size(); ++j) {
+            if (cv_used[j]) continue;
+            const auto& cv_item = classified_cv[j];
+            cv::Rect2f cv_box;
+            if (cv_item.cv_geom.shape == ShapeType::CIRCLE) {
+                float r = cv_item.cv_geom.radius;
+                cv_box = cv::Rect2f(cv_item.cv_geom.center.x - r, cv_item.cv_geom.center.y - r, 2.0f * r, 2.0f * r);
+            } else {
+                cv_box = cv_item.cv_geom.rotated_box.boundingRect2f();
+            }
+
+            float x1 = std::max(dl.box.x, cv_box.x);
+            float y1 = std::max(dl.box.y, cv_box.y);
+            float x2 = std::min(dl.box.x + dl.box.width, cv_box.x + cv_box.width);
+            float y2 = std::min(dl.box.y + dl.box.height, cv_box.y + cv_box.height);
+
+            float inter_w = std::max(0.0f, x2 - x1);
+            float inter_h = std::max(0.0f, y2 - y1);
+            float inter_area = inter_w * inter_h;
+
+            if (inter_area > 0.0f) {
+                float cv_area = std::max(1.0f, cv_box.width * cv_box.height);
+                float dl_area = std::max(1.0f, dl.box.width * dl.box.height);
+                float cv_overlap = inter_area / cv_area;
+                float dl_overlap = inter_area / dl_area;
+                float iou = inter_area / (cv_area + dl_area - inter_area);
+
+                bool cv_center_in_dl = dl.box.contains(cv_item.cv_geom.center);
+                bool dl_center_in_cv = cv_box.contains(fc.center);
+
+                // Se DL è sopra a CV (inclusione di centro o sovrapposizione significativa), togli CV
+                if (cv_center_in_dl || dl_center_in_cv || cv_overlap >= 0.20f || dl_overlap >= 0.20f || iou >= 0.15f) {
+                    cv_used[j] = true;
+                }
+            }
         }
 
         final_list.push_back(fc);
@@ -724,8 +880,11 @@ std::vector<FinalComponent> OutputProcessor::fuseDlAndCv(
             const auto& cv_ref = classified_cv[j];
 
             // REQUISITO UTENTE:
-            // "se elementi molto molto piccoli riconosciuti con il sistema computer vision
-            // non vengono catalogati con il sistema di deep learning (rimane punto di domanda) allora non considerarli"
+            // "i componenti non catalogati in cv non considerarli nella fusione"
+            if (cv_ref.label == "?" || cv_ref.label.empty()) {
+                continue;
+            }
+
             if (isTinyUnclassified(cv_ref.cv_geom, cv_ref.label, tiny_cv_max_area, tiny_cv_max_dim)) {
                 continue;
             }
@@ -773,6 +932,308 @@ std::vector<FinalComponent> OutputProcessor::fuseDlAndCv(
     }
 
     return non_overlapping_list;
+}
+
+// =========================================================================
+// Armonizzazione Componenti Identici via Computer Vision
+// =========================================================================
+std::vector<FinalComponent> OutputProcessor::harmonizeIdenticalComponents(
+    const std::vector<FinalComponent>& comps,
+    const cv::Mat& image,
+    float geom_tol,
+    float ncc_thresh,
+    float hist_thresh,
+    std::vector<SimilarityClusterInfo>* clusters_out) {
+
+    if (comps.empty() || image.empty()) {
+        return comps;
+    }
+
+    size_t n = comps.size();
+    std::vector<FinalComponent> harmonized = comps;
+
+    // 1) Pre-estrazione delle feature visuali per tutti i componenti
+    std::vector<ComponentVisualFeature> features(n);
+    for (size_t i = 0; i < n; ++i) {
+        features[i] = extractVisualFeature(image, comps[i]);
+    }
+
+    // 2) Disjoint Set Union (DSU) per partizionamento in cluster di equivalenza
+    std::vector<int> parent(n);
+    for (size_t i = 0; i < n; ++i) parent[i] = static_cast<int>(i);
+
+    auto find_root = [&](auto& self, int i) -> int {
+        return (parent[i] == i) ? i : (parent[i] = self(self, parent[i]));
+    };
+
+    auto unite = [&](int i, int j) {
+        int ri = find_root(find_root, i);
+        int rj = find_root(find_root, j);
+        if (ri != rj) parent[ri] = rj;
+    };
+
+    // 3) Confronto pairwise ottimizzato
+    for (size_t i = 0; i < n; ++i) {
+        if (!features[i].valid) continue;
+        for (size_t j = i + 1; j < n; ++j) {
+            if (!features[j].valid) continue;
+            if (comps[i].shape != comps[j].shape) continue;
+
+            float max_area = std::max(features[i].area, features[j].area);
+            if (max_area > 0.0f && std::abs(features[i].area - features[j].area) / max_area > 0.35f) {
+                continue;
+            }
+
+            if (areFeaturesIdentical(features[i], features[j], geom_tol, ncc_thresh, hist_thresh)) {
+                unite(static_cast<int>(i), static_cast<int>(j));
+            }
+        }
+    }
+
+    // 4) Raggruppamento indici per cluster
+    std::map<int, std::vector<int>> cluster_groups;
+    for (size_t i = 0; i < n; ++i) {
+        cluster_groups[find_root(find_root, static_cast<int>(i))].push_back(static_cast<int>(i));
+    }
+
+    if (clusters_out) {
+        clusters_out->clear();
+    }
+
+    int cluster_id_prog = 1;
+
+    // 5) Risoluzione del consenso per ciascun cluster con almeno 2 elementi identici
+    for (auto& [root, members] : cluster_groups) {
+        if (members.size() <= 1) continue;
+
+        std::map<std::string, int> class_counts;
+        std::map<std::string, float> class_conf_sum;
+        std::map<std::string, int> orig_labels;
+
+        for (int idx : members) {
+            const std::string& lbl = comps[idx].label;
+            orig_labels[lbl]++;
+            if (lbl != "?") {
+                class_counts[lbl]++;
+                class_conf_sum[lbl] += comps[idx].confidence;
+            }
+        }
+
+        // Se tutti i componenti del cluster sono '?', non possiamo assegnare una classe certa
+        if (class_counts.empty()) continue;
+
+        // Trova la classe vincente (maggioranza di rilevamenti, con confidenza come tie-break)
+        std::string winning_label = "?";
+        int max_count = 0;
+        float max_conf_sum = 0.0f;
+        for (const auto& [lbl, cnt] : class_counts) {
+            float conf_sum = class_conf_sum[lbl];
+            if (cnt > max_count || (cnt == max_count && conf_sum > max_conf_sum)) {
+                max_count = cnt;
+                max_conf_sum = conf_sum;
+                winning_label = lbl;
+            }
+        }
+
+        float consensus_conf = max_conf_sum / static_cast<float>(max_count);
+        if (max_count >= 2) {
+            consensus_conf = std::min(1.0f, std::max(consensus_conf, 0.75f));
+        }
+
+        int harmonized_in_cluster = 0;
+        for (int idx : members) {
+            if (harmonized[idx].label != winning_label) {
+                std::string old_lbl = harmonized[idx].label;
+                harmonized[idx].label = winning_label;
+                harmonized[idx].confidence = consensus_conf;
+                harmonized[idx].notes += " [CV-Similarity Harmonized: '" + old_lbl +
+                                         "' -> '" + winning_label + "' (Cluster #" +
+                                         std::to_string(cluster_id_prog) + ")]";
+                harmonized_in_cluster++;
+            }
+        }
+
+        if (clusters_out) {
+            SimilarityClusterInfo cinfo;
+            cinfo.cluster_id = cluster_id_prog;
+            cinfo.winning_label = winning_label;
+            cinfo.consensus_confidence = consensus_conf;
+            cinfo.member_count = static_cast<int>(members.size());
+            cinfo.harmonized_count = harmonized_in_cluster;
+            cinfo.original_labels = orig_labels;
+            for (int idx : members) {
+                cinfo.member_ids.push_back(harmonized[idx].id);
+            }
+            clusters_out->push_back(cinfo);
+        }
+        cluster_id_prog++;
+    }
+
+    return harmonized;
+}
+
+// =========================================================================
+// Ricerca Globale di Componenti Simili su Tutta la Scheda (Fase 2)
+// =========================================================================
+std::vector<FinalComponent> OutputProcessor::searchSimilarComponentsOnBoard(
+    const std::vector<FinalComponent>& existing_comps,
+    const cv::Mat& image,
+    const std::vector<SimilarityClusterInfo>& clusters,
+    float search_ncc_thresh,
+    float search_hist_thresh,
+    float max_existing_iou) {
+
+    std::vector<FinalComponent> discovered;
+    if (existing_comps.empty() || image.empty() || clusters.empty()) {
+        return discovered;
+    }
+
+    cv::Mat board_gray;
+    cv::cvtColor(image, board_gray, cv::COLOR_BGR2GRAY);
+
+    // Bounding box occupate (esistenti + nuove scoperte) per prevenire sovrapposizioni
+    std::vector<cv::Rect2f> occupied_boxes;
+    occupied_boxes.reserve(existing_comps.size() + 100);
+    for (const auto& ec : existing_comps) {
+        occupied_boxes.push_back(ec.box);
+    }
+
+    int next_id = static_cast<int>(existing_comps.size() + 1);
+
+    for (const auto& cl : clusters) {
+        if (cl.winning_label == "?" || cl.member_count < 1) continue;
+
+        // Trova il componente rappresentativo del cluster (massima confidenza con etichetta vincente)
+        const FinalComponent* rep_comp = nullptr;
+        for (const auto& ec : existing_comps) {
+            if (ec.label == cl.winning_label &&
+                std::find(cl.member_ids.begin(), cl.member_ids.end(), ec.id) != cl.member_ids.end()) {
+                if (!rep_comp || ec.confidence > rep_comp->confidence) {
+                    rep_comp = &ec;
+                }
+            }
+        }
+        if (!rep_comp) continue;
+
+        int tw = static_cast<int>(std::round(rep_comp->box.width));
+        int th = static_cast<int>(std::round(rep_comp->box.height));
+        int tx = static_cast<int>(std::round(rep_comp->box.x));
+        int ty = static_cast<int>(std::round(rep_comp->box.y));
+
+        if (tw < 8 || th < 8 || tw > 250 || th > 250) continue;
+        if (tx < 0 || ty < 0 || tx + tw > image.cols || ty + th > image.rows) continue;
+
+        cv::Rect t_roi(tx, ty, tw, th);
+        cv::Mat t_crop = image(t_roi);
+        cv::Mat t_gray;
+        cv::cvtColor(t_crop, t_gray, cv::COLOR_BGR2GRAY);
+
+        // Istogramma colore HSV 2D di riferimento
+        cv::Mat t_hsv;
+        cv::cvtColor(t_crop, t_hsv, cv::COLOR_BGR2HSV);
+        int h_bins = 16, s_bins = 16;
+        int histSize[] = {h_bins, s_bins};
+        float h_ranges[] = {0.0f, 180.0f};
+        float s_ranges[] = {0.0f, 256.0f};
+        const float* ranges[] = {h_ranges, s_ranges};
+        int channels[] = {0, 1};
+        cv::Mat t_hist;
+        cv::calcHist(&t_hsv, 1, channels, cv::Mat(), t_hist, 2, histSize, ranges, true, false);
+        cv::normalize(t_hist, t_hist, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
+
+        // Template da testare: orizzontale e (se rettangolare allungato) verticale ruotato di 90°
+        std::vector<std::pair<cv::Mat, float>> templates_to_match;
+        templates_to_match.push_back({t_gray, 0.0f});
+
+        float aspect_ratio = static_cast<float>(std::max(tw, th)) / static_cast<float>(std::min(tw, th));
+        if (aspect_ratio >= 1.15f) {
+            cv::Mat t_rot;
+            cv::rotate(t_gray, t_rot, cv::ROTATE_90_CLOCKWISE);
+            templates_to_match.push_back({t_rot, 90.0f});
+        }
+
+        for (const auto& [cur_t, cur_angle] : templates_to_match) {
+            if (cur_t.cols >= board_gray.cols || cur_t.rows >= board_gray.rows) continue;
+
+            cv::Mat match_res;
+            cv::matchTemplate(board_gray, cur_t, match_res, cv::TM_CCOEFF_NORMED);
+
+            // Trova picchi locali (massimi locali >= search_ncc_thresh)
+            cv::Mat dilated;
+            cv::dilate(match_res, dilated, cv::Mat(), cv::Point(-1, -1), 2);
+            cv::Mat is_peak = (match_res == dilated) & (match_res >= search_ncc_thresh);
+
+            std::vector<cv::Point> peak_pts;
+            cv::findNonZero(is_peak, peak_pts);
+
+            for (const auto& pt : peak_pts) {
+                float score = match_res.at<float>(pt.y, pt.x);
+                cv::Rect2f cand_box(static_cast<float>(pt.x), static_cast<float>(pt.y),
+                                    static_cast<float>(cur_t.cols), static_cast<float>(cur_t.rows));
+
+                if (cand_box.x < 0 || cand_box.y < 0 ||
+                    cand_box.x + cand_box.width > image.cols ||
+                    cand_box.y + cand_box.height > image.rows) {
+                    continue;
+                }
+
+                // Controllo 1: sovrapposizione con componenti già noti o già scoperti
+                bool overlaps_existing = false;
+                cv::Point2f cand_center(cand_box.x + cand_box.width * 0.5f, cand_box.y + cand_box.height * 0.5f);
+                for (const auto& ob : occupied_boxes) {
+                    float iou = calculateIoU(cand_box, ob);
+                    float ov = calculateOverlap(cand_box, ob);
+                    if (iou > max_existing_iou || ov > 0.35f || ob.contains(cand_center)) {
+                        overlaps_existing = true;
+                        break;
+                    }
+                }
+                if (overlaps_existing) continue;
+
+                // Controllo 2: verifica coerenza colore con istogramma HSV
+                cv::Rect cand_roi(static_cast<int>(cand_box.x), static_cast<int>(cand_box.y),
+                                  static_cast<int>(cand_box.width), static_cast<int>(cand_box.height));
+                cv::Mat cand_crop = image(cand_roi);
+                cv::Mat cand_hsv;
+                cv::cvtColor(cand_crop, cand_hsv, cv::COLOR_BGR2HSV);
+                cv::Mat cand_hist;
+                cv::calcHist(&cand_hsv, 1, channels, cv::Mat(), cand_hist, 2, histSize, ranges, true, false);
+                cv::normalize(cand_hist, cand_hist, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
+
+                double bhatt = cv::compareHist(t_hist, cand_hist, cv::HISTCMP_BHATTACHARYYA);
+                if (bhatt > search_hist_thresh) {
+                    continue; // Colore troppo differente da quello del componente
+                }
+
+                // Controllo 3: luminosità media (non su bordo nero esterno al PCB)
+                cv::Scalar mean_val = cv::mean(cand_crop);
+                if (mean_val[0] < 15.0 && mean_val[1] < 15.0 && mean_val[2] < 15.0) {
+                    continue;
+                }
+
+                // Match valido trovato! Creiamo il nuovo componente
+                FinalComponent fc_new;
+                fc_new.id = next_id++;
+                fc_new.source = ComponentSource::SIMILARITY_DISCOVERED;
+                fc_new.label = cl.winning_label;
+                fc_new.confidence = std::min(0.92f, std::max(0.70f, score));
+                fc_new.box = cand_box;
+                fc_new.center = cand_center;
+                fc_new.shape = rep_comp->shape;
+                fc_new.rotated_box = cv::RotatedRect(cand_center, cand_box.size(), cur_angle);
+                fc_new.radius = (fc_new.shape == ShapeType::CIRCLE) ? (cand_box.width * 0.5f) : 0.0f;
+                fc_new.area = cand_box.width * cand_box.height;
+                fc_new.notes = "Nuovo componente scoperto via ricerca visiva su scheda (Cluster #" +
+                               std::to_string(cl.cluster_id) + ", Score NCC: " +
+                               std::to_string(score).substr(0, 4) + ")";
+
+                discovered.push_back(fc_new);
+                occupied_boxes.push_back(cand_box);
+            }
+        }
+    }
+
+    return discovered;
 }
 
 // =========================================================================
@@ -1143,7 +1604,7 @@ cv::Mat OutputProcessor::renderStep3Geometric(const cv::Mat& base_img, const std
     if (base_img.empty()) return {};
     cv::Mat canvas = base_img.clone();
 
-    int n_fused = 0, n_dl = 0, n_cv = 0;
+    int n_fused = 0, n_dl = 0, n_cv = 0, n_sim = 0;
 
     for (const auto& c : comps) {
         cv::Scalar col;
@@ -1153,6 +1614,9 @@ cv::Mat OutputProcessor::renderStep3Geometric(const cv::Mat& base_img, const std
         } else if (c.source == ComponentSource::DL_ONLY) {
             col = COLOR_DL_ONLY;
             n_dl++;
+        } else if (c.source == ComponentSource::SIMILARITY_DISCOVERED) {
+            col = COLOR_SIMILARITY;
+            n_sim++;
         } else {
             col = COLOR_CV_ONLY;
             n_cv++;
@@ -1191,19 +1655,21 @@ cv::Mat OutputProcessor::renderStep3Geometric(const cv::Mat& base_img, const std
     cv::Mat overlay = canvas(banner_rect);
     cv::Mat dark(banner_rect.size(), CV_8UC3, cv::Scalar(15, 15, 15));
     cv::addWeighted(dark, 0.82, overlay, 0.18, 0.0, overlay);
-    std::string btext = "Step 3 (Geometrico): Origine Rilevamento (Verde=Fuso DL+CV, Azzurro=Solo DL, Magenta=Solo CV)";
-    cv::putText(canvas, btext, cv::Point(14, 25), cv::FONT_HERSHEY_SIMPLEX, 0.58, cv::Scalar(255, 255, 255), 2, cv::LINE_AA);
+    std::string btext = "Step 3 (Geometrico): Origine Rilevamento (Verde=Fuso DL+CV, Azzurro=Solo DL, Magenta=Solo CV, Arancio=Ricerca Simili)";
+    cv::putText(canvas, btext, cv::Point(14, 25), cv::FONT_HERSHEY_SIMPLEX, 0.50, cv::Scalar(255, 255, 255), 2, cv::LINE_AA);
 
     std::vector<std::pair<std::string, int>> stats = {
         {"FUSED (DL + CV)", n_fused},
         {"DL ONLY", n_dl},
-        {"CV ONLY", n_cv}
+        {"CV ONLY", n_cv},
+        {"RICERCA SIMILI", n_sim}
     };
 
     std::map<std::string, cv::Scalar> pal = {
         {"FUSED (DL + CV)", COLOR_FUSED},
         {"DL ONLY", COLOR_DL_ONLY},
-        {"CV ONLY", COLOR_CV_ONLY}
+        {"CV ONLY", COLOR_CV_ONLY},
+        {"RICERCA SIMILI", COLOR_SIMILARITY}
     };
 
     cv::Mat legend = createSideLegendPanel(stats, static_cast<int>(comps.size()), pal, canvas.rows, "Fonti Rilevamento");
@@ -1422,6 +1888,38 @@ bool OutputProcessor::saveAllStepResults(
                 if (cidx + 1 < res.step3_final_counts.size()) jf << ",";
                 jf << "\n";
             }
+            jf << "  },\n";
+            jf << "  \"similarity_harmonization\": {\n";
+            jf << "    \"clusters_count\": " << res.similarity_clusters.size() << ",\n";
+            jf << "    \"harmonized_components_count\": " << res.harmonized_components_count << ",\n";
+            jf << "    \"discovered_components_count\": " << res.discovered_components_count << ",\n";
+            jf << "    \"clusters\": [\n";
+            for (size_t ci = 0; ci < res.similarity_clusters.size(); ++ci) {
+                const auto& cl = res.similarity_clusters[ci];
+                jf << "      {\n";
+                jf << "        \"cluster_id\": " << cl.cluster_id << ",\n";
+                jf << "        \"winning_label\": \"" << cl.winning_label << "\",\n";
+                jf << "        \"consensus_confidence\": " << std::fixed << std::setprecision(3) << cl.consensus_confidence << ",\n";
+                jf << "        \"member_count\": " << cl.member_count << ",\n";
+                jf << "        \"harmonized_count\": " << cl.harmonized_count << ",\n";
+                jf << "        \"original_distribution\": {";
+                size_t od_i = 0;
+                for (const auto& [lbl, cnt] : cl.original_labels) {
+                    jf << "\"" << lbl << "\": " << cnt;
+                    if (++od_i < cl.original_labels.size()) jf << ", ";
+                }
+                jf << "},\n";
+                jf << "        \"member_ids\": [";
+                for (size_t mi = 0; mi < cl.member_ids.size(); ++mi) {
+                    jf << cl.member_ids[mi];
+                    if (mi + 1 < cl.member_ids.size()) jf << ", ";
+                }
+                jf << "]\n";
+                jf << "      }";
+                if (ci + 1 < res.similarity_clusters.size()) jf << ",";
+                jf << "\n";
+            }
+            jf << "    ]\n";
             jf << "  }\n";
             jf << "}\n";
             std::cout << "  -> [Step 3] Riepilogo JSON Finale Completo: " << json_path << std::endl;
@@ -1583,90 +2081,209 @@ OutputProcessingResult OutputProcessor::processBoardSide(
     // -------------------------------------------------------------------------
     // ESECUZIONE STEP 1: Fusione multi-esposizione DL
     // -------------------------------------------------------------------------
-    std::cout << "\n--- STEP 1: Fusione rilevamenti DL multi-esposizione ---" << std::endl;
-    res.step1_dl_merged = mergeMultiExposureDl(all_dl_dets, recommended_stem, config.dl_merge_iou_thresh);
-    for (const auto& c : res.step1_dl_merged) {
-        res.step1_counts[c.label]++;
-    }
+    if (!all_dl_dets.empty() || config.detection_mode == 2 || config.detection_mode == 3) {
+        std::cout << "\n--- STEP 1: Fusione rilevamenti DL multi-esposizione ---" << std::endl;
+        res.step1_dl_merged = mergeMultiExposureDl(all_dl_dets, recommended_stem, config.dl_merge_iou_thresh);
+        for (const auto& c : res.step1_dl_merged) {
+            res.step1_counts[c.label]++;
+        }
 
-    std::cout << "   Componenti DL unificati totali: " << res.step1_dl_merged.size() << std::endl;
-    std::cout << "   Dettaglio classi (priorita' no-? e voti di maggioranza):" << std::endl;
-    for (const auto& [lbl, cnt] : res.step1_counts) {
-        std::cout << "     - " << lbl << ": " << cnt << std::endl;
-    }
+        std::cout << "   Componenti DL unificati totali: " << res.step1_dl_merged.size() << std::endl;
+        std::cout << "   Dettaglio classi (priorita' no-? e voti di maggioranza):" << std::endl;
+        for (const auto& [lbl, cnt] : res.step1_counts) {
+            std::cout << "     - " << lbl << ": " << cnt << std::endl;
+        }
 
-    if (!res.best_image.empty()) {
-        res.step1_elements_vis = renderStep1Elements(res.best_image, res.step1_dl_merged);
-        res.step1_types_vis = renderStep1Types(res.best_image, res.step1_dl_merged);
+        if (!res.best_image.empty()) {
+            res.step1_elements_vis = renderStep1Elements(res.best_image, res.step1_dl_merged);
+            res.step1_types_vis = renderStep1Types(res.best_image, res.step1_dl_merged);
+        }
     }
 
     // -------------------------------------------------------------------------
-    // ESECUZIONE STEP 2: Riconoscimento componenti CV tramite pesi DL
+    // ESECUZIONE STEP 2: Riconoscimento componenti CV tramite pesi DL (se mode 1 o 3)
     // -------------------------------------------------------------------------
-    std::cout << "\n--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---" << std::endl;
-    std::vector<CvComponent> cv_comps;
+    if (config.detection_mode == 1 || config.detection_mode == 3) {
+        std::cout << "\n--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---" << std::endl;
+        std::vector<CvComponent> cv_comps;
 
-    // Tentiamo di caricare i componenti CV della foto migliore o della prima disponibile
-    std::string cv_csv_path = (fs::path(cv_output_dir) / (recommended_stem + "_components_cv.csv")).string();
-    if (fs::exists(cv_csv_path)) {
-        cv_comps = loadCvComponentsCsv(cv_csv_path);
-        std::cout << "   Caricati " << cv_comps.size() << " componenti CV da " << cv_csv_path << std::endl;
-    } else if (cv_detector != nullptr && !res.best_image.empty()) {
-        std::cout << "   Esecuzione CV Component Detector al volo sull'immagine di riferimento..." << std::endl;
-        CvDetectionConfig cv_cfg;
-        cv_cfg.show_windows = false;
-        auto cv_res = cv_detector->detect(res.best_image, cv_cfg);
-        cv_comps = cv_res.components;
-    } else {
-        // Cerca qualsiasi file CV disponibile nella cartella
-        if (fs::exists(cv_output_dir)) {
-            for (const auto& entry : fs::directory_iterator(cv_output_dir)) {
-                if (entry.path().extension() == ".csv") {
-                    cv_comps = loadCvComponentsCsv(entry.path().string());
-                    if (!cv_comps.empty()) {
-                        std::cout << "   Caricati " << cv_comps.size() << " componenti CV da "
-                                  << entry.path().filename().string() << std::endl;
-                        break;
+        // Tentiamo di caricare i componenti CV della foto migliore o della prima disponibile
+        std::string cv_csv_path = (fs::path(cv_output_dir) / (recommended_stem + "_components_cv.csv")).string();
+        if (fs::exists(cv_csv_path)) {
+            cv_comps = loadCvComponentsCsv(cv_csv_path);
+            std::cout << "   Caricati " << cv_comps.size() << " componenti CV da " << cv_csv_path << std::endl;
+        } else if (cv_detector != nullptr && !res.best_image.empty()) {
+            std::cout << "   Esecuzione CV Component Detector al volo sull'immagine di riferimento..." << std::endl;
+            CvDetectionConfig cv_cfg;
+            cv_cfg.show_windows = false;
+            auto cv_res = cv_detector->detect(res.best_image, cv_cfg);
+            cv_comps = cv_res.components;
+        } else {
+            // Cerca qualsiasi file CV disponibile nella cartella
+            if (fs::exists(cv_output_dir)) {
+                for (const auto& entry : fs::directory_iterator(cv_output_dir)) {
+                    if (entry.path().extension() == ".csv") {
+                        cv_comps = loadCvComponentsCsv(entry.path().string());
+                        if (!cv_comps.empty()) {
+                            std::cout << "   Caricati " << cv_comps.size() << " componenti CV da "
+                                      << entry.path().filename().string() << std::endl;
+                            break;
+                        }
                     }
                 }
             }
         }
-    }
 
-    res.step2_cv_classified = classifyCvComponentsWithDl(
-        cv_comps,
-        res.step1_dl_merged,
-        res.best_image,
-        dl_detector,
-        config.cv_dl_match_iou_thresh,
-        config.min_conf_for_label,
-        config.enable_patch_inference);
+        res.step2_cv_classified = classifyCvComponentsWithDl(
+            cv_comps,
+            res.step1_dl_merged,
+            res.best_image,
+            dl_detector,
+            config.cv_dl_match_iou_thresh,
+            config.min_conf_for_label,
+            config.enable_patch_inference);
 
-    for (const auto& c : res.step2_cv_classified) {
-        res.step2_counts[c.label]++;
-    }
+        for (const auto& c : res.step2_cv_classified) {
+            res.step2_counts[c.label]++;
+        }
 
-    std::cout << "   Componenti CV classificati totali: " << res.step2_cv_classified.size() << std::endl;
-    std::cout << "   Dettaglio classi CV riconosciute con pesi DL:" << std::endl;
-    for (const auto& [lbl, cnt] : res.step2_counts) {
-        std::cout << "     - " << lbl << ": " << cnt << std::endl;
-    }
+        std::cout << "   Componenti CV classificati totali: " << res.step2_cv_classified.size() << std::endl;
+        std::cout << "   Dettaglio classi CV riconosciute con pesi DL:" << std::endl;
+        for (const auto& [lbl, cnt] : res.step2_counts) {
+            std::cout << "     - " << lbl << ": " << cnt << std::endl;
+        }
 
-    if (!res.best_image.empty()) {
-        res.step2_cv_elements_vis = renderStep2CvElements(res.best_image, res.step2_cv_classified);
-        res.step2_cv_types_vis = renderStep2CvTypes(res.best_image, res.step2_cv_classified);
+        if (!res.best_image.empty()) {
+            res.step2_cv_elements_vis = renderStep2CvElements(res.best_image, res.step2_cv_classified);
+            res.step2_cv_types_vis = renderStep2CvTypes(res.best_image, res.step2_cv_classified);
+        }
     }
 
     // -------------------------------------------------------------------------
-    // ESECUZIONE STEP 3: Fusione finale completa (DL + CV)
+    // ESECUZIONE STEP 3: Elaborazione Componenti Finali per Modalità
     // -------------------------------------------------------------------------
-    std::cout << "\n--- STEP 3: Fusione finale completa (DL multi-esposizione + CV classificato) ---" << std::endl;
-    res.step3_final_components = fuseDlAndCv(
-        res.step1_dl_merged,
-        res.step2_cv_classified,
-        config.cv_dl_match_iou_thresh,
-        config.tiny_cv_max_area,
-        config.tiny_cv_max_dim);
+    std::cout << "\n--- STEP 3: Elaborazione Componenti Finali ---" << std::endl;
+    if (config.detection_mode == 1) {
+        std::cout << "   [Modalità 1: Solo Computer Vision Classica catalogata]" << std::endl;
+        for (const auto& cv_ref : res.step2_cv_classified) {
+            // REQUISITO UTENTE: i componenti non catalogati in CV non considerarli nella fusione
+            if (cv_ref.label == "?" || cv_ref.label.empty()) continue;
+
+            FinalComponent fc;
+            fc.source = ComponentSource::CV_ONLY;
+            fc.shape = cv_ref.cv_geom.shape;
+            fc.center = cv_ref.cv_geom.center;
+            fc.radius = cv_ref.cv_geom.radius;
+            fc.rotated_box = cv_ref.cv_geom.rotated_box;
+            fc.area = cv_ref.cv_geom.area;
+
+            if (fc.shape == ShapeType::CIRCLE) {
+                float r = fc.radius;
+                fc.box = cv::Rect2f(fc.center.x - r, fc.center.y - r, 2.0f * r, 2.0f * r);
+            } else {
+                fc.box = fc.rotated_box.boundingRect2f();
+            }
+
+            fc.label = cv_ref.label;
+            fc.confidence = cv_ref.label_conf;
+            fc.notes = "Solo CV (Metodo: " + cv_ref.classification_method + ")";
+            res.step3_final_components.push_back(fc);
+        }
+        res.step3_final_components = resolveEnclosingAndOverlaps(res.step3_final_components, config.enclosure_overlap_thresh);
+    } else if (config.detection_mode == 2) {
+        std::cout << "   [Modalità 2: Solo Deep Learning YOLO]" << std::endl;
+        for (const auto& dl : res.step1_dl_merged) {
+            FinalComponent fc;
+            fc.source = ComponentSource::DL_ONLY;
+            fc.shape = ShapeType::RECTANGLE;
+            fc.box = dl.box;
+            fc.center = cv::Point2f(dl.box.x + dl.box.width * 0.5f, dl.box.y + dl.box.height * 0.5f);
+            fc.rotated_box = cv::RotatedRect(fc.center, dl.box.size(), 0.0f);
+            fc.radius = 0.0f;
+            fc.area = dl.box.width * dl.box.height;
+            fc.label = dl.label;
+            fc.confidence = (dl.label != "?") ? dl.label_conf : dl.box_conf;
+            fc.notes = "Solo DL (" + std::to_string(dl.vote_count) + " voti su " +
+                       std::to_string(dl.total_observations) + " foto)";
+            res.step3_final_components.push_back(fc);
+        }
+        res.step3_final_components = resolveEnclosingAndOverlaps(res.step3_final_components, config.enclosure_overlap_thresh);
+    } else {
+        std::cout << "   [Modalità 3: Entrambi DL + CV Classica]" << std::endl;
+        res.step3_final_components = fuseDlAndCv(
+            res.step1_dl_merged,
+            res.step2_cv_classified,
+            config.cv_dl_match_iou_thresh,
+            config.tiny_cv_max_area,
+            config.tiny_cv_max_dim);
+    }
+
+    // -------------------------------------------------------------------------
+    // ARMONIZZAZIONE E RICERCA GLOBALE DI COMPONENTI SIMILI (TUTTE LE 3 MODALITÀ)
+    // -------------------------------------------------------------------------
+    if (config.enable_similarity_harmonization && !res.best_image.empty()) {
+        std::cout << "\n--- FASE 1: Armonizzazione Componenti Identici Riconosciuti ---" << std::endl;
+        res.step3_final_components = harmonizeIdenticalComponents(
+            res.step3_final_components,
+            res.best_image,
+            config.similarity_geom_tol,
+            config.similarity_ncc_thresh,
+            config.similarity_hist_thresh,
+            &res.similarity_clusters);
+
+        for (const auto& cinfo : res.similarity_clusters) {
+            res.harmonized_components_count += cinfo.harmonized_count;
+        }
+
+        std::cout << "   Cluster di componenti identici identificati: " << res.similarity_clusters.size() << std::endl;
+        std::cout << "   Componenti ri-classificati/uniformati: " << res.harmonized_components_count << std::endl;
+        for (const auto& cinfo : res.similarity_clusters) {
+            if (cinfo.harmonized_count > 0) {
+                std::cout << "     * Cluster #" << cinfo.cluster_id << " (" << cinfo.member_count << " componenti identici): "
+                          << "Classe armonizzata: '" << cinfo.winning_label << "' (Conf: "
+                          << std::fixed << std::setprecision(2) << cinfo.consensus_confidence << "). "
+                          << cinfo.harmonized_count << " corretti/promossi da: ";
+                for (const auto& [lbl, cnt] : cinfo.original_labels) {
+                    if (lbl != cinfo.winning_label) {
+                        std::cout << "[" << lbl << ": " << cnt << "] ";
+                    }
+                }
+                std::cout << std::endl;
+            }
+        }
+
+        // FASE 2: Ricerca visiva globale su tutta la scheda per scoprire nuovi componenti simili
+        if (config.enable_whole_board_search && !res.similarity_clusters.empty()) {
+            std::cout << "\n--- FASE 2: Ricerca Globale su tutta la Scheda di Porzioni Simili ---" << std::endl;
+            auto newly_discovered = searchSimilarComponentsOnBoard(
+                res.step3_final_components,
+                res.best_image,
+                res.similarity_clusters,
+                config.search_ncc_thresh,
+                config.search_hist_thresh,
+                config.search_max_existing_iou);
+
+            res.discovered_components_count = static_cast<int>(newly_discovered.size());
+            std::cout << "   Nuovi componenti scoperti su scheda: " << res.discovered_components_count << std::endl;
+            for (const auto& nd : newly_discovered) {
+                std::cout << "     + Trovato nuovo componente: " << nd.label
+                          << " ad alta similarita' a (" << std::round(nd.center.x) << ", " << std::round(nd.center.y)
+                          << ") [Conf: " << std::fixed << std::setprecision(2) << nd.confidence << "]" << std::endl;
+                res.step3_final_components.push_back(nd);
+            }
+
+            // Ri-ordina e ri-assegna ID progressivi
+            std::sort(res.step3_final_components.begin(), res.step3_final_components.end(), [](const auto& a, const auto& b) {
+                if (std::abs(a.center.y - b.center.y) > 20.0f) {
+                    return a.center.y < b.center.y;
+                }
+                return a.center.x < b.center.x;
+            });
+            for (size_t i = 0; i < res.step3_final_components.size(); ++i) {
+                res.step3_final_components[i].id = static_cast<int>(i + 1);
+            }
+        }
+    }
 
     for (const auto& c : res.step3_final_components) {
         res.step3_final_counts[c.label]++;
