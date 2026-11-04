@@ -136,7 +136,7 @@ public:
         const std::vector<VerifiedPcbComponent>& inputComponents,
         const AoiAlignmentTransform& transform,
         const ComponentSegmentationConfig& config = ComponentSegmentationConfig(),
-        const cv::Mat& precomputedComponentsMask = cv::Mat());
+        const std::vector<cv::Mat>& multiExposureImages = {});
 
     /**
      * @brief Esegue l'elaborazione ad alto livello per una scheda e lato, caricando

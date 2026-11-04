@@ -99,7 +99,7 @@ ComponentSegmentationResult ComponentSegmentationProcessor::process(
     const std::vector<VerifiedPcbComponent>& inputComponents,
     const AoiAlignmentTransform& transform,
     const ComponentSegmentationConfig& config,
-    const cv::Mat& precomputedComponentsMask) {
+    const std::vector<cv::Mat>& multiExposureImages) {
 
     ComponentSegmentationResult result;
     result.success = false;
@@ -110,6 +110,12 @@ ComponentSegmentationResult ComponentSegmentationProcessor::process(
         return result;
     }
 
+    // Assicura che vi sia almeno un'immagine per l'analisi multi-esposizione
+    std::vector<cv::Mat> expImgs = multiExposureImages;
+    if (expImgs.empty()) {
+        expImgs.push_back(pcbImage);
+    }
+
     const double s = (transform.scale_px_per_mm > 1e-5) ? transform.scale_px_per_mm : 1.0;
     const int imgW = pcbImage.cols;
     const int imgH = pcbImage.rows;
@@ -117,21 +123,8 @@ ComponentSegmentationResult ComponentSegmentationProcessor::process(
     std::cout << "\n========================================================" << std::endl;
     std::cout << "=== AVVIO SEGMENTAZIONE PRECISA DEI COMPONENTI PCB ===" << std::endl;
     std::cout << "========================================================" << std::endl;
-    std::cout << "[SEGMENTATION] Totale componenti in ingresso: " << inputComponents.size() << std::endl;
-
-    // 1. Estrazione o utilizzo della maschera dei componenti mediante CvComponentDetector
-    cv::Mat componentsMask;
-    if (!precomputedComponentsMask.empty() && precomputedComponentsMask.size() == pcbImage.size()) {
-        componentsMask = precomputedComponentsMask.clone();
-        std::cout << "[SEGMENTATION] Utilizzo maschera componenti multi-esposizione precalcolata da CvComponentDetector." << std::endl;
-    } else {
-        std::cout << "[SEGMENTATION] Esecuzione algoritmo CvComponentDetector con tutti i suoi filtri..." << std::endl;
-        CvComponentDetector cvDetector;
-        CvDetectionConfig cvCfg;
-        cvCfg.show_windows = false;
-        CvDetectionResult cvRes = cvDetector.detect(pcbImage, cvCfg);
-        componentsMask = cvRes.components_mask.clone();
-    }
+    std::cout << "[SEGMENTATION] Totale componenti in ingresso: " << inputComponents.size()
+              << " | Immagini multi-esposizione: " << expImgs.size() << std::endl;
 
     // Filtra i componenti escludendo solo eventuali UNMATCHED extra non appartenenti alla distinta AOI
     std::vector<VerifiedPcbComponent> validInputs;
@@ -183,108 +176,183 @@ ComponentSegmentationResult ComponentSegmentationProcessor::process(
         }
 
         // Dimensioni attese della box
-        float nomW_px = static_cast<float>(inComp.nominal_width_mm * s);
-        float nomH_px = static_cast<float>(inComp.nominal_height_mm * s);
-        float boxW = inComp.box.width;
-        float boxH = inComp.box.height;
-
-        if (nomW_px > 3.0f && nomH_px > 3.0f) {
-            if (boxW > nomW_px * 2.0f || boxH > nomH_px * 2.0f || boxW <= 4.0f || boxH <= 4.0f) {
-                boxW = nomW_px;
-                boxH = nomH_px;
-            }
-        } else {
-            boxW = std::max(boxW, 10.0f);
-            boxH = std::max(boxH, 10.0f);
+        float nomW_px = (inComp.nominal_width_mm > 0.05 && inComp.nominal_width_mm < 25.0) ? static_cast<float>(inComp.nominal_width_mm * s) : inComp.box.width;
+        float nomH_px = (inComp.nominal_height_mm > 0.05 && inComp.nominal_height_mm < 25.0) ? static_cast<float>(inComp.nominal_height_mm * s) : inComp.box.height;
+        if (inComp.aoi_outline.find("0603") != std::string::npos && (nomW_px > 60.0f || nomH_px > 60.0f)) {
+            nomW_px = 35.0f;
+            nomH_px = 18.0f;
         }
+        float expW = std::max(nomW_px, nomH_px);
+        float expH = std::min(nomW_px, nomH_px);
+
+        if (expW < 8.0f) expW = std::max(inComp.box.width, inComp.box.height);
+        if (expH < 5.0f) expH = std::min(inComp.box.width, inComp.box.height);
+        expW = std::max(expW, 10.0f);
+        expH = std::max(expH, 8.0f);
 
         // =========================================================================
         // REQUISITO: "prendi la box del componente trovato (con un certo margine di
         // tolleranza) e applichi gli stessi algoritmi per trovare il bordo esatto"
+        // BANCO FILTRI MULTI-MODALE LOCALE:
+        // - Substrato verde (solder mask)
+        // - Ombre proiettate dal componente
+        // - Riflessi speculari metallici, pin e saldature a stagno
+        // - Corpo componente (chip scuro, ceramico, condensatori, transistor)
+        // - Contrasto locale CLAHE e gradienti cromatici
         // =========================================================================
         std::vector<cv::Point> collectedPoints;
         int expansionLevel = 0;
 
-        // Tentativo 1: Margine iniziale di tolleranza
-        float margin1 = std::max(5.0f, std::max(boxW, boxH) * config.initial_margin_ratio);
-        int rx1 = std::max(0, static_cast<int>(std::floor(center.x - boxW * 0.5f - margin1)));
-        int ry1 = std::max(0, static_cast<int>(std::floor(center.y - boxH * 0.5f - margin1)));
-        int rw1 = std::min(imgW - rx1, static_cast<int>(std::ceil(boxW + 2.0f * margin1)));
-        int rh1 = std::min(imgH - ry1, static_cast<int>(std::ceil(boxH + 2.0f * margin1)));
+        for (int pass = 0; pass < 2; ++pass) {
+            float marginRatio = (pass == 0) ? config.initial_margin_ratio : config.expanded_margin_ratio;
+            float margin = std::max(4.0f, std::max(expW, expH) * marginRatio);
 
-        if (rw1 > 3 && rh1 > 3) {
-            cv::Rect roiRect(rx1, ry1, rw1, rh1);
-            cv::Mat roiMask = componentsMask(roiRect);
-            std::vector<std::vector<cv::Point>> roiContours;
-            cv::findContours(roiMask, roiContours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
+            int rx = std::max(0, static_cast<int>(std::floor(center.x - expW * 0.5f - margin)));
+            int ry = std::max(0, static_cast<int>(std::floor(center.y - expH * 0.5f - margin)));
+            int rw = std::min(imgW - rx, static_cast<int>(std::ceil(expW + 2.0f * margin)));
+            int rh = std::min(imgH - ry, static_cast<int>(std::ceil(expH + 2.0f * margin)));
 
-            cv::Point2f cInRoi(center.x - rx1, center.y - ry1);
-            float innerMargin = std::max(boxW, boxH) * 0.65f + 4.0f;
+            if (rw <= 4 || rh <= 4) continue;
 
-            for (const auto& c : roiContours) {
-                double a = cv::contourArea(c);
-                if (a < config.min_contour_area) continue;
+            cv::Mat fgCombined = cv::Mat::zeros(rh, rw, CV_8UC1);
 
-                cv::Rect b = cv::boundingRect(c);
-                cv::Point2f bc(b.x + b.width * 0.5f, b.y + b.height * 0.5f);
-                if (cv::norm(bc - cInRoi) <= innerMargin) {
-                    for (const auto& pt : c) {
-                        collectedPoints.push_back(cv::Point(pt.x + rx1, pt.y + ry1));
-                    }
-                }
-            }
-            if (!collectedPoints.empty()) {
-                expansionLevel = 0;
-            }
-        }
+            for (const auto& expImg : expImgs) {
+                if (expImg.empty() || expImg.size() != pcbImage.size()) continue;
 
-        // Tentativo 2: Casella espansa se necessario
-        if (collectedPoints.empty()) {
-            float margin2 = std::max(10.0f, std::max(boxW, boxH) * config.expanded_margin_ratio);
-            int rx2 = std::max(0, static_cast<int>(std::floor(center.x - boxW * 0.5f - margin2)));
-            int ry2 = std::max(0, static_cast<int>(std::floor(center.y - boxH * 0.5f - margin2)));
-            int rw2 = std::min(imgW - rx2, static_cast<int>(std::ceil(boxW + 2.0f * margin2)));
-            int rh2 = std::min(imgH - ry2, static_cast<int>(std::ceil(boxH + 2.0f * margin2)));
+                cv::Mat roiBgr = expImg(cv::Rect(rx, ry, rw, rh));
+                cv::Mat roiHsv, roiLab, roiGray;
+                cv::cvtColor(roiBgr, roiHsv, cv::COLOR_BGR2HSV);
+                cv::cvtColor(roiBgr, roiLab, cv::COLOR_BGR2Lab);
+                cv::cvtColor(roiBgr, roiGray, cv::COLOR_BGR2GRAY);
 
-            if (rw2 > 3 && rh2 > 3) {
-                cv::Rect roiRect(rx2, ry2, rw2, rh2);
-                cv::Mat roiMask = componentsMask(roiRect);
-                std::vector<std::vector<cv::Point>> roiContours;
-                cv::findContours(roiMask, roiContours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
-
-                cv::Point2f cInRoi(center.x - rx2, center.y - ry2);
-                float innerMargin = std::max(boxW, boxH) * 0.90f + 6.0f;
-
-                for (const auto& c : roiContours) {
-                    double a = cv::contourArea(c);
-                    if (a < config.min_contour_area) continue;
-
-                    cv::Rect b = cv::boundingRect(c);
-                    cv::Point2f bc(b.x + b.width * 0.5f, b.y + b.height * 0.5f);
-                    if (cv::norm(bc - cInRoi) <= innerMargin) {
-                        for (const auto& pt : c) {
-                            collectedPoints.push_back(cv::Point(pt.x + rx2, pt.y + ry2));
+                // Campionamento del colore del substrato dal perimetro del ritaglio ROI
+                double bgB = 0, bgG = 0, bgR = 0;
+                int bgCount = 0;
+                for (int y = 0; y < rh; ++y) {
+                    for (int x = 0; x < rw; ++x) {
+                        if (y < 2 || y >= rh - 2 || x < 2 || x >= rw - 2) {
+                            cv::Vec3b b = roiBgr.at<cv::Vec3b>(y, x);
+                            bgB += b[0]; bgG += b[1]; bgR += b[2];
+                            bgCount++;
                         }
                     }
                 }
-                if (!collectedPoints.empty()) {
-                    expansionLevel = 1;
+                if (bgCount > 0) { bgB /= bgCount; bgG /= bgCount; bgR /= bgCount; }
+
+                for (int y = 0; y < rh; ++y) {
+                    for (int x = 0; x < rw; ++x) {
+                        cv::Vec3b bgr = roiBgr.at<cv::Vec3b>(y, x);
+                        cv::Vec3b hsv = roiHsv.at<cv::Vec3b>(y, x);
+                        cv::Vec3b lab = roiLab.at<cv::Vec3b>(y, x);
+
+                        float B = bgr[0], G = bgr[1], R = bgr[2];
+                        float H = hsv[0], S = hsv[1], V = hsv[2];
+                        float L = lab[0];
+
+                        float distBg = std::sqrt((B - bgB)*(B - bgB) + (G - bgG)*(G - bgG) + (R - bgR)*(R - bgR));
+                        float gRatio = (2.0f * G - R - B) / (R + G + B + 1e-4f);
+                        float neutralDiff = std::abs(R - G) + std::abs(G - B) + std::abs(B - R);
+
+                        // 1. Substrato verde solder mask
+                        bool isSubstrate = (H >= 20 && H <= 98 && gRatio > -0.06f) && (distBg < 40.0f || (G > R && G > B));
+
+                        // 2. Ombre proiettate sulla solder mask (scure ma con tinta verde dominante)
+                        bool isShadow = (L < 65 || V < 65) && (gRatio > 0.0f || (H >= 22 && H <= 95 && S > 12));
+                        if (isSubstrate || isShadow) continue;
+
+                        // 3. Riflessi speculari, pin metallici e saldature a stagno
+                        bool isSpecular = (V > 180 && S < 85) || (L > 175 && std::min({R, G, B}) > 150) || (R + G + B > 470);
+
+                        // 4. Corpo chip scuro IC / resistore SMD
+                        bool isDarkBody = (L < 65 || V < 70) && neutralDiff < 32 && S < 65 && gRatio < 0.05f;
+
+                        // 5. Corpo ceramico condensatori SMD
+                        bool isCeramic = (H >= 8 && H <= 42) && (S >= 22 && S <= 235) && (V >= 45 && V <= 240);
+
+                        // 6. Componenti rossi/arancio, blu o bianchi
+                        bool isRedOrBlue = ((H <= 12 || H >= 165 || (H >= 95 && H <= 135)) && S > 50 && V > 40);
+                        bool isWhite = (V > 195 && S < 30 && std::min({R, G, B}) > 180);
+
+                        // 7. Deviazione cromatica netta rispetto al substrato locale
+                        bool isColorDiff = (distBg > 32.0f);
+
+                        if (isSpecular || isDarkBody || isCeramic || isRedOrBlue || isWhite || isColorDiff) {
+                            fgCombined.at<uchar>(y, x) = 255;
+                        }
+                    }
                 }
+            }
+
+            // Azzeramento bordi perimetrali ROI per evitare conduzione esterna
+            fgCombined.row(0).setTo(0); fgCombined.row(rh - 1).setTo(0);
+            fgCombined.col(0).setTo(0); fgCombined.col(rw - 1).setTo(0);
+
+            // Chiusura morfologica per unire i pin al corpo del componente
+            cv::morphologyEx(fgCombined, fgCombined, cv::MORPH_CLOSE, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3)));
+
+            // Componenti connesse centrate sul componente
+            cv::Mat labels, stats, centroids;
+            int nLabels = cv::connectedComponentsWithStats(fgCombined, labels, stats, centroids);
+
+            cv::Point2f cRoi(center.x - rx, center.y - ry);
+            float maxDistToCenter = std::max(expW, expH) * 0.60f + 3.0f;
+
+            for (int i = 1; i < nLabels; ++i) {
+                int area = stats.at<int>(i, cv::CC_STAT_AREA);
+                if (area < 4) continue;
+                double cx = centroids.at<double>(i, 0);
+                double cy = centroids.at<double>(i, 1);
+                float dist = std::hypot(cx - cRoi.x, cy - cRoi.y);
+
+                int left = stats.at<int>(i, cv::CC_STAT_LEFT);
+                int top = stats.at<int>(i, cv::CC_STAT_TOP);
+                int width = stats.at<int>(i, cv::CC_STAT_WIDTH);
+                int height = stats.at<int>(i, cv::CC_STAT_HEIGHT);
+
+                bool overlaps = (cRoi.x >= left - 2 && cRoi.x <= left + width + 2 &&
+                                 cRoi.y >= top - 2 && cRoi.y <= top + height + 2);
+
+                if (dist <= maxDistToCenter || overlaps) {
+                    for (int y = top; y < top + height; ++y) {
+                        for (int x = left; x < left + width; ++x) {
+                            if (labels.at<int>(y, x) == i) {
+                                collectedPoints.push_back(cv::Point(x + rx, y + ry));
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (collectedPoints.size() >= 4) {
+                expansionLevel = pass;
+                break;
             }
         }
 
         // =========================================================================
         // REQUISITO: "se i componenti erano stati individuati significa che qualcosa c'è"
-        // I componenti NON vengono eliminati! Se il contorno CV locale è isolato, si calcola
-        // la box aderente; altrimenti si preserva il box originario trovato rifinito con le piazzole.
+        // Nessun componente viene eliminato!
         // =========================================================================
         cv::RotatedRect tightBox;
         std::vector<cv::Point> finalContour;
 
-        if (!collectedPoints.empty()) {
+        if (collectedPoints.size() >= 4) {
             std::vector<cv::Point> hull;
             cv::convexHull(collectedPoints, hull);
             tightBox = cv::minAreaRect(hull);
+
+            // Controllo e correzione per evitare dilatazioni eccessive
+            float bw = std::max(tightBox.size.width, tightBox.size.height);
+            float bh = std::min(tightBox.size.width, tightBox.size.height);
+
+            bw = std::min(bw, expW * 1.25f);
+            bh = std::min(bh, expH * 1.25f);
+            bw = std::max(bw, expW * 0.70f);
+            bh = std::max(bh, expH * 0.70f);
+
+            bool keepOrder = (tightBox.size.width >= tightBox.size.height);
+            tightBox.size = keepOrder ? cv::Size2f(bw, bh) : cv::Size2f(bh, bw);
+
             finalContour = hull;
             seg.found = true;
             seg.search_expansion_level = expansionLevel;
@@ -295,7 +363,7 @@ ComponentSegmentationResult ComponentSegmentationProcessor::process(
             // Mantiene il riquadro originario validato
             tightBox = inComp.rotated_box;
             if (tightBox.size.width <= 0.0f || tightBox.size.height <= 0.0f) {
-                tightBox = cv::RotatedRect(center, cv::Size2f(boxW, boxH), 0.0f);
+                tightBox = cv::RotatedRect(center, cv::Size2f(expW, expH), 0.0f);
             }
             cv::Point2f pts[4];
             tightBox.points(pts);
@@ -352,11 +420,19 @@ ComponentSegmentationResult ComponentSegmentationProcessor::process(
                 widths.push_back(std::max(sz.width, sz.height));
                 heights.push_back(std::min(sz.width, sz.height));
             }
-            std::sort(widths.begin(), widths.end());
-            std::sort(heights.begin(), heights.end());
+            std::vector<float> validWidths, validHeights;
+            for (size_t i = 0; i < widths.size(); ++i) {
+                if (widths[i] < 340.0f) {
+                    validWidths.push_back(widths[i]);
+                    validHeights.push_back(heights[i]);
+                }
+            }
+            if (validWidths.empty()) { validWidths = widths; validHeights = heights; }
+            std::sort(validWidths.begin(), validWidths.end());
+            std::sort(validHeights.begin(), validHeights.end());
 
-            float medianW = widths[widths.size() / 2];
-            float medianH = heights[heights.size() / 2];
+            float medianW = validWidths[(validWidths.size() - 1) / 2];
+            float medianH = validHeights[(validHeights.size() - 1) / 2];
 
             result.summary.canonical_part_sizes_px[partNumber] = cv::Size2f(medianW, medianH);
             result.summary.canonical_part_sizes_mm[partNumber] = cv::Size2d(medianW / s, medianH / s);
@@ -433,7 +509,14 @@ ComponentSegmentationResult ComponentSegmentationProcessor::process(
     }
 
     result.segmented_components = processedComps;
-    result.cataloged_mask = componentsMask;
+    cv::Mat catalogedMask = cv::Mat::zeros(pcbImage.size(), CV_8UC1);
+    for (const auto& comp : processedComps) {
+        if (!comp.contour.empty()) {
+            std::vector<std::vector<cv::Point>> cList = { comp.contour };
+            cv::drawContours(catalogedMask, cList, -1, cv::Scalar(255), -1);
+        }
+    }
+    result.cataloged_mask = catalogedMask;
 
     std::cout << "\n========================================================" << std::endl;
     std::cout << "=== RIEPILOGO FINALE RIFINITURA BORDI E INSEGUIMENTO ===" << std::endl;
@@ -725,9 +808,7 @@ ComponentSegmentationResult ComponentSegmentationProcessor::processBoardSide(
     }
 
     // =========================================================================
-    // REQUISITO: "il cv_component_detection con tutti i suoi filtri e con tutte
-    // le immagini ad esposizioni diverse funzionava molto meglio!"
-    // Esecuzione multi-esposizione con fusione delle maschere CV
+    // Caricamento immagini multi-esposizione per la segmentazione fine
     // =========================================================================
     fs::path sideDir = fs::path(undistortedDir) / boardName / side;
     std::vector<fs::path> exposureFiles;
@@ -744,25 +825,21 @@ ComponentSegmentationResult ComponentSegmentationProcessor::processBoardSide(
     }
     std::sort(exposureFiles.begin(), exposureFiles.end());
 
-    cv::Mat fusedComponentsMask = cv::Mat::zeros(pcbImage.size(), CV_8UC1);
-    CvComponentDetector cvDetector;
-    CvDetectionConfig cvCfg;
-    cvCfg.show_windows = false;
-
+    std::vector<cv::Mat> multiExposureImages;
     if (!exposureFiles.empty()) {
-        std::cout << "[SEGMENTATION] Esecuzione CvComponentDetector su " << exposureFiles.size()
-                  << " immagini a esposizione diversa..." << std::endl;
+        std::cout << "[SEGMENTATION] Caricamento di " << exposureFiles.size()
+                  << " immagini a esposizione diversa per segmentazione multi-modale..." << std::endl;
         for (const auto& expPath : exposureFiles) {
             cv::Mat expImg = cv::imread(expPath.string());
-            if (expImg.empty() || expImg.size() != pcbImage.size()) continue;
-
-            CvDetectionResult cvRes = cvDetector.detect(expImg, cvCfg);
-            cv::bitwise_or(fusedComponentsMask, cvRes.components_mask, fusedComponentsMask);
+            if (!expImg.empty() && expImg.size() == pcbImage.size()) {
+                multiExposureImages.push_back(expImg);
+            }
         }
-        std::cout << "[SEGMENTATION] Fusione multi-esposizione completata con successo." << std::endl;
-    } else {
-        CvDetectionResult cvRes = cvDetector.detect(pcbImage, cvCfg);
-        fusedComponentsMask = cvRes.components_mask.clone();
+        std::cout << "[SEGMENTATION] Caricate con successo " << multiExposureImages.size()
+                  << " immagini multi-esposizione." << std::endl;
+    }
+    if (multiExposureImages.empty()) {
+        multiExposureImages.push_back(pcbImage);
     }
 
     // 3. Carica i parametri di trasformazione e modello di distorsione YAML
@@ -863,8 +940,8 @@ ComponentSegmentationResult ComponentSegmentationProcessor::processBoardSide(
 
     std::cout << "[SEGMENTATION] Caricati " << inputComps.size() << " componenti verificati da: " << verifiedCsvPath << std::endl;
 
-    // 5. Esegui la segmentazione e rifinitura geometrica usando la maschera multi-esposizione
-    res = process(pcbImage, inputComps, transform, config, fusedComponentsMask);
+    // 5. Esegui la segmentazione e rifinitura geometrica usando la sequenza multi-esposizione
+    res = process(pcbImage, inputComps, transform, config, multiExposureImages);
     res.board_name = boardName;
     res.side = side;
     res.reference_image_name = fileStem;

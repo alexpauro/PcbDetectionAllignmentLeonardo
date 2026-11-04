@@ -797,13 +797,18 @@ La libreria `component_segmentation` (`lib/component_segmentation/`) implementa 
 
 #### `component_segmentation.hpp` / `component_segmentation.cpp`
 
-##### 1. Pipeline di Segmentazione Multi-Esposizione e Rifinitura Bordi
+##### 1. Pipeline di Segmentazione Multi-Esposizione e Rifinitura Bordi con Banco Filtri Locale
 - **Descrizione Qualitativa**:
-  Prende in carico tutti i componenti precedentemente individuati e verificati, ordina l'elaborazione dai componenti con area maggiore a quelli minori, e per ciascun componente analizza l'intorno del box trovato applicando direttamente la catena completa dei filtri di Computer Vision classica di `pcb::CvComponentDetector`. Sfrutta le immagini a esposizione multipla per fondere le maschere dei componenti senza ombre o riflessi speculari. Estrae il bordo esatto del componente presente all'interno del riquadro (con margine di tolleranza iniziale ed espanso), senza eliminare o scartare i componenti già individuati.
+  Prende in carico tutti i componenti precedentemente individuati e verificati, ordina l'elaborazione dai componenti con area maggiore a quelli minori, e per ciascun componente ritaglia l'intorno del riquadro individuato (con margine di tolleranza controllato). All'interno del ritaglio locale (analizzato anche attraverso la sequenza di immagini fotografiche ad esposizioni diverse), esegue un banco completo di filtri di Computer Vision classica per separare accuratamente il componente fisico dal circuito stampato, escludendo ombre e piste esterne, ed estraendo sia il contorno esatto che il rettangolo minimo orientato più aderente possibile senza spazi vuoti, senza scartare alcun componente individuato.
 - **Dettagli Tecnici**:
-  - *Riutilizzo di `CvComponentDetector`*: non duplica codice ma invoca direttamente `CvComponentDetector::detect` con l'intero banco filtri (filtro solder mask verde, contrasto adattivo bilaterale e CLAHE, Canny adattivo, Scharr, gradienti colore, Top-Hat/Black-Hat e filtri multi-colore per chip scuri, metallo/saldature e condensatori ceramici).
-  - *Fusione Multi-Esposizione*: in `processBoardSide`, itera su tutte le esposizioni fotografiche disponibili (`_001.bmp` ... `_010.bmp`), accumulando con operatore logico OR le maschere binarie `components_mask` per garantire la massima continuità dei bordi.
-  - *Rifinitura Locale con Margine di Tolleranza*: per ciascun box componente, estrae i punti di contorno appartenenti alla maschera CV entro il margine di tolleranza iniziale (default `0.25` della dimensione del box) o espanso (default `0.70`). Calcola il convex hull dei punti appartenenti al componente, ottenendo il perimetro reale e aderente. Se in casi estremi il bordo non è segmentabile, preserva il riquadro originale validato, garantendo la conservazione del 100% dei componenti individuati.
+  - *Banco Filtri Multi-Modale Locale*:
+    - **Campionamento Substrato (Solder Mask)**: campiona il colore del perimetro esterno del ritaglio per identificare la dominante cromatica del supporto PCB verdognolo ($\mu_B, \mu_G, \mu_R$) e calcola la distanza euclidea $D$ nello spazio colore combinata con l'indice di verdura $(2G - R - B)/(R + G + B)$.
+    - **Filtro Ombre Proiettate**: individua le ombre scure proiettate dal componente sui lati del PCB ($L < 65$, $V < 65$ con componente verde dominante o $gRatio > 0$) e le classifica rigorosamente come sfondo, evitando che la casella del componente si dilati inglobando l'ombra.
+    - **Filtro Riflessi Speculari e Pin Metallici (Solder Fillets)**: rileva i pin, i terminali argentati e le saldature a stagno ad alta brillantezza ($V > 180$, $L > 175$ con componente cromatica neutra $\min(R,G,B) > 150$, e Top-Hat morfologico per micro-dettagli riflettenti).
+    - **Filtro Corpi Componente (Dark Chips & Ceramic)**: individua i corpi scuri dei circuiti integrati e dei resistori SMD ($L < 65$, saturazione bassa $S < 65$, bilanciamento neutro $|R-G|+|G-B|+|B-R| < 32$, e filtro Black-Hat), e i corpi in ceramica dei condensatori SMD (tonalità marrone/ocra/beige con $H \in [8, 42]$, $S \in [22, 235]$).
+    - **Deviazione Cromatica e Gradienti**: calcola la transizione netta di colore e gradiente di Scharr rispetto al substrato locale.
+  - *Fusione e Isolamento Componente Centrale*: fonde i contributi di foreground across multiple exposure images `(specular | darkBody | ceramic | colorDiff) & (~substrate) & (~shadow)`, applica una chiusura morfologica locale ($3 \times 3$) per ricongiungere i pin al corpo del componente, ed esegue l'analisi delle componenti connesse selezionando unicamente gli elementi collegati o sovrapposti al centro nominale/rilevato del componente, scartando tracce di rame o artefatti periferici.
+  - *Rifinitura Geometrica Stretta*: calcola il convex hull e il `cv::minAreaRect`, imponendo vincoli geometrici realistici per impedire dilatazioni o restringimenti anomali, garantendo che il box sia stretto attorno al componente senza spazi vuoti. In caso di mancata segmentazione al primo margine di tolleranza, effettua un secondo passaggio ad area espansa, preservando il box validato qualora non vi siano punti sufficienti.
 - **Firma e Parametri**:
   ```cpp
   ComponentSegmentationResult process(
@@ -811,9 +816,9 @@ La libreria `component_segmentation` (`lib/component_segmentation/`) implementa 
       const std::vector<VerifiedPcbComponent>& inputComponents,
       const AoiAlignmentTransform& transform,
       const ComponentSegmentationConfig& config = ComponentSegmentationConfig(),
-      const cv::Mat& precomputedComponentsMask = cv::Mat());
+      const std::vector<cv::Mat>& multiExposureImages = {});
   ```
-  - *Input*: immagine PCB non distorta, vettore componenti verificati AOI, trasformazione proiettiva con modello di distorsione omografica, configurazione, eventuale maschera componenti multi-esposizione precalcolata.
+  - *Input*: immagine PCB non distorta, vettore componenti verificati AOI, trasformazione proiettiva con modello di distorsione omografica, configurazione, vettore delle immagini PCB a esposizioni multiple.
   - *Output*: oggetto `ComponentSegmentationResult` contenente la totalità dei componenti rifiniti e confermati, statistiche e immagini diagnostiche.
 
 ##### 2. Rettangolo Minimo Aderente (Solo Rettangoli, No Cerchi)
