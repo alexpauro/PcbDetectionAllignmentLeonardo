@@ -13,9 +13,9 @@ namespace pcb {
 namespace fs = std::filesystem;
 
 /**
- * @brief Risultato della segmentazione e modellazione precisa di un singolo componente PCB.
+ * @brief Risultato dell'allineamento preciso e modellazione metrologica di un singolo componente PCB.
  */
-struct SegmentedComponent {
+struct AlignedComponent {
     int id = 0;                                 ///< ID progressivo (1-based)
     std::string ref_des;                        ///< Reference designator / codice componente (es. "R301", "IC204")
     std::string label;                          ///< Tipologia / classe associata (es. "resistor", "ic", "capacitor_smd")
@@ -24,7 +24,7 @@ struct SegmentedComponent {
 
     // Contorno reale estratto via algoritmi di Computer Vision
     std::vector<cv::Point> contour;             ///< Punti del contorno reale in coordinate assolute immagine
-    bool found = false;                         ///< True se segmentato con successo
+    bool found = false;                         ///< True se allineato con successo
     int search_expansion_level = 0;             ///< 0: trovato in ROI base, 1: trovato in ROI espansa
 
     // Bounding box rettangolare aderente in pixel (solo rettangoli, senza spazi vuoti)
@@ -39,6 +39,12 @@ struct SegmentedComponent {
     // Dimensioni box in millimetri reali sulla scheda
     double box_width_mm = 0.0;                  ///< Larghezza box in mm
     double box_height_mm = 0.0;                 ///< Altezza box in mm
+
+    // Dimensioni fisiche reali da datasheet (da component_cv_mapping.txt)
+    double datasheet_width_mm = 0.0;            ///< Larghezza reale da datasheet (mm)
+    double datasheet_height_mm = 0.0;           ///< Altezza reale da datasheet (mm)
+    double datasheet_thickness_mm = 0.0;        ///< Spessore reale da datasheet (mm)
+    std::string datasheet_source;               ///< Fonte/sito web del datasheet
 
     // Coordinate nominali teoriche (da distinta AOI / CAD)
     double nominal_x_mm = 0.0;                  ///< Posizione nominale X (mm)
@@ -58,101 +64,115 @@ struct SegmentedComponent {
     double error_dist_px = 0.0;                 ///< Errore euclideo di posizionamento in pixel
     double error_rot_deg = 0.0;                 ///< Errore angolare di rotazione (pochi decimi/gradi)
 
-    std::string notes;                          ///< Note diagnostiche sul rilevamento o armonizzazione
+    std::string notes;                          ///< Note diagnostiche sul rilevamento o allineamento
 };
 
 /**
- * @brief Parametri di configurazione per la segmentazione e rifinitura contorni dei componenti.
+ * @brief Parametri di configurazione per la stima precisa di micro-traslazioni,
+ * micro-rotazioni e allineamento rettangoli mediante fusione Caliper + Edge-Template multi-esposizione.
  */
-struct ComponentSegmentationConfig {
-    float initial_margin_ratio = 0.25f;         ///< Margine iniziale intorno alla casella nota (25%)
-    float expanded_margin_ratio = 0.70f;        ///< Margine espanso di ricerca se non trovato (70%)
-    float min_contour_area = 8.0f;              ///< Area minima del contorno in pixel per evitare artefatti
-    float max_overlap_with_cataloged = 0.55f;   ///< Soglia sovrapposizione con componenti già catalogati
-    bool harmonize_part_number_sizes = true;    ///< Impone stesso ingombro per componenti con stesso codice produttore
-    int contour_thickness = 1;                  ///< Spessore dei bordi sottili colorati per il rendering (1 o 2 px)
-    bool show_windows = false;                  ///< Mostra finestre interattive OpenCV
+struct ComponentAlignmentConfig {
+    float max_translation_px = 4.0f;           ///< Escursione massima micro-traslazione in pixel (~0.35 mm)
+    float max_rotation_deg = 3.0f;             ///< Escursione massima micro-rotazione in gradi (<= 3.0°)
+    float translation_step_px = 0.5f;          ///< Passo di ricerca su griglia per la micro-traslazione (pixel)
+    float rotation_step_deg = 0.25f;           ///< Passo di ricerca su griglia per la micro-rotazione (gradi)
+    int caliper_rays_per_edge = 5;             ///< Numero di raggi caliper per ciascun bordo del rettangolo
+    float caliper_ray_length_px = 5.0f;        ///< Semi-lunghezza del raggio di campionamento (pixel)
+    bool fill_internal_holes = true;           ///< Riempimento fori interni
+    float initial_margin_ratio = 0.25f;        ///< Margine iniziale intorno alla casella nota
+    float expanded_margin_ratio = 0.70f;       ///< Margine espanso di ricerca
+    float min_contour_area = 8.0f;             ///< Area minima del contorno in pixel
+    float min_solidity = 0.40f;                ///< Solidita' minima
+    float min_rect_fill = 0.35f;               ///< Riempimento minimo del rettangolo
+    bool harmonize_part_number_sizes = true;   ///< Impone stesso ingombro in mm per componenti con stesso codice produttore
+    int contour_thickness = 1;                 ///< Spessore dei bordi sottili colorati per il rendering (1 o 2 px)
+    bool save_intermediate_filters = true;     ///< Salva le immagini dei filtri intermedi su disco
+    bool show_windows = false;                 ///< Mostra finestre interattive OpenCV
 };
 
 /**
- * @brief Statistiche aggregate sul processo di segmentazione.
+ * @brief Statistiche aggregate sul processo di allineamento e stima posa componenti.
  */
-struct ComponentSegmentationSummary {
+struct ComponentAlignmentSummary {
     int total_input_components = 0;             ///< Totale componenti riconosciuti in ingresso
-    int successfully_segmented = 0;             ///< Componenti con contorno e dimensioni rifiniti tramite CV
+    int successfully_aligned = 0;               ///< Componenti con micro-orientamento e posizione allineati
+    int from_processed_output = 0;              ///< Componenti preservati da processed_output con etichette AOI
+    int recovered_by_aoi = 0;                   ///< Nuove box recuperate da AOI non presenti in precedenza
+    int preserved_original_box = 0;             ///< Componenti mantenuti con box originario validato
     int found_in_initial_roi = 0;               ///< Trovati con margine iniziale di tolleranza
     int found_in_expanded_roi = 0;              ///< Trovati espandendo il margine di tolleranza
-    int preserved_original_box = 0;             ///< Preservati con box originario validato
-    int rejected_not_found = 0;                 ///< Non confermati
-    int rejected_overlap_cataloged = 0;         ///< Duplicati o sovrapposti
+    int rejected_not_found = 0;                 ///< Non confermati (0)
+    int rejected_overlap_cataloged = 0;         ///< Duplicati scartati (0)
     
     double mean_error_dist_mm = 0.0;            ///< Errore medio di posizionamento (mm)
     double mean_error_dist_px = 0.0;            ///< Errore medio di posizionamento (px)
     double mean_error_rot_deg = 0.0;            ///< Errore medio di rotazione (gradi)
 
-    std::map<std::string, cv::Size2f> canonical_part_sizes_px; ///< Ingombro canonico pixel per codice produttore
-    std::map<std::string, cv::Size2d> canonical_part_sizes_mm; ///< Ingombro canonico mm per codice produttore
+    std::map<std::string, cv::Size2f> canonical_part_sizes_px; ///< Ingombro medio pixel per codice produttore
+    std::map<std::string, cv::Size2d> canonical_part_sizes_mm; ///< Ingombro millimetri unificato per codice produttore
     std::map<std::string, int> class_distribution;             ///< Distribuzione per classe
 };
 
 /**
- * @brief Risultato completo dell'elaborazione di segmentazione.
+ * @brief Risultato completo dell'elaborazione di allineamento componenti.
  */
-struct ComponentSegmentationResult {
+struct ComponentAlignmentResult {
     bool success = false;
     std::string board_name;
     std::string side;
     std::string reference_image_name;
 
-    std::vector<SegmentedComponent> segmented_components; ///< Componenti validati e rifiniti
-    std::vector<SegmentedComponent> rejected_components;  ///< Componenti scartati/eliminati
-    ComponentSegmentationSummary summary;
+    std::vector<AlignedComponent> aligned_components;   ///< Componenti validati e allineati
+    std::vector<AlignedComponent> rejected_components;  ///< Componenti scartati/eliminati
+    ComponentAlignmentSummary summary;
 
     cv::Mat contours_vis;       ///< Immagine con indicazione del contorno reale di tutti i componenti (bordi sottili e colorati)
     cv::Mat tight_boxes_vis;    ///< Immagine con i rettangoli minimi orientati aderenti senza spazi
     cv::Mat cataloged_mask;     ///< Maschera binaria delle aree occupate dai componenti catalogati
+    std::map<std::string, cv::Mat> intermediate_filter_masks; ///< Risultati intermedi con i diversi filtri
 };
 
 /**
- * @brief Classe principale per la segmentazione fine, estrazione contorni reali,
+ * @brief Classe principale per l'allineamento fine, stima micro-rotazioni e micro-traslazioni,
  * adattamento rettangoli circoscritti e verifica metrologica con correzione della distorsione.
  */
-class ComponentSegmentationProcessor {
+class ComponentAlignmentProcessor {
 public:
-    ComponentSegmentationProcessor();
+    ComponentAlignmentProcessor();
 
     /**
-     * @brief Esegue la pipeline di segmentazione su una lista di componenti già riconosciuti
+     * @brief Esegue la pipeline di allineamento su una lista di componenti già riconosciuti
      * (es. provenienti da AOI verification o step finale di fusione).
      *
      * @param pcbImage Immagine PCB di riferimento non distorta.
      * @param inputComponents Vettore dei componenti riconosciuti in ingresso.
      * @param transform Trasformazione e modello di distorsione omografica AOI <-> pixel.
-     * @param config Parametri di configurazione della segmentazione.
-     * @return ComponentSegmentationResult Risultato completo con contorni, box ed errori metrologici.
+     * @param config Parametri di configurazione dell'allineamento.
+     * @param multiExposureImages Vettore opzionale di 10 immagini multi-esposizione per la stima robusta.
+     * @return ComponentAlignmentResult Risultato completo con contorni, box ed errori metrologici.
      */
-    ComponentSegmentationResult process(
+    ComponentAlignmentResult process(
         const cv::Mat& pcbImage,
         const std::vector<VerifiedPcbComponent>& inputComponents,
         const AoiAlignmentTransform& transform,
-        const ComponentSegmentationConfig& config = ComponentSegmentationConfig(),
+        const ComponentAlignmentConfig& config = ComponentAlignmentConfig(),
         const std::vector<cv::Mat>& multiExposureImages = {});
 
     /**
      * @brief Esegue l'elaborazione ad alto livello per una scheda e lato, caricando
      * automaticamente i dati da disco (AOI verified components, parametri di allineamento e foto PCB).
      */
-    ComponentSegmentationResult processBoardSide(
+    ComponentAlignmentResult processBoardSide(
         const std::string& boardName,
         const std::string& side,
         const std::string& undistortedDir,
         const std::string& aoiVerificationDir,
         const std::string& paramsDir,
         const std::string& outputBaseDir,
-        const ComponentSegmentationConfig& config = ComponentSegmentationConfig());
+        const ComponentAlignmentConfig& config = ComponentAlignmentConfig());
 
     /**
-     * @brief Salva su disco i file prodotti dalla segmentazione:
+     * @brief Salva su disco i file prodotti dall'allineamento componenti:
      * - CSV con tutte le associazioni (RefDes, classe, codice produttore, coordinate px, reale posizione mm con distorsione, errori)
      * - JSON riepilogativo con statistiche e ingombri canonici
      * - Immagine con i contorni sottili e colorati
@@ -161,7 +181,7 @@ public:
     bool saveResults(
         const std::string& outputDir,
         const std::string& fileStem,
-        const ComponentSegmentationResult& result);
+        const ComponentAlignmentResult& result);
 
     /**
      * @brief Mappa una coordinata pixel (u, v) nella reale coordinata millimetrica (x_mm, y_mm),
@@ -182,4 +202,3 @@ public:
 };
 
 } // namespace pcb
-

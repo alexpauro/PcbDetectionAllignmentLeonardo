@@ -2,10 +2,12 @@
 #include "undistort.hpp"
 #include "board_alignment.hpp"
 #include "component_detector.hpp"
+#include "multi_model_detector.hpp"
+#include "class_mapper.hpp"
 #include "cv_component_detector.hpp"
 #include "output_processor.hpp"
 #include "aoi_verification.hpp"
-#include "component_segmentation.hpp"
+#include "component_alignment.hpp"
 #include <string>
 #include <iostream>
 #include <filesystem>
@@ -416,9 +418,17 @@ bool runPcbBoardAlignment(bool show_windows = false, const std::vector<BoardSide
     return true;
 }
 
-// Funzione per eseguire il rilevamento dei componenti PCB (modello ParsaVictor a 2 stadi: any + fine)
-bool runPcbComponentDetection(const std::vector<BoardSideTarget>& targets = {}) {
-    std::cout << "\n=== AVVIO RICONOSCIMENTO COMPONENTI PCB (YOLO) ===" << std::endl;
+// Funzione per eseguire il rilevamento dei componenti PCB
+// Supporta sia la modalità standard (solo ParsaVictor a 2 stadi: any + fine)
+// sia la modalità avanzata con ensemble di tutti i modelli e pesi disponibili in pcb_component_detection
+bool runPcbComponentDetection(const std::vector<BoardSideTarget>& targets = {}, bool use_all_models = false) {
+    if (use_all_models) {
+        std::cout << "\n========================================================" << std::endl;
+        std::cout << "=== AVVIO RICONOSCIMENTO COMPONENTI PCB (TUTTI I MODELLI DL) ===" << std::endl;
+        std::cout << "========================================================" << std::endl;
+    } else {
+        std::cout << "\n=== AVVIO RICONOSCIMENTO COMPONENTI PCB (YOLO: PARSAVICTOR) ===" << std::endl;
+    }
 
     std::string undistorted_base_dir = "../data/outputs/pcb_images_undistorted";
     std::string raw_base_dir = "../data/inputs/pcb_images";
@@ -436,10 +446,6 @@ bool runPcbComponentDetection(const std::vector<BoardSideTarget>& targets = {}) 
         return false;
     }
 
-    // Pesi predefiniti del modello ParsaVictor (supporta sia .pt che .onnx)
-    std::string any_weights = "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.pt";
-    std::string fine_weights = "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.pt";
-
     pcb::DetectionConfig config;
     config.conf_threshold = 0.20f;
     config.nms_threshold = 0.50f;
@@ -450,19 +456,37 @@ bool runPcbComponentDetection(const std::vector<BoardSideTarget>& targets = {}) 
     config.label_display_mode = "auto";
     config.min_label_px = 24;
 
-    std::cout << "\nInizializzazione del rilevatore componenti PCB..." << std::endl;
-    std::cout << "- Pesi 'any' (localizzazione): " << any_weights << std::endl;
-    std::cout << "- Pesi 'fine' (classificazione 13 classi): " << fine_weights << std::endl;
+    std::unique_ptr<pcb::ComponentDetector> detector;
+    std::unique_ptr<pcb::MultiModelDetector> multi_detector;
 
-    pcb::ComponentDetector detector;
-    if (!detector.loadAnyModel(any_weights, config.imgsz)) {
-        std::cerr << "ERRORE: Impossibile caricare il modello ANY." << std::endl;
-        return false;
-    }
+    if (use_all_models) {
+        std::cout << "\nInizializzazione del rilevatore multi-modello (ensemble completo)..." << std::endl;
+        multi_detector = std::make_unique<pcb::MultiModelDetector>();
+        int loaded_count = multi_detector->scanAndLoadModels(true);
+        if (loaded_count <= 0) {
+            std::cerr << "ERRORE: Nessun modello DL valido caricato per l'ensemble." << std::endl;
+            return false;
+        }
+        std::cout << "Rilevatore multi-modello pronto con " << loaded_count << " algoritmi/pesi attivi." << std::endl;
+    } else {
+        // Pesi predefiniti del modello ParsaVictor (supporta sia .pt che .onnx)
+        std::string any_weights = "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.pt";
+        std::string fine_weights = "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.pt";
 
-    if (!detector.loadFineModel(fine_weights, pcb::ComponentDetector::getDefaultClasses(), config.imgsz)) {
-        std::cerr << "ERRORE: Impossibile caricare il modello FINE." << std::endl;
-        return false;
+        std::cout << "\nInizializzazione del rilevatore componenti PCB (ParsaVictor)..." << std::endl;
+        std::cout << "- Pesi 'any' (localizzazione): " << any_weights << std::endl;
+        std::cout << "- Pesi 'fine' (classificazione 13 classi): " << fine_weights << std::endl;
+
+        detector = std::make_unique<pcb::ComponentDetector>();
+        if (!detector->loadAnyModel(any_weights, config.imgsz)) {
+            std::cerr << "ERRORE: Impossibile caricare il modello ANY." << std::endl;
+            return false;
+        }
+
+        if (!detector->loadFineModel(fine_weights, pcb::ComponentDetector::getDefaultClasses(), config.imgsz)) {
+            std::cerr << "ERRORE: Impossibile caricare il modello FINE." << std::endl;
+            return false;
+        }
     }
 
     auto processSideDetection = [&](const fs::path& side_dir, const std::string& board_name, const std::string& side) {
@@ -497,10 +521,16 @@ bool runPcbComponentDetection(const std::vector<BoardSideTarget>& targets = {}) 
                 continue;
             }
 
-            auto result = detector.detect(img, config, "both");
+            pcb::DetectionResult result;
             std::string stem = img_path.stem().string();
 
-            detector.saveResults(out_side_dir.string(), stem, img, result, "both");
+            if (use_all_models && multi_detector) {
+                result = multi_detector->detect(img, config);
+                pcb::MultiModelDetector::saveResults(out_side_dir.string(), stem, img, result);
+            } else if (detector) {
+                result = detector->detect(img, config, "both");
+                detector->saveResults(out_side_dir.string(), stem, img, result, "both");
+            }
 
             std::cout << "   Trovati " << result.detections.size() << " componenti." << std::endl;
             std::cout << "   Dettaglio classi:" << std::endl;
@@ -579,11 +609,12 @@ bool runPcbCvComponentDetection(bool interactive_windows = true, const std::vect
 
     // Configurazione filtri Computer Vision classica
     pcb::CvDetectionConfig config;
-    config.use_green_filter = true;          // Filtro colore verdognolo tipico del PCB (solder mask)
-    config.h_min = 20;
-    config.h_max = 90;
-    config.s_min = 16;
+    config.use_green_filter = true;          // Filtro colore verdognolo/oliva tipico del PCB (solder mask)
+    config.h_min = 8;
+    config.h_max = 95;
+    config.s_min = 15;
     config.v_min = 20;
+    config.green_ratio_thresh = -0.06f;
     config.use_bilateral = true;             // Riduzione rumore con conservazione bordi
     config.use_clahe = true;                 // Contrasto locale adattivo
     config.use_canny = true;                 // Canny edge detector
@@ -876,33 +907,33 @@ bool runPcbAoiVerification(bool show_windows = true, const std::vector<BoardSide
     return true;
 }
 
-// Funzione per la segmentazione fine dei contorni reali dei componenti,
+// Funzione per l'allineamento preciso e modellazione metrologica dei componenti,
 // adattamento dei rettangoli minimi circoscritti, armonizzazione per codice produttore
 // e calcolo della reale posizione in mm con modello di distorsione ed errore.
-bool runPcbComponentSegmentation(bool show_windows = true, const std::vector<BoardSideTarget>& targets = {}) {
+bool runPcbComponentAlignment(bool show_windows = true, const std::vector<BoardSideTarget>& targets = {}) {
     std::cout << "\n========================================================" << std::endl;
-    std::cout << "=== AVVIO SEGMENTAZIONE E MODELLAZIONE REALE COMPONENTI ===" << std::endl;
+    std::cout << "=== AVVIO ALLINEAMENTO E MODELLAZIONE REALE COMPONENTI ===" << std::endl;
     std::cout << "========================================================" << std::endl;
 
     std::string undistorted_base_dir = "../data/outputs/pcb_images_undistorted";
     std::string verification_output_base_dir = "../data/outputs/pcb_aoi_verification";
     std::string params_dir = "../data/parameters";
-    std::string segmentation_output_base_dir = "../data/outputs/pcb_component_segmentation";
+    std::string alignment_output_base_dir = "../data/outputs/pcb_component_alignment";
 
-    pcb::ComponentSegmentationProcessor segmenter;
-    pcb::ComponentSegmentationConfig config;
+    pcb::ComponentAlignmentProcessor aligner;
+    pcb::ComponentAlignmentConfig config;
     config.show_windows = show_windows;
 
     auto processOneBoardSide = [&](const std::string& bname, const std::string& side) {
-        segmenter.processBoardSide(
+        aligner.processBoardSide(
             bname, side, undistorted_base_dir,
             verification_output_base_dir, params_dir,
-            segmentation_output_base_dir, config);
+            alignment_output_base_dir, config);
     };
 
     if (!targets.empty()) {
         for (const auto& t : targets) {
-            std::cout << "\n--- Elaborazione segmentazione per scheda: " << t.board_name 
+            std::cout << "\n--- Elaborazione allineamento per scheda: " << t.board_name 
                       << " [" << t.side << "] ---" << std::endl;
             processOneBoardSide(t.board_name, t.side);
         }
@@ -917,7 +948,7 @@ bool runPcbComponentSegmentation(bool show_windows = true, const std::vector<Boa
 
         for (const auto& bpath : board_paths) {
             std::string bname = bpath.filename().string();
-            std::cout << "\n--- Elaborazione segmentazione per scheda: " << bname << " ---" << std::endl;
+            std::cout << "\n--- Elaborazione allineamento per scheda: " << bname << " ---" << std::endl;
 
             for (const std::string side : {"TOP", "BOTTOM"}) {
                 fs::path side_dir = bpath / side;
@@ -929,9 +960,9 @@ bool runPcbComponentSegmentation(bool show_windows = true, const std::vector<Boa
     }
 
     std::cout << "\n========================================================" << std::endl;
-    std::cout << "Segmentazione e modellazione componenti completata con successo!" << std::endl;
+    std::cout << "Allineamento e modellazione componenti completata con successo!" << std::endl;
     std::cout << "Immagini e file CSV salvati in:\n  " 
-              << segmentation_output_base_dir << std::endl;
+              << alignment_output_base_dir << std::endl;
     std::cout << "========================================================" << std::endl;
 
     return true;
@@ -980,6 +1011,30 @@ int main() {
         }
     }
 
+    // Se la modalità include Deep Learning (opzione 2 o 3), chiedi se usare solo ParsaVictor o tutti i pesi disponibili
+    bool use_all_dl_models = false;
+    if (mode_choice == 2 || mode_choice == 3) {
+        std::cout << "\n--------------------------------------------------------" << std::endl;
+        std::cout << "   CONFIGURAZIONE ALGORITMI DEEP LEARNING (DL)          " << std::endl;
+        std::cout << "--------------------------------------------------------" << std::endl;
+        std::cout << "1) Solo ParsaVictor (modello di riferimento a 2 stadi: any + fine) [Default]" << std::endl;
+        std::cout << "2) Tutti gli algoritmi e pesi disponibili in pcb_component_detection" << std::endl;
+        std::cout << "   (Ensemble multi-modello, unificazione classi e risoluzione contrasti per affidabilita')" << std::endl;
+        std::cout << "Seleziona un'opzione (1 / 2, default 1): ";
+
+        std::string dl_choice_str;
+        if (std::cin >> dl_choice_str) {
+            std::transform(dl_choice_str.begin(), dl_choice_str.end(), dl_choice_str.begin(),
+                           [](unsigned char c){ return static_cast<char>(std::toupper(c)); });
+            if (dl_choice_str == "2" || dl_choice_str == "TUTTI" || dl_choice_str == "ALL") {
+                use_all_dl_models = true;
+                std::cout << "-> Modalita' selezionata: Tutti i modelli e pesi disponibili in pcb_component_detection." << std::endl;
+            } else {
+                std::cout << "-> Modalita' selezionata: Solo ParsaVictor (modello standard di riferimento)." << std::endl;
+            }
+        }
+    }
+
     if (mode_choice == 1) {
         if (!runPcbCvComponentDetection(show_windows, selected_targets)) {
             return -1;
@@ -988,7 +1043,7 @@ int main() {
             return -1;
         }
     } else if (mode_choice == 2) {
-        if (!runPcbComponentDetection(selected_targets)) {
+        if (!runPcbComponentDetection(selected_targets, use_all_dl_models)) {
             return -1;
         }
         if (!runPcbOutputProcessing(show_windows, selected_targets, 2)) {
@@ -998,7 +1053,7 @@ int main() {
         if (!runPcbCvComponentDetection(show_windows, selected_targets)) {
             return -1;
         }
-        if (!runPcbComponentDetection(selected_targets)) {
+        if (!runPcbComponentDetection(selected_targets, use_all_dl_models)) {
             return -1;
         }
         if (!runPcbOutputProcessing(show_windows, selected_targets, 3)) {
@@ -1011,9 +1066,9 @@ int main() {
         return -1;
     }
 
-    // Fase: Segmentazione precisa contorni reali, adattamento rettangoli aderenti,
+    // Fase: Allineamento preciso contorni reali, adattamento rettangoli aderenti,
     // armonizzazione ingombri per codice produttore e calcolo posizione metrologica reale in mm con distorsione
-    if (!runPcbComponentSegmentation(show_windows, selected_targets)) {
+    if (!runPcbComponentAlignment(show_windows, selected_targets)) {
         return -1;
     }
 

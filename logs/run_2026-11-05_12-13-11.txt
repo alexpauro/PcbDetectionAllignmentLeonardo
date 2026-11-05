@@ -1,23 +1,35 @@
 ======================================================
- Avvio run.sh: 2026-11-04 12:32:12
- Log file: logs/run_2026-11-04_12-32-12.txt
+ Avvio run.sh: 2026-11-05 12:13:11
+ Log file: logs/run_2026-11-05_12-13-11.txt
 ======================================================
 -- OpenCV versione trovata: 4.9.0
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/build
+Consolidate compiler generated dependencies of target common
 Consolidate compiler generated dependencies of target cv_component_detection
+Consolidate compiler generated dependencies of target board_alignment
+[  5%] Built target cv_component_detection
+[ 10%] Built target common
+[ 20%] Built target board_alignment
 Consolidate compiler generated dependencies of target calibration
 Consolidate compiler generated dependencies of target component_detection
-Consolidate compiler generated dependencies of target board_alignment
-[ 13%] Built target cv_component_detection
-[ 33%] Built target calibration
-[ 46%] Built target component_detection
-[ 73%] Built target board_alignment
+[ 28%] Built target calibration
+[ 38%] Built target component_detection
+Consolidate compiler generated dependencies of target test_multi_model_detection
 Consolidate compiler generated dependencies of target output_processing
-[ 86%] Built target output_processing
+[ 43%] Built target test_multi_model_detection
+[ 61%] Built target output_processing
+Consolidate compiler generated dependencies of target aoi_verification
+[ 79%] Built target aoi_verification
+Consolidate compiler generated dependencies of target test_aoi_verification
+Consolidate compiler generated dependencies of target component_segmentation
+[ 84%] Built target component_segmentation
+[ 89%] Built target test_aoi_verification
 Consolidate compiler generated dependencies of target pcb_app
-[100%] Built target pcb_app
+Consolidate compiler generated dependencies of target test_component_segmentation
+[ 94%] Built target pcb_app
+[100%] Built target test_component_segmentation
 
 === ESECUZIONE ===
 === AVVIO CALIBRAZIONE TELECAMERA ===
@@ -126,9 +138,112 @@ Parametri di scala e omografia salvati in: ../data/parameters
 2) Deep Learning YOLO (Modello a 2 stadi) + fusione dati
 3) Entrambi (prima CV Classica, poi YOLO) + fusione dati
 Seleziona un'opzione (1 / 2 / 3, default 3): 
-=== AVVIO RICONOSCIMENTO COMPONENTI PCB (YOLO) ===
+--------------------------------------------------------
+   CONFIGURAZIONE ALGORITMI DEEP LEARNING (DL)          
+--------------------------------------------------------
+1) Solo ParsaVictor (modello di riferimento a 2 stadi: any + fine) [Default]
+2) Tutti gli algoritmi e pesi disponibili in pcb_component_detection
+   (Ensemble multi-modello, unificazione classi e risoluzione contrasti per affidabilita')
+Seleziona un'opzione (1 / 2, default 1): -> Modalita' selezionata: Solo ParsaVictor (modello standard di riferimento).
 
-Inizializzazione del rilevatore componenti PCB...
+========================================================
+=== AVVIO RILEVAMENTO COMPONENTI PCB (COMPUTER VISION) ===
+========================================================
+
+--- Elaborazione CV Componenti per scheda: A [TOP] ---
+
+Elaborazione Computer Vision per A [TOP] (10 immagini)...
+
+-> Analisi filtri e bordi su: A_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_001_components_cv.json
+   Componenti totali trovati: 670
+     - Rettangoli orientati/ruotati: 623
+     - Cerchi: 47
+
+-> Analisi filtri e bordi su: A_TOP_002.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_002_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_002_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_002_components_cv.json
+   Componenti totali trovati: 571
+     - Rettangoli orientati/ruotati: 514
+     - Cerchi: 57
+
+-> Analisi filtri e bordi su: A_TOP_003.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.json
+   Componenti totali trovati: 428
+     - Rettangoli orientati/ruotati: 398
+     - Cerchi: 30
+
+-> Analisi filtri e bordi su: A_TOP_004.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_004_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_004_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_004_components_cv.json
+   Componenti totali trovati: 464
+     - Rettangoli orientati/ruotati: 434
+     - Cerchi: 30
+
+-> Analisi filtri e bordi su: A_TOP_005.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_005_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_005_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_005_components_cv.json
+   Componenti totali trovati: 398
+     - Rettangoli orientati/ruotati: 315
+     - Cerchi: 83
+
+-> Analisi filtri e bordi su: A_TOP_006.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_006_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_006_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_006_components_cv.json
+   Componenti totali trovati: 507
+     - Rettangoli orientati/ruotati: 471
+     - Cerchi: 36
+
+-> Analisi filtri e bordi su: A_TOP_007.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_007_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_007_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_007_components_cv.json
+   Componenti totali trovati: 587
+     - Rettangoli orientati/ruotati: 551
+     - Cerchi: 36
+
+-> Analisi filtri e bordi su: A_TOP_008.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_008_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_008_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_008_components_cv.json
+   Componenti totali trovati: 658
+     - Rettangoli orientati/ruotati: 621
+     - Cerchi: 37
+
+-> Analisi filtri e bordi su: A_TOP_009.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_009_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_009_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_009_components_cv.json
+   Componenti totali trovati: 705
+     - Rettangoli orientati/ruotati: 641
+     - Cerchi: 64
+
+-> Analisi filtri e bordi su: A_TOP_010.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_010_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_010_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_010_components_cv.json
+   Componenti totali trovati: 682
+     - Rettangoli orientati/ruotati: 636
+     - Cerchi: 46
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/A/TOP"
+
+========================================================
+Rilevamento CV classica completato con successo!
+Immagini annotate, maschere, CSV e JSON salvati in:
+  ../data/outputs/pcb_cv_component_detection
+========================================================
+
+=== AVVIO RICONOSCIMENTO COMPONENTI PCB (YOLO: PARSAVICTOR) ===
+
+Inizializzazione del rilevatore componenti PCB (ParsaVictor)...
 - Pesi 'any' (localizzazione): ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.pt
 - Pesi 'fine' (classificazione 13 classi): ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.pt
 [ComponentDetector] Trovato modello ONNX già esportato: "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx"
@@ -327,7 +442,7 @@ Foto disponibili per questo lato:
   8) A_TOP_008.bmp (65 rilevamenti DL)
   9) A_TOP_009.bmp (12 rilevamenti DL)
   10) A_TOP_010.bmp (12 rilevamenti DL)
-Quale foto vuoi utilizzare come sfondo grafico? (Inserisci 1-10 oppure premi INVIO per la consigliata [A_TOP_003]): -> Immagine base selezionata per il rendering: A_TOP_001
+Quale foto vuoi utilizzare come sfondo grafico? (Inserisci 1-10 oppure premi INVIO per la consigliata [A_TOP_003]): -> Immagine base selezionata per il rendering: A_TOP_003
 
 --- STEP 1: Fusione rilevamenti DL multi-esposizione ---
    Componenti DL unificati totali: 166
@@ -346,51 +461,53 @@ Quale foto vuoi utilizzare come sfondo grafico? (Inserisci 1-10 oppure premi INV
      - Transistor: 3
 
 --- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---
-   Caricati 425 componenti CV da ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.csv
-   Componenti CV classificati totali: 425
+   Caricati 428 componenti CV da ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.csv
+   Componenti CV classificati totali: 428
    Dettaglio classi CV riconosciute con pesi DL:
-     - ?: 309
-     - Capacitor: 7
-     - Connector: 50
-     - Diode: 1
-     - Electrolytic Capacitor: 1
-     - IC: 25
-     - Marker: 1
-     - Oscillator: 1
-     - Other: 8
-     - Resistor: 15
-     - Switch/Button: 4
-     - Transistor: 3
-
---- STEP 3: Fusione finale completa (DL multi-esposizione + CV classificato) ---
-
---- ARMONIZZAZIONE COMPONENTI IDENTICI VIA COMPUTER VISION ---
-   Cluster di componenti identici identificati: 16
-   Componenti ri-classificati/armonizzati: 10
-     * Cluster #4 (5 componenti identici): Classe armonizzata: 'Capacitor' (Conf: 0.75). 1 corretti/promossi da: [Other: 1] 
-     * Cluster #6 (4 componenti identici): Classe armonizzata: 'Resistor' (Conf: 0.75). 2 corretti/promossi da: [?: 1] [Other: 1] 
-     * Cluster #9 (2 componenti identici): Classe armonizzata: 'Resistor' (Conf: 0.25). 1 corretti/promossi da: [?: 1] 
-     * Cluster #11 (2 componenti identici): Classe armonizzata: 'Electrolytic Capacitor' (Conf: 0.75). 1 corretti/promossi da: [Other: 1] 
-     * Cluster #12 (2 componenti identici): Classe armonizzata: 'Resistor' (Conf: 0.56). 1 corretti/promossi da: [?: 1] 
-     * Cluster #14 (9 componenti identici): Classe armonizzata: 'IC' (Conf: 0.75). 4 corretti/promossi da: [?: 2] [Transistor: 2] 
-   Totale componenti finali unificati: 320
-   Ripartizione per fonte:
-     - CV_ONLY: 156
-     - DL_ONLY: 88
-     - FUSED_DL_CV: 76
-   Riepilogo finale classi:
-     - ?: 182
+     - ?: 116
      - Capacitor: 21
+     - Connector: 27
+     - Diode: 1
+     - Electrolytic Capacitor: 8
+     - IC: 206
+     - Oscillator: 2
+     - Other: 29
+     - Resistor: 13
+     - Switch/Button: 1
+     - Transistor: 4
+
+--- STEP 3: Elaborazione Componenti Finali ---
+   [Modalità 3: Entrambi DL + CV Classica]
+
+--- FASE 1: Armonizzazione Componenti Identici Riconosciuti ---
+   Cluster di componenti identici identificati: 8
+   Componenti ri-classificati/uniformati: 22
+     * Cluster #3 (2 componenti identici): Classe armonizzata: 'Electrolytic Capacitor' (Conf: 0.87). 1 corretti/promossi da: [Other: 1] 
+     * Cluster #4 (4 componenti identici): Classe armonizzata: 'Capacitor' (Conf: 0.63). 3 corretti/promossi da: [?: 2] [Resistor: 1] 
+     * Cluster #5 (32 componenti identici): Classe armonizzata: 'Resistor' (Conf: 0.75). 17 corretti/promossi da: [?: 10] [Capacitor: 3] [Other: 4] 
+     * Cluster #6 (5 componenti identici): Classe armonizzata: 'IC' (Conf: 0.75). 1 corretti/promossi da: [Transistor: 1] 
+
+--- FASE 2: Ricerca Globale su tutta la Scheda di Porzioni Simili ---
+   Nuovi componenti scoperti su scheda: 1
+     + Trovato nuovo componente: Resistor ad alta similarita' a (789.00, 687.00) [Conf: 0.81]
+   Totale componenti finali unificati: 166
+   Ripartizione per fonte:
+     - DL_ONLY: 79
+     - FUSED_DL_CV: 86
+     - SIMILARITY_DISCOVERED: 1
+   Riepilogo finale classi:
+     - ?: 21
+     - Capacitor: 20
      - Connector: 1
      - Diode: 1
      - Electrolytic Capacitor: 3
-     - IC: 34
+     - IC: 31
      - Marker: 1
      - Oscillator: 1
-     - Other: 28
-     - Resistor: 46
+     - Other: 25
+     - Resistor: 59
      - Switch/Button: 1
-     - Transistor: 1
+     - Transistor: 2
 
 [OutputProcessor] Salvataggio passaggi intermedi in: ../data/outputs/pcb_processed_output/A/TOP
   -> [Step 1] Immagine elementi DL: ../data/outputs/pcb_processed_output/A/TOP/step1_merged_dl_elements.jpg
@@ -411,6 +528,88 @@ Quale foto vuoi utilizzare come sfondo grafico? (Inserisci 1-10 oppure premi INV
 Elaborazione output e fusione completata con successo!
 Tutti i passaggi intermedi salvati in:
   ../data/outputs/pcb_processed_output
+========================================================
+
+========================================================
+=== AVVIO VERIFICA E ARMONIZZAZIONE COMPONENTI (AOI) ===
+========================================================
+
+--- Elaborazione verifica AOI per scheda: A [TOP] ---
+
+========================================================
+ AVVIO VERIFICA AOI: A [TOP]
+========================================================
+[AOI] Caricate 194 associazioni dal file di mapping: ../data/parameters/component_cv_mapping.txt
+[AOI] Analisi del file coordinate AOI: ../data/inputs/pcb_coordinates_componentes_from_aoi/A/TOP/AA900789820001ABTOP-AOI.asc
+[AOI] File analizzato con successo: 194 componenti nominali.
+[AOI] Ingombro da piazzole Gerber disabilitato come da specifica utente.
+[AOI] Riquadri determinati direttamente da DL e da sovrapposizione multi-foto CV.
+[AOI] Utilizzo dell'immagine base scelta dall'utente per il rendering grafico: A_TOP_003.bmp
+[AOI] Caricamento sovrapposizione CV da 10 foto...
+[AOI] Sovrapposizione multi-foto CV completata: caricati 5670 elementi geometrici da 10 esposizioni.
+[AOI] Migliore orientazione teorica: rot180 (Inlier iniziali: 174/194)
+[AOI] Modello di correzione distorsione ottica e prospettica stimato con successo!
+  - Corrispondenza inlier: 175/194 (90.2%)
+  - Errore medio di allineamento: 5.69 px (0.50 mm)
+
+========================================================
+[AOI] RIEPILOGO VERIFICA ARMONIZZATA (DL + SOVRAPPOSIZIONE CV):
+  - Componenti nominali AOI:         194
+  - Match esatti confermati (DL):    80
+  - Classi errate corrette con AOI:  75
+  - Totale associati su scheda:      155 / 194 (79.9%)
+  - Componenti mancanti recuperati:  39
+  - Rilevamenti extra (non disegnati):11
+  - Scostamento medio reale/nominale:5.81 px (0.510 mm)
+========================================================
+[AOI] Salvato CSV componenti verificati in: ../data/outputs/pcb_aoi_verification/A/TOP/A_TOP_003_aoi_verified_components.csv
+[AOI] Salvato JSON riepilogo in: ../data/outputs/pcb_aoi_verification/A/TOP/A_TOP_003_aoi_verified_summary.json
+[AOI] Salvata immagine allineamento in: ../data/outputs/pcb_aoi_verification/A/TOP/A_TOP_003_best_alignment.jpg
+[AOI] Salvata immagine tipi verificati in: ../data/outputs/pcb_aoi_verification/A/TOP/A_TOP_003_verified_types.jpg
+[AOI] Salvata immagine elementi verificati in: ../data/outputs/pcb_aoi_verification/A/TOP/A_TOP_003_verified_elements.jpg
+[AOI] Salvati parametri YAML in: ../data/parameters/aoi_alignment_A_TOP.yml
+
+========================================================
+Verifica componenti AOI completata con successo!
+Immagini con allineamento e componenti verificati salvate in:
+  ../data/outputs/pcb_aoi_verification
+========================================================
+
+========================================================
+=== AVVIO SEGMENTAZIONE E MODELLAZIONE REALE COMPONENTI ===
+========================================================
+
+--- Elaborazione segmentazione per scheda: A [TOP] ---
+[SEGMENTATION] Caricamento di 10 immagini a esposizione diversa per estrazione multi-modale...
+[SEGMENTATION] Caricate con successo 10 immagini multi-esposizione.
+[SEGMENTATION] Caricati parametri allineamento e omografia da: "../data/parameters/aoi_alignment_A_TOP.yml"
+[SEGMENTATION] Caricati 194 componenti verificati da: ../data/outputs/pcb_aoi_verification/A/TOP/A_TOP_003_aoi_verified_components.csv
+
+========================================================
+=== AVVIO MODELLAZIONE PRECISA COMPONENTI (CALIPER + TEMPLATE) ===
+========================================================
+[SEGMENTATION] Totale componenti in ingresso: 194 | Immagini multi-esposizione: 10
+[SEGMENTATION] Ordinamento completato: componenti ordinati per area decrescente (da max a min).
+
+========================================================
+=== RIEPILOGO FINALE FUSIONE CALIPER + EDGE-TEMPLATE ===
+  - Totale componenti elaborati:       194
+  - Componenti da Processed Output:    155
+  - Componenti recuperati da AOI:      39
+  - Micro-orientamento rifinito:       194 / 194
+  - Scostamento medio reale/nominale:  0.576 mm (6.56 px)
+  - Errore medio micro-rotazione:      0.41°
+========================================================
+[SEGMENTATION] Salvato CSV componenti segmentati: ../data/outputs/pcb_component_segmentation/A/TOP/A_TOP_003_precise_segmented_components.csv
+[SEGMENTATION] Salvato JSON riepilogo: ../data/outputs/pcb_component_segmentation/A/TOP/A_TOP_003_precise_segmented_summary.json
+[SEGMENTATION] Salvata immagine contorni sottili e colorati: ../data/outputs/pcb_component_segmentation/A/TOP/A_TOP_003_segmented_contours.jpg
+[SEGMENTATION] Salvata immagine rettangoli aderenti: ../data/outputs/pcb_component_segmentation/A/TOP/A_TOP_003_precise_bounding_boxes.jpg
+[SEGMENTATION] Salvate 4 maschere dei filtri intermedi in: "../data/outputs/pcb_component_segmentation/A/TOP/intermediate_filters"
+
+========================================================
+Segmentazione e modellazione componenti completata con successo!
+Immagini e file CSV salvati in:
+  ../data/outputs/pcb_component_segmentation
 ========================================================
 
 Pipeline complessiva completata con successo.

@@ -130,7 +130,7 @@ CvDetectionResult CvComponentDetector::detect(const cv::Mat& input_image,
         // c) Condensatori ceramici (tan, marroncino, ocra, giallo)
         if (config.detect_ceramic_capacitors) {
             cv::Mat ceramic_mask;
-            cv::inRange(hsv, cv::Scalar(8, 30, 50), cv::Scalar(38, 255, 235), ceramic_mask);
+            cv::inRange(hsv, cv::Scalar(8, 55, 60), cv::Scalar(35, 255, 220), ceramic_mask);
             cv::bitwise_or(multi_color_mask, ceramic_mask, multi_color_mask);
         }
         // d) Piazzole dorate e rame (testpoint, ENIG, connettori)
@@ -233,12 +233,22 @@ CvDetectionResult CvComponentDetector::detect(const cv::Mat& input_image,
     result.edges_mask = combined_edges.clone();
 
     // =========================================================================
-    // STEP 4: Fusione Prove (Non-Verde + Multi-Colore + Bordi) & Pulizia Piste
+    // STEP 4: Fusione Prove (Multi-Colore + Bordi) & Pulizia Piste
     // =========================================================================
+    // Combiniamo le evidenze fisiche dei componenti (colore differenziato e bordi/gradienti).
+    // Invece di fare l'OR con non_substrate (che rendeva quasi tutta l'immagine bianca
+    // e fondeva tutti i componenti in un unico mega-blocco), utilizziamo il substrato verde
+    // come filtro di esclusione (AND NOT) per preservare la netta separazione tra componenti.
     cv::Mat candidate_mask;
-    cv::bitwise_or(non_substrate, combined_edges, candidate_mask);
     if (config.use_multi_color_filters) {
-        cv::bitwise_or(candidate_mask, multi_color_mask, candidate_mask);
+        candidate_mask = multi_color_mask.clone();
+        cv::bitwise_or(candidate_mask, combined_edges, candidate_mask);
+    } else {
+        candidate_mask = combined_edges.clone();
+    }
+
+    if (config.use_green_filter) {
+        cv::bitwise_and(candidate_mask, non_substrate, candidate_mask);
     }
 
     // Azzeriamo i pixel lungo il bordo perimetrale estremo dell'immagine (3 px)

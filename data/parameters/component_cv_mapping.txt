@@ -1,194 +1,194 @@
-IC204      50.698    15.951   180.0      T     4001794M0015       SOT553      OP AMP OPA170 SINGLE SOT553-5  (36V, SINGLE-SUPPLY, SOT553, LOW-POWER OPERATION --> Class: IC
-IC206      45.390    35.509   180.0      T     4001794M0015       SOT553      OP AMP OPA170 SINGLE SOT553-5  (36V, SINGLE-SUPPLY, SOT553, LOW-POWER OPERATION --> Class: IC
-IC207      47.295    39.700     0.0      T     4001794M0015       SOT553      OP AMP OPA170 SINGLE SOT553-5  (36V, SINGLE-SUPPLY, SOT553, LOW-POWER OPERATION --> Class: IC
-IC209      53.797    35.306   180.0      T     4001794M0015       SOT553      OP AMP OPA170 SINGLE SOT553-5  (36V, SINGLE-SUPPLY, SOT553, LOW-POWER OPERATION --> Class: IC
-IC210      55.296    39.497     0.0      T     4001794M0015       SOT553      OP AMP OPA170 SINGLE SOT553-5  (36V, SINGLE-SUPPLY, SOT553, LOW-POWER OPERATION --> Class: IC
-IC301      25.298    41.859     0.0      T     4000887M0569       MSOP8D      IC LTC6101HV _ MSOP-8 (HIGH VOLTAGE, HIGH-SIDE CURRENT SENSE AMPLIFIER,SUPPLY R --> Class: IC
-IC401      60.300    41.859     0.0      T     4000887M0569       MSOP8D      IC LTC6101HV _ MSOP-8 (HIGH VOLTAGE, HIGH-SIDE CURRENT SENSE AMPLIFIER,SUPPLY R --> Class: IC
-TR103       8.865    11.621    90.0      T     1AAN004212         D2PAK       N CHANNEL 150 V  MOSFET   TO-263 --> Class: Transistor
-TR201       5.893    56.540    90.0      T     69697-27/001       SOT23A      BJT SIG MMBT2222A NPN SOT-23  (TRANS. NPN   MMBT2222A 350mW) --> Class: Transistor
-TR202       9.804    56.540    90.0      T     69697-27/001       SOT23A      BJT SIG MMBT2222A NPN SOT-23  (TRANS. NPN   MMBT2222A 350mW) --> Class: Transistor
-TR205      44.907    18.059   180.0      T     69698-07/001       SOT23A      FET SIG 2N7002 N CASE 318-08 3 PIN --> Class: Transistor
-TR206      45.212    12.649    90.0      T     69698-07/001       SOT23A      FET SIG 2N7002 N CASE 318-08 3 PIN --> Class: Transistor
-TR207      44.907    29.108    90.0      T     69698-07/001       SOT23A      FET SIG 2N7002 N CASE 318-08 3 PIN --> Class: Transistor
-TR208      54.610    29.489    90.0      T     69698-07/001       SOT23A      FET SIG 2N7002 N CASE 318-08 3 PIN --> Class: Transistor
-TR209      55.601    13.360    90.0      T     69669-42/001       SOT23A      BJT SIG MMBT2907 PNP SOT-23 (TRANS. PNP BSR15) --> Class: Transistor
-TR210      41.402    12.675   270.0      T     69698-07/001       SOT23A      FET SIG 2N7002 N CASE 318-08 3 PIN --> Class: Transistor
-TR301      44.133     5.309   270.0      T     1AAN001691         SOT1212-8A  MOSFET P-CHANNEL 150V, 2A --> Class: Transistor
-TR305      23.114    29.756   270.0      T     69697-35/001       SOT89A      BJT PWR BCX55 NPN SOT89 (TRANS. NPN BCX55-10) --> Class: Transistor
-TR401      81.966    13.145   180.0      T     1AAN001691         SOT1212-8A  MOSFET P-CHANNEL 150V, 2A --> Class: Transistor
-TR405      64.719    30.239   270.0      T     69697-35/001       SOT89A      BJT PWR BCX55 NPN SOT89 (TRANS. NPN BCX55-10) --> Class: Transistor
-TR501       3.048    69.494   270.0      T     69697-27/001       SOT23A      BJT SIG MMBT2222A NPN SOT-23  (TRANS. NPN   MMBT2222A 350mW) --> Class: Transistor
-D203       55.296    21.539   270.0      T     1200926M0017       SC79A       Diode sig _V 500mA 500mW SC-79 (BAS516 SIGNAL DIODE SC-79 500mW) --> Class: Diode
-D204       53.797    21.539    90.0      T     1200926M0017       SC79A       Diode sig _V 500mA 500mW SC-79 (BAS516 SIGNAL DIODE SC-79 500mW) --> Class: Diode
-D301       45.212     8.992   270.0      T     1200926M0017       SC79A       Diode sig _V 500mA 500mW SC-79 (BAS516 SIGNAL DIODE SC-79 500mW) --> Class: Diode
-D308       19.558    36.779   270.0      T     1200926M0017       SC79A       Diode sig _V 500mA 500mW SC-79 (BAS516 SIGNAL DIODE SC-79 500mW) --> Class: Diode
-D401       78.943    13.335    90.0      T     1200926M0017       SC79A       Diode sig _V 500mA 500mW SC-79 (BAS516 SIGNAL DIODE SC-79 500mW) --> Class: Diode
-D408       59.969    34.798    90.0      T     1200926M0017       SC79A       Diode sig _V 500mA 500mW SC-79 (BAS516 SIGNAL DIODE SC-79 500mW) --> Class: Diode
-D306       45.999    45.847    90.0      T     69541-48/001       DO-214AA    TVS _V _uA 600W DO-214AA  (TRANSZORB BIDIRECT.  7.5V  5%) --> Class: Diode
-D307       22.403    25.273     0.0      T     69594-01/009       RD23A       Zener 10V 200mW 49, 3 PIN (DIODO ZENER BZX84-C10 10V) --> Class: Diode
-D406       54.508    45.847    90.0      T     69541-48/001       DO-214AA    TVS _V _uA 600W DO-214AA  (TRANSZORB BIDIRECT.  7.5V  5%) --> Class: Diode
-D407       60.706    25.273     0.0      T     69594-01/009       RD23A       Zener 10V 200mW 49, 3 PIN (DIODO ZENER BZX84-C10 10V) --> Class: Diode
-C210       52.019    13.640     0.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor
-C211       48.311    17.856    90.0      T     1AAN004438         CH1206C     CAP., CER., MULTILAYER, 100V, X7R, 4.7uF, 10%, SMD, 1206 --> Class: Capacitor
-C215       52.578    40.488     0.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor
-C216       44.704    40.894     0.0      T     66380-13/551       CH0603A     CAP 10nF +/-10% 50V X7R 0603 (COND.CHIP 0603 10nF 10% 50V X7R) --> Class: Capacitor
-C217       59.512    37.795     0.0      T     66380-13/551       CH0603A     CAP 10nF +/-10% 50V X7R 0603 (COND.CHIP 0603 10nF 10% 50V X7R) --> Class: Capacitor
-C301       29.007     6.401    90.0      T     1101182M0263       CH1210D     CAP 10uF +/-10% 50V X7R 1210 (1210 PACKAGE ) --> Class: Capacitor
-C304       25.908     6.401    90.0      T     1101182M0263       CH1210D     CAP 10uF +/-10% 50V X7R 1210 (1210 PACKAGE ) --> Class: Capacitor
-C305       47.930     7.798     0.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor
-C306       41.605     8.839     0.0      T     66380-05/245       CH1206A     CAP 15nF +/-10% 200V CER _ (COND.CHIP 15n 10% 200V 1206) --> Class: Capacitor
-C307       40.107     4.953    90.0      T     66380-04/332       CH1206A     CAP 390pF +/-5% 500V CER 1206 (COND.CHIP 390p 5% 500V 1206) --> Class: Capacitor
-C308       27.711    21.692    90.0      T     66380-07/967       CH1812A     CAP 47nF +/-10% 1000V CER _  (COND.CHIP 47nF 10% 1KV 1812) --> Class: Capacitor
-C309       36.500    33.553     0.0      T     66380-04/332       CH1206A     CAP 390pF +/-5% 500V CER 1206 (COND.CHIP 390p 5% 500V 1206) --> Class: Capacitor
-C318       22.708    42.951    90.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor
-C323       36.881    16.866     0.0      T     66380-13/113       CH0603A     CAP 100pF +/-5% 50V CER 0603 (COND.CHIP 0603 100pF 5% 50V NPO) --> Class: Capacitor
-C324       30.404    13.564    90.0      T     1100733M0731       CH1206C     CAP 10uF +/-10% 25V X7R 1206 --> Class: Capacitor
-C325       27.915    13.564    90.0      T     1100733M0731       CH1206C     CAP 10uF +/-10% 25V X7R 1206 --> Class: Capacitor
-C326       37.922    18.567     0.0      T     1100746M1395       CH0603A     CAP 2.2uF +/-10% 10V X7R 0603 (0603) --> Class: Capacitor
-C328       37.719    26.264     0.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor
-C329       27.153    27.788    90.0      T     1AAN004438         CH1206C     CAP., CER., MULTILAYER, 100V, X7R, 4.7uF, 10%, SMD, 1206 --> Class: Capacitor
-C330       22.682    36.627     0.0      T     1AAN004438         CH1206C     CAP., CER., MULTILAYER, 100V, X7R, 4.7uF, 10%, SMD, 1206 --> Class: Capacitor
-C331       39.827    28.550     0.0      T     66380-13/113       CH0603A     CAP 100pF +/-5% 50V CER 0603 (COND.CHIP 0603 100pF 5% 50V NPO) --> Class: Capacitor
-C332       39.802    30.251     0.0      T     66380-13/547       CH0603A     CAP 4.7nF +/-10% 50V X7R 0603 (COND.CHIP 0603 4.7nF 10% 50V X7R) --> Class: Capacitor
-C402       61.443     6.401    90.0      T     1101182M0263       CH1210D     CAP 10uF +/-10% 50V X7R 1210 (1210 PACKAGE ) --> Class: Capacitor
-C403       64.541     6.401    90.0      T     1101182M0263       CH1210D     CAP 10uF +/-10% 50V X7R 1210 (1210 PACKAGE ) --> Class: Capacitor
-C405       79.756    18.339    90.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor
-C406       81.026     9.296     0.0      T     66380-05/245       CH1206A     CAP 15nF +/-10% 200V CER _ (COND.CHIP 15n 10% 200V 1206) --> Class: Capacitor
-C407       76.251     5.944    90.0      T     66380-04/332       CH1206A     CAP 390pF +/-5% 500V CER 1206 (COND.CHIP 390p 5% 500V 1206) --> Class: Capacitor
-C408       66.599    21.488    90.0      T     66380-07/967       CH1812A     CAP 47nF +/-10% 1000V CER _  (COND.CHIP 47nF 10% 1KV 1812) --> Class: Capacitor
-C409       77.749    34.696    90.0      T     66380-04/332       CH1206A     CAP 390pF +/-5% 500V CER 1206 (COND.CHIP 390p 5% 500V 1206) --> Class: Capacitor
-C418       57.607    43.155    90.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor
-C423       75.768    16.866     0.0      T     66380-13/113       CH0603A     CAP 100pF +/-5% 50V CER 0603 (COND.CHIP 0603 100pF 5% 50V NPO) --> Class: Capacitor
-C424       70.104    13.462    90.0      T     1100733M0731       CH1206C     CAP 10uF +/-10% 25V X7R 1206 --> Class: Capacitor
-C425       67.615    13.462    90.0      T     1100733M0731       CH1206C     CAP 10uF +/-10% 25V X7R 1206 --> Class: Capacitor
-C426       76.835    18.466     0.0      T     1100746M1395       CH0603A     CAP 2.2uF +/-10% 10V X7R 0603 (0603) --> Class: Capacitor
-C428       76.632    26.264     0.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor
-C429       65.100    26.264     0.0      T     1AAN004438         CH1206C     CAP., CER., MULTILAYER, 100V, X7R, 4.7uF, 10%, SMD, 1206 --> Class: Capacitor
-C430       63.627    34.163     0.0      T     1AAN004438         CH1206C     CAP., CER., MULTILAYER, 100V, X7R, 4.7uF, 10%, SMD, 1206 --> Class: Capacitor
-C431       79.121    28.550     0.0      T     66380-13/113       CH0603A     CAP 100pF +/-5% 50V CER 0603 (COND.CHIP 0603 100pF 5% 50V NPO) --> Class: Capacitor
-C432       79.121    30.251     0.0      T     66380-13/547       CH0603A     CAP 4.7nF +/-10% 50V X7R 0603 (COND.CHIP 0603 4.7nF 10% 50V X7R) --> Class: Capacitor
-C501        6.096    71.374    90.0      T     66380-13/003       CH0603A     CAP 1pF +/-0.25PF 50V C0G/NP0 0603 (COND.CHIP 0603 1pF .25pF 50V NP0) --> Class: Capacitor
-C502        8.382    69.139     0.0      T     66380-13/538       CH0603A     CAP 820pF +/-10% 50V X7R 0603 (COND.CHIP 0603 820pF 10% 50V X7R) --> Class: Capacitor
-C505       12.294    71.552    90.0      T     66380-13/003       CH0603A     CAP 1pF +/-0.25PF 50V C0G/NP0 0603 (COND.CHIP 0603 1pF .25pF 50V NP0) --> Class: Capacitor
-C507        6.502    64.846     0.0      T     1AAN004438         CH1206C     CAP., CER., MULTILAYER, 100V, X7R, 4.7uF, 10%, SMD, 1206 --> Class: Capacitor
-C509       11.303    64.846     0.0      T     1AAN004438         CH1206C     CAP., CER., MULTILAYER, 100V, X7R, 4.7uF, 10%, SMD, 1206 --> Class: Capacitor
-R204       13.284    56.896     0.0      T     64440-12/821       RH0603B     RES 100kohm 1% 63mW MET 0603  (RES.CHIP 0603 100K 1%) --> Class: Resistor
-R207       13.284    55.397     0.0      T     64440-12/821       RH0603B     RES 100kohm 1% 63mW MET 0603  (RES.CHIP 0603 100K 1%) --> Class: Resistor
-R220       48.844    12.141     0.0      T     64440-12/121       RH0603B     RES 100kohm 2% 62.5mW MET 0603  (RES.CHIP   100k  2%  50V  0603) --> Class: Resistor
-R221       45.136    15.342     0.0      T     64440-12/121       RH0603B     RES 100kohm 2% 62.5mW MET 0603  (RES.CHIP   100k  2%  50V  0603) --> Class: Resistor
-R222       48.870    13.843     0.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor
-R223       56.998    18.313    90.0      T     64440-12/121       RH0603B     RES 100kohm 2% 62.5mW MET 0603  (RES.CHIP   100k  2%  50V  0603) --> Class: Resistor
-R224       55.194    18.796    90.0      T     64440-12/615       RH0603B     RES 56kohm 1% 63mW MET 0603 (RES.CHIP 0603 56k) --> Class: Resistor
-R225       53.696    18.796    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor
-R226       51.054    19.660     0.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor
-R227       55.651    16.053     0.0      T     64440-12/121       RH0603B     RES 100kohm 2% 62.5mW MET 0603  (RES.CHIP   100k  2%  50V  0603) --> Class: Resistor
-R228       52.045    11.938     0.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor
-R229       52.603    15.900    90.0      T     64440-12/121       RH0603B     RES 100kohm 2% 62.5mW MET 0603  (RES.CHIP   100k  2%  50V  0603) --> Class: Resistor
-R230       51.029    18.161     0.0      T     64440-12/121       RH0603B     RES 100kohm 2% 62.5mW MET 0603  (RES.CHIP   100k  2%  50V  0603) --> Class: Resistor
-R231       42.189    29.235    90.0      T     64440-12/589       RH0603B     RES 4.7kohm 1% 63mW MET 0603 (RES.CHIP 0603 4.7k) --> Class: Resistor
-R232       47.396    33.071    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor
-R233       43.510    35.458    90.0      T     64440-12/145       RH0603B     RES 1Mohm 1% 63mW MET 0603  (RES.CHIP     1M  1%  50V  0603) --> Class: Resistor
-R234       44.653    37.694     0.0      T     64440-12/613       RH0603B     RES 47kohm 1% 63mW MET 0603 (RES.CHIP 0603 47k) --> Class: Resistor
-R236       47.396    36.957    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor
-R237       51.892    29.032    90.0      T     64440-12/589       RH0603B     RES 4.7kohm 1% 63mW MET 0603 (RES.CHIP 0603 4.7k) --> Class: Resistor
-R238       52.730    32.309     0.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor
-R239       51.892    34.569    90.0      T     64440-12/145       RH0603B     RES 1Mohm 1% 63mW MET 0603  (RES.CHIP     1M  1%  50V  0603) --> Class: Resistor
-R240       52.553    37.389     0.0      T     64440-12/613       RH0603B     RES 47kohm 1% 63mW MET 0603 (RES.CHIP 0603 47k) --> Class: Resistor
-R241       52.527    38.887     0.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor
-R242       55.702    36.754    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor
-R243        2.464    58.699     0.0      T     64440-12/599       RH0603B     RES 12kohm 1% 63mW MET 0603 (RES.CHIP 0603 12k) --> Class: Resistor
-R301       47.955     6.198     0.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor
-R302       33.909     7.899     0.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor
-R304       34.849     4.089     0.0      T     2201790M0017       RH2512      RES 33ohm 5% 2W CERAMIC 2512 --> Class: Resistor
-R305       36.398    43.383    90.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor
-R306       34.900    43.409    90.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor
-R309       38.456    48.946    90.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor
-R310       36.957    48.870    90.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor
-R312       22.708    40.081    90.0      T     64440-12/049       RH0603B     RES 100ohm 1% 63mW MET 0603 (RES.CHIP 100o 1% 50V 0603) --> Class: Resistor
-R314       27.889    41.808    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor
-R315       32.969    10.312     0.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor
-R316       34.569    12.370     0.0      T     64440-12/591       RH0603B     RES 5.6kohm 1% 63mW MET 0603  (RES.CHIP 0603 5.6k) --> Class: Resistor
-R317       33.909    14.427    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor
-R318       37.109    14.326    90.0      T     64440-12/577       RH0603B     RES 1.5kohm 1% 63mW MET 0603 (RES.CHIP 0603 1.5k) --> Class: Resistor
-R321       30.632    17.170     0.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor
-R322       29.210    26.619    90.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor
-R323       37.668    24.663     0.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor
-R324       22.568    33.985     0.0      T     64440-09/745       RHMS1       RES 4.7kohm 1% 250mW MET (RES.MELF 4.7Kohm 1% 1.5 X 3.6) --> Class: Resistor
-R325       34.950    31.572     0.0      T     2201501-0014       RH0603B     RES 470ohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 470o) --> Class: Resistor
-R326       34.214    29.388    90.0      T     2201512-0011       RH0603B     RES 2.7kohm .1% 62mW MET _  (RES.SMT 0603 0.1% 2.7k) --> Class: Resistor
-R327       35.712    29.413    90.0      T     2201506-0019       RH0603B     RES 1kohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 1k) --> Class: Resistor
-R328       31.979    31.572     0.0      T     2201501-0014       RH0603B     RES 470ohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 470o) --> Class: Resistor
-R329       32.715    29.388    90.0      T     2201512-0011       RH0603B     RES 2.7kohm .1% 62mW MET _  (RES.SMT 0603 0.1% 2.7k) --> Class: Resistor
-R330       31.217    29.413    90.0      T     2201506-0019       RH0603B     RES 1kohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 1k) --> Class: Resistor
-R331       37.414    29.413    90.0      T     64440-12/605       RH0603B     RES 22kohm 1% 63mW MET 0603  (RES.CHIP 0603 22k) --> Class: Resistor
-R333       32.410    14.859    90.0      T     64440-12/001       RH0603B     RES 1ohm 5% 63mW MET _ (RES.CHIP 1o 5% 50V 0603) --> Class: Resistor
-R334       20.193    41.135    90.0      T     64440-09/001       RHMS1       RES 1ohm 1% 250mW MET (RES.MELF 1.00ohm 1% 1.5X3.6) --> Class: Resistor
-R401       80.086    16.027     0.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor
-R402       69.317     7.798     0.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor
-R404       70.612     4.089     0.0      T     2201790M0017       RH2512      RES 33ohm 5% 2W CERAMIC 2512 --> Class: Resistor
-R405       71.603    43.586    90.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor
-R406       70.104    43.612    90.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor
-R409       73.355    48.743    90.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor
-R410       71.653    48.565    90.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor
-R412       57.607    40.183    90.0      T     64440-12/049       RH0603B     RES 100ohm 1% 63mW MET 0603 (RES.CHIP 100o 1% 50V 0603) --> Class: Resistor
-R414       62.890    41.808    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor
-R415       72.847    10.846     0.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor
-R416       74.371    12.370     0.0      T     64440-12/591       RH0603B     RES 5.6kohm 1% 63mW MET 0603  (RES.CHIP 0603 5.6k) --> Class: Resistor
-R417       73.508    14.427    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor
-R418       76.759    14.402    90.0      T     64440-12/577       RH0603B     RES 1.5kohm 1% 63mW MET 0603 (RES.CHIP 0603 1.5k) --> Class: Resistor
-R421       69.621    17.069     0.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor
-R422       68.504    26.416    90.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor
-R423       76.581    24.663     0.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor
-R424       60.503    30.086    90.0      T     64440-09/745       RHMS1       RES 4.7kohm 1% 250mW MET (RES.MELF 4.7Kohm 1% 1.5 X 3.6) --> Class: Resistor
-R425       74.244    31.572     0.0      T     2201501-0014       RH0603B     RES 470ohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 470o) --> Class: Resistor
-R426       73.508    29.388    90.0      T     2201512-0011       RH0603B     RES 2.7kohm .1% 62mW MET _  (RES.SMT 0603 0.1% 2.7k) --> Class: Resistor
-R427       75.006    29.413    90.0      T     2201506-0019       RH0603B     RES 1kohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 1k) --> Class: Resistor
-R428       71.272    31.572     0.0      T     2201501-0014       RH0603B     RES 470ohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 470o) --> Class: Resistor
-R429       72.009    29.388    90.0      T     2201512-0011       RH0603B     RES 2.7kohm .1% 62mW MET _  (RES.SMT 0603 0.1% 2.7k) --> Class: Resistor
-R430       70.510    29.413    90.0      T     2201506-0019       RH0603B     RES 1kohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 1k) --> Class: Resistor
-R431       76.708    29.413    90.0      T     64440-12/605       RH0603B     RES 22kohm 1% 63mW MET 0603  (RES.CHIP 0603 22k) --> Class: Resistor
-R433       72.111    14.427    90.0      T     64440-12/001       RH0603B     RES 1ohm 5% 63mW MET _ (RES.CHIP 1o 5% 50V 0603) --> Class: Resistor
-R434       57.810    33.795    90.0      T     64440-09/001       RHMS1       RES 1ohm 1% 250mW MET (RES.MELF 1.00ohm 1% 1.5X3.6) --> Class: Resistor
-R501        1.905    66.065    90.0      T     64440-12/821       RH0603B     RES 100kohm 1% 63mW MET 0603  (RES.CHIP 0603 100K 1%) --> Class: Resistor
-R502        3.404    66.040    90.0      T     64440-12/821       RH0603B     RES 100kohm 1% 63mW MET 0603  (RES.CHIP 0603 100K 1%) --> Class: Resistor
-R503        7.696    71.476    90.0      T     64440-12/627       RH0603B     RES 180kohm 1% 63mW MET 0603  (RES.CHIP 0603 180k) --> Class: Resistor
-R504       10.693    71.476    90.0      T     64440-12/611       RH0603B     RES 39kohm 5% 63mW MET 0603 (RES.CHIP 0603 39k) --> Class: Resistor
-R505        9.195    71.476    90.0      T     2200516M1937       RH0603B     RES 51kohm 1% 63mW MET 0603 --> Class: Resistor
-R509       13.792    71.577    90.0      T     64440-12/129       RH0603B     RES 220kohm 1% 63mW MET 0603  (RES.CHIP   220k  1%  50V  0603) --> Class: Resistor
-R510        6.350    67.589     0.0      T     64440-12/821       RH0603B     RES 100kohm 1% 63mW MET 0603  (RES.CHIP 0603 100K 1%) --> Class: Resistor
-F101       93.497    59.258    90.0      T     68361-47/811       F535        Fuse (FUSIBILE SMT QUADROMELF DA 3 A) --> Class: Other
-L102       98.196    19.456    90.0      T     Y1200205           LH6D38      Y1200205 --> Class: Other
-L103       90.297    19.456    90.0      T     Y1200205           LH6D38      Y1200205 --> Class: Other
-L101       93.091    34.442    90.0      T     1500618M0021       LH4AA       IND 1.32mH 30% 3.3A SMD  (COMMON MODE CHOKES) --> Class: Other
-R307       29.566    34.138     0.0      T     2201791M0016       RH2512      RES 100ohm 5% 2W CERAMIC 2512 --> Class: Resistor
-R407       71.577    34.138     0.0      T     2201791M0016       RH2512      RES 100ohm 5% 2W CERAMIC 2512 --> Class: Resistor
-C109        8.712    48.743     0.0      T     1AAN001690         CHUUT5-GA   CAPACITOR, ALUMINUM ELECTROLYTIC, SOLID POLYMER, POLARIZED, 80V, 47uF, SURFACE --> Class: Electrolytic Capacitor
-C110        8.712    37.846     0.0      T     1AAN001690         CHUUT5-GA   CAPACITOR, ALUMINUM ELECTROLYTIC, SOLID POLYMER, POLARIZED, 80V, 47uF, SURFACE --> Class: Electrolytic Capacitor
-C111        8.712    26.340     0.0      T     1AAN001690         CHUUT5-GA   CAPACITOR, ALUMINUM ELECTROLYTIC, SOLID POLYMER, POLARIZED, 80V, 47uF, SURFACE --> Class: Electrolytic Capacitor
-C315       31.801    49.962     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor
-C316       31.801    46.838     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor
-C317       31.496    43.358     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor
-C320       26.594    46.838     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor
-C321       26.594    49.962     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor
-C327       29.413    30.074    90.0      T     Y0401017           CH0603A     CERAMIC CAP 1uF 10% 25V X7R 0603 --> Class: Capacitor
-C415       66.396    49.911     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor
-C416       66.396    46.812     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor
-C417       66.396    43.358     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor
-C420       61.189    46.812     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor
-C421       61.189    49.911     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor
-C427       68.707    29.870    90.0      T     Y0401017           CH0603A     CERAMIC CAP 1uF 10% 25V X7R 0603 --> Class: Capacitor
-C506       11.481    69.139     0.0      T     1AAN003554         CH0603A     CAP FIX CER 4.7nF 25V 10% 0603 --> Class: Capacitor
-D304       44.679    32.512   180.0      T     1AAN007995         RD123A      Rectifier Diode, Schottky, 1 Phase, 1 Element, 2A, 60V V(RRM), Silicon --> Class: Diode
-D404       73.812    37.795     0.0      T     1AAN007995         RD123A      Rectifier Diode, Schottky, 1 Phase, 1 Element, 2A, 60V V(RRM), Silicon --> Class: Diode
-IC302      33.020    22.454    90.0      T     1AAN015027         ADP1074ACC  ISOLATED SYNCH FORWARD CTRL WITH ACTIVE CLAMP AND iCOUPLER --> Class: IC
-IC402      71.907    22.454    90.0      T     1AAN015027         ADP1074ACC  ISOLATED SYNCH FORWARD CTRL WITH ACTIVE CLAMP AND iCOUPLER --> Class: IC
-R235       44.628    39.192     0.0      T     76502M101056       RH0603B     RESIST CRCW06032002F100 20K 1% SMD --> Class: Resistor
-R319       37.846    20.168     0.0      T     2299999M0457       RH0603B     RES 28kohm 1% 100mW MET 0603 --> Class: Resistor
-R320       37.821    21.463     0.0      T     2201835M0014       RH0603AA    RES 49.9kohm 1% 100mW MET 0603  (49K9 0603 THICK FILM 0.1W) --> Class: Resistor
-R419       76.759    19.964     0.0      T     2299999M0457       RH0603B     RES 28kohm 1% 100mW MET 0603 --> Class: Resistor
-R420       76.708    21.260     0.0      T     2201835M0014       RH0603AA    RES 49.9kohm 1% 100mW MET 0603  (49K9 0603 THICK FILM 0.1W) --> Class: Resistor
-TR303      33.465    39.040   270.0      T     1AAN007754         SOT685-5    Power Field-Effect Transistor, 14A I(D), 100V, 0.007ohm, 1-Element, N-Channel, --> Class: Transistor
-TR304      40.005    44.310   180.0      T     1AAN007754         SOT685-5    Power Field-Effect Transistor, 14A I(D), 100V, 0.007ohm, 1-Element, N-Channel, --> Class: Transistor
-TR403      68.440    39.040   270.0      T     1AAN007754         SOT685-5    Power Field-Effect Transistor, 14A I(D), 100V, 0.007ohm, 1-Element, N-Channel, --> Class: Transistor
-TR404      75.311    44.310   180.0      T     1AAN007754         SOT685-5    Power Field-Effect Transistor, 14A I(D), 100V, 0.007ohm, 1-Element, N-Channel, --> Class: Transistor
+IC204      50.698    15.951   180.0      T     4001794M0015       SOT553      OP AMP OPA170 SINGLE SOT553-5  (36V, SINGLE-SUPPLY, SOT553, LOW-POWER OPERATION --> Class: IC | Dimensions (mm): 1.6 x 1.6 x 0.55 | Source: onsemi.com / ti.com
+IC206      45.390    35.509   180.0      T     4001794M0015       SOT553      OP AMP OPA170 SINGLE SOT553-5  (36V, SINGLE-SUPPLY, SOT553, LOW-POWER OPERATION --> Class: IC | Dimensions (mm): 1.6 x 1.6 x 0.55 | Source: onsemi.com / ti.com
+IC207      47.295    39.700     0.0      T     4001794M0015       SOT553      OP AMP OPA170 SINGLE SOT553-5  (36V, SINGLE-SUPPLY, SOT553, LOW-POWER OPERATION --> Class: IC | Dimensions (mm): 1.6 x 1.6 x 0.55 | Source: onsemi.com / ti.com
+IC209      53.797    35.306   180.0      T     4001794M0015       SOT553      OP AMP OPA170 SINGLE SOT553-5  (36V, SINGLE-SUPPLY, SOT553, LOW-POWER OPERATION --> Class: IC | Dimensions (mm): 1.6 x 1.6 x 0.55 | Source: onsemi.com / ti.com
+IC210      55.296    39.497     0.0      T     4001794M0015       SOT553      OP AMP OPA170 SINGLE SOT553-5  (36V, SINGLE-SUPPLY, SOT553, LOW-POWER OPERATION --> Class: IC | Dimensions (mm): 1.6 x 1.6 x 0.55 | Source: onsemi.com / ti.com
+IC301      25.298    41.859     0.0      T     4000887M0569       MSOP8D      IC LTC6101HV _ MSOP-8 (HIGH VOLTAGE, HIGH-SIDE CURRENT SENSE AMPLIFIER,SUPPLY R --> Class: IC | Dimensions (mm): 3.0 x 4.9 x 1.1 | Source: analog.com
+IC401      60.300    41.859     0.0      T     4000887M0569       MSOP8D      IC LTC6101HV _ MSOP-8 (HIGH VOLTAGE, HIGH-SIDE CURRENT SENSE AMPLIFIER,SUPPLY R --> Class: IC | Dimensions (mm): 3.0 x 4.9 x 1.1 | Source: analog.com
+TR103       8.865    11.621    90.0      T     1AAN004212         D2PAK       N CHANNEL 150 V  MOSFET   TO-263 --> Class: Transistor | Dimensions (mm): 10.16 x 15.24 x 4.57 | Source: infineon.com
+TR201       5.893    56.540    90.0      T     69697-27/001       SOT23A      BJT SIG MMBT2222A NPN SOT-23  (TRANS. NPN   MMBT2222A 350mW) --> Class: Transistor | Dimensions (mm): 2.92 x 2.37 x 1.12 | Source: nexperia.com / onsemi.com
+TR202       9.804    56.540    90.0      T     69697-27/001       SOT23A      BJT SIG MMBT2222A NPN SOT-23  (TRANS. NPN   MMBT2222A 350mW) --> Class: Transistor | Dimensions (mm): 2.92 x 2.37 x 1.12 | Source: nexperia.com / onsemi.com
+TR205      44.907    18.059   180.0      T     69698-07/001       SOT23A      FET SIG 2N7002 N CASE 318-08 3 PIN --> Class: Transistor | Dimensions (mm): 2.92 x 2.37 x 1.12 | Source: nexperia.com / onsemi.com
+TR206      45.212    12.649    90.0      T     69698-07/001       SOT23A      FET SIG 2N7002 N CASE 318-08 3 PIN --> Class: Transistor | Dimensions (mm): 2.92 x 2.37 x 1.12 | Source: nexperia.com / onsemi.com
+TR207      44.907    29.108    90.0      T     69698-07/001       SOT23A      FET SIG 2N7002 N CASE 318-08 3 PIN --> Class: Transistor | Dimensions (mm): 2.92 x 2.37 x 1.12 | Source: nexperia.com / onsemi.com
+TR208      54.610    29.489    90.0      T     69698-07/001       SOT23A      FET SIG 2N7002 N CASE 318-08 3 PIN --> Class: Transistor | Dimensions (mm): 2.92 x 2.37 x 1.12 | Source: nexperia.com / onsemi.com
+TR209      55.601    13.360    90.0      T     69669-42/001       SOT23A      BJT SIG MMBT2907 PNP SOT-23 (TRANS. PNP BSR15) --> Class: Transistor | Dimensions (mm): 2.92 x 2.37 x 1.12 | Source: nexperia.com / onsemi.com
+TR210      41.402    12.675   270.0      T     69698-07/001       SOT23A      FET SIG 2N7002 N CASE 318-08 3 PIN --> Class: Transistor | Dimensions (mm): 2.92 x 2.37 x 1.12 | Source: nexperia.com / onsemi.com
+TR301      44.133     5.309   270.0      T     1AAN001691         SOT1212-8A  MOSFET P-CHANNEL 150V, 2A --> Class: Transistor | Dimensions (mm): 3.3 x 3.3 x 0.85 | Source: nexperia.com
+TR305      23.114    29.756   270.0      T     69697-35/001       SOT89A      BJT PWR BCX55 NPN SOT89 (TRANS. NPN BCX55-10) --> Class: Transistor | Dimensions (mm): 4.5 x 4.0 x 1.5 | Source: nexperia.com / diodes.com
+TR401      81.966    13.145   180.0      T     1AAN001691         SOT1212-8A  MOSFET P-CHANNEL 150V, 2A --> Class: Transistor | Dimensions (mm): 3.3 x 3.3 x 0.85 | Source: nexperia.com
+TR405      64.719    30.239   270.0      T     69697-35/001       SOT89A      BJT PWR BCX55 NPN SOT89 (TRANS. NPN BCX55-10) --> Class: Transistor | Dimensions (mm): 4.5 x 4.0 x 1.5 | Source: nexperia.com / diodes.com
+TR501       3.048    69.494   270.0      T     69697-27/001       SOT23A      BJT SIG MMBT2222A NPN SOT-23  (TRANS. NPN   MMBT2222A 350mW) --> Class: Transistor | Dimensions (mm): 2.92 x 2.37 x 1.12 | Source: nexperia.com / onsemi.com
+D203       55.296    21.539   270.0      T     1200926M0017       SC79A       Diode sig _V 500mA 500mW SC-79 (BAS516 SIGNAL DIODE SC-79 500mW) --> Class: Diode | Dimensions (mm): 1.6 x 0.8 x 0.6 | Source: nexperia.com
+D204       53.797    21.539    90.0      T     1200926M0017       SC79A       Diode sig _V 500mA 500mW SC-79 (BAS516 SIGNAL DIODE SC-79 500mW) --> Class: Diode | Dimensions (mm): 1.6 x 0.8 x 0.6 | Source: nexperia.com
+D301       45.212     8.992   270.0      T     1200926M0017       SC79A       Diode sig _V 500mA 500mW SC-79 (BAS516 SIGNAL DIODE SC-79 500mW) --> Class: Diode | Dimensions (mm): 1.6 x 0.8 x 0.6 | Source: nexperia.com
+D308       19.558    36.779   270.0      T     1200926M0017       SC79A       Diode sig _V 500mA 500mW SC-79 (BAS516 SIGNAL DIODE SC-79 500mW) --> Class: Diode | Dimensions (mm): 1.6 x 0.8 x 0.6 | Source: nexperia.com
+D401       78.943    13.335    90.0      T     1200926M0017       SC79A       Diode sig _V 500mA 500mW SC-79 (BAS516 SIGNAL DIODE SC-79 500mW) --> Class: Diode | Dimensions (mm): 1.6 x 0.8 x 0.6 | Source: nexperia.com
+D408       59.969    34.798    90.0      T     1200926M0017       SC79A       Diode sig _V 500mA 500mW SC-79 (BAS516 SIGNAL DIODE SC-79 500mW) --> Class: Diode | Dimensions (mm): 1.6 x 0.8 x 0.6 | Source: nexperia.com
+D306       45.999    45.847    90.0      T     69541-48/001       DO-214AA    TVS _V _uA 600W DO-214AA  (TRANSZORB BIDIRECT.  7.5V  5%) --> Class: Diode | Dimensions (mm): 5.3 x 3.6 x 2.2 | Source: vishay.com
+D307       22.403    25.273     0.0      T     69594-01/009       RD23A       Zener 10V 200mW 49, 3 PIN (DIODO ZENER BZX84-C10 10V) --> Class: Diode | Dimensions (mm): 2.92 x 2.37 x 1.12 | Source: nexperia.com
+D406       54.508    45.847    90.0      T     69541-48/001       DO-214AA    TVS _V _uA 600W DO-214AA  (TRANSZORB BIDIRECT.  7.5V  5%) --> Class: Diode | Dimensions (mm): 5.3 x 3.6 x 2.2 | Source: vishay.com
+D407       60.706    25.273     0.0      T     69594-01/009       RD23A       Zener 10V 200mW 49, 3 PIN (DIODO ZENER BZX84-C10 10V) --> Class: Diode | Dimensions (mm): 2.92 x 2.37 x 1.12 | Source: nexperia.com
+C210       52.019    13.640     0.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C211       48.311    17.856    90.0      T     1AAN004438         CH1206C     CAP., CER., MULTILAYER, 100V, X7R, 4.7uF, 10%, SMD, 1206 --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C215       52.578    40.488     0.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C216       44.704    40.894     0.0      T     66380-13/551       CH0603A     CAP 10nF +/-10% 50V X7R 0603 (COND.CHIP 0603 10nF 10% 50V X7R) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C217       59.512    37.795     0.0      T     66380-13/551       CH0603A     CAP 10nF +/-10% 50V X7R 0603 (COND.CHIP 0603 10nF 10% 50V X7R) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C301       29.007     6.401    90.0      T     1101182M0263       CH1210D     CAP 10uF +/-10% 50V X7R 1210 (1210 PACKAGE ) --> Class: Capacitor | Dimensions (mm): 3.2 x 2.5 x 2.0 | Source: murata.com
+C304       25.908     6.401    90.0      T     1101182M0263       CH1210D     CAP 10uF +/-10% 50V X7R 1210 (1210 PACKAGE ) --> Class: Capacitor | Dimensions (mm): 3.2 x 2.5 x 2.0 | Source: murata.com
+C305       47.930     7.798     0.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C306       41.605     8.839     0.0      T     66380-05/245       CH1206A     CAP 15nF +/-10% 200V CER _ (COND.CHIP 15n 10% 200V 1206) --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C307       40.107     4.953    90.0      T     66380-04/332       CH1206A     CAP 390pF +/-5% 500V CER 1206 (COND.CHIP 390p 5% 500V 1206) --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C308       27.711    21.692    90.0      T     66380-07/967       CH1812A     CAP 47nF +/-10% 1000V CER _  (COND.CHIP 47nF 10% 1KV 1812) --> Class: Capacitor | Dimensions (mm): 4.5 x 3.2 x 1.5 | Source: murata.com
+C309       36.500    33.553     0.0      T     66380-04/332       CH1206A     CAP 390pF +/-5% 500V CER 1206 (COND.CHIP 390p 5% 500V 1206) --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C318       22.708    42.951    90.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C323       36.881    16.866     0.0      T     66380-13/113       CH0603A     CAP 100pF +/-5% 50V CER 0603 (COND.CHIP 0603 100pF 5% 50V NPO) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C324       30.404    13.564    90.0      T     1100733M0731       CH1206C     CAP 10uF +/-10% 25V X7R 1206 --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C325       27.915    13.564    90.0      T     1100733M0731       CH1206C     CAP 10uF +/-10% 25V X7R 1206 --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C326       37.922    18.567     0.0      T     1100746M1395       CH0603A     CAP 2.2uF +/-10% 10V X7R 0603 (0603) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C328       37.719    26.264     0.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C329       27.153    27.788    90.0      T     1AAN004438         CH1206C     CAP., CER., MULTILAYER, 100V, X7R, 4.7uF, 10%, SMD, 1206 --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C330       22.682    36.627     0.0      T     1AAN004438         CH1206C     CAP., CER., MULTILAYER, 100V, X7R, 4.7uF, 10%, SMD, 1206 --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C331       39.827    28.550     0.0      T     66380-13/113       CH0603A     CAP 100pF +/-5% 50V CER 0603 (COND.CHIP 0603 100pF 5% 50V NPO) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C332       39.802    30.251     0.0      T     66380-13/547       CH0603A     CAP 4.7nF +/-10% 50V X7R 0603 (COND.CHIP 0603 4.7nF 10% 50V X7R) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C402       61.443     6.401    90.0      T     1101182M0263       CH1210D     CAP 10uF +/-10% 50V X7R 1210 (1210 PACKAGE ) --> Class: Capacitor | Dimensions (mm): 3.2 x 2.5 x 2.0 | Source: murata.com
+C403       64.541     6.401    90.0      T     1101182M0263       CH1210D     CAP 10uF +/-10% 50V X7R 1210 (1210 PACKAGE ) --> Class: Capacitor | Dimensions (mm): 3.2 x 2.5 x 2.0 | Source: murata.com
+C405       79.756    18.339    90.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C406       81.026     9.296     0.0      T     66380-05/245       CH1206A     CAP 15nF +/-10% 200V CER _ (COND.CHIP 15n 10% 200V 1206) --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C407       76.251     5.944    90.0      T     66380-04/332       CH1206A     CAP 390pF +/-5% 500V CER 1206 (COND.CHIP 390p 5% 500V 1206) --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C408       66.599    21.488    90.0      T     66380-07/967       CH1812A     CAP 47nF +/-10% 1000V CER _  (COND.CHIP 47nF 10% 1KV 1812) --> Class: Capacitor | Dimensions (mm): 4.5 x 3.2 x 1.5 | Source: murata.com
+C409       77.749    34.696    90.0      T     66380-04/332       CH1206A     CAP 390pF +/-5% 500V CER 1206 (COND.CHIP 390p 5% 500V 1206) --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C418       57.607    43.155    90.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C423       75.768    16.866     0.0      T     66380-13/113       CH0603A     CAP 100pF +/-5% 50V CER 0603 (COND.CHIP 0603 100pF 5% 50V NPO) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C424       70.104    13.462    90.0      T     1100733M0731       CH1206C     CAP 10uF +/-10% 25V X7R 1206 --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C425       67.615    13.462    90.0      T     1100733M0731       CH1206C     CAP 10uF +/-10% 25V X7R 1206 --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C426       76.835    18.466     0.0      T     1100746M1395       CH0603A     CAP 2.2uF +/-10% 10V X7R 0603 (0603) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C428       76.632    26.264     0.0      T     1100746M1148       CH0603A     CAP 100nF +/-10% 50V X7R 0603 (100nF, 0603, 50V, X7R Fixed Capacitor) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C429       65.100    26.264     0.0      T     1AAN004438         CH1206C     CAP., CER., MULTILAYER, 100V, X7R, 4.7uF, 10%, SMD, 1206 --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C430       63.627    34.163     0.0      T     1AAN004438         CH1206C     CAP., CER., MULTILAYER, 100V, X7R, 4.7uF, 10%, SMD, 1206 --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C431       79.121    28.550     0.0      T     66380-13/113       CH0603A     CAP 100pF +/-5% 50V CER 0603 (COND.CHIP 0603 100pF 5% 50V NPO) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C432       79.121    30.251     0.0      T     66380-13/547       CH0603A     CAP 4.7nF +/-10% 50V X7R 0603 (COND.CHIP 0603 4.7nF 10% 50V X7R) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C501        6.096    71.374    90.0      T     66380-13/003       CH0603A     CAP 1pF +/-0.25PF 50V C0G/NP0 0603 (COND.CHIP 0603 1pF .25pF 50V NP0) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C502        8.382    69.139     0.0      T     66380-13/538       CH0603A     CAP 820pF +/-10% 50V X7R 0603 (COND.CHIP 0603 820pF 10% 50V X7R) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C505       12.294    71.552    90.0      T     66380-13/003       CH0603A     CAP 1pF +/-0.25PF 50V C0G/NP0 0603 (COND.CHIP 0603 1pF .25pF 50V NP0) --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C507        6.502    64.846     0.0      T     1AAN004438         CH1206C     CAP., CER., MULTILAYER, 100V, X7R, 4.7uF, 10%, SMD, 1206 --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+C509       11.303    64.846     0.0      T     1AAN004438         CH1206C     CAP., CER., MULTILAYER, 100V, X7R, 4.7uF, 10%, SMD, 1206 --> Class: Capacitor | Dimensions (mm): 3.2 x 1.6 x 0.6 | Source: murata.com
+R204       13.284    56.896     0.0      T     64440-12/821       RH0603B     RES 100kohm 1% 63mW MET 0603  (RES.CHIP 0603 100K 1%) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R207       13.284    55.397     0.0      T     64440-12/821       RH0603B     RES 100kohm 1% 63mW MET 0603  (RES.CHIP 0603 100K 1%) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R220       48.844    12.141     0.0      T     64440-12/121       RH0603B     RES 100kohm 2% 62.5mW MET 0603  (RES.CHIP   100k  2%  50V  0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R221       45.136    15.342     0.0      T     64440-12/121       RH0603B     RES 100kohm 2% 62.5mW MET 0603  (RES.CHIP   100k  2%  50V  0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R222       48.870    13.843     0.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R223       56.998    18.313    90.0      T     64440-12/121       RH0603B     RES 100kohm 2% 62.5mW MET 0603  (RES.CHIP   100k  2%  50V  0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R224       55.194    18.796    90.0      T     64440-12/615       RH0603B     RES 56kohm 1% 63mW MET 0603 (RES.CHIP 0603 56k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R225       53.696    18.796    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R226       51.054    19.660     0.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R227       55.651    16.053     0.0      T     64440-12/121       RH0603B     RES 100kohm 2% 62.5mW MET 0603  (RES.CHIP   100k  2%  50V  0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R228       52.045    11.938     0.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R229       52.603    15.900    90.0      T     64440-12/121       RH0603B     RES 100kohm 2% 62.5mW MET 0603  (RES.CHIP   100k  2%  50V  0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R230       51.029    18.161     0.0      T     64440-12/121       RH0603B     RES 100kohm 2% 62.5mW MET 0603  (RES.CHIP   100k  2%  50V  0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R231       42.189    29.235    90.0      T     64440-12/589       RH0603B     RES 4.7kohm 1% 63mW MET 0603 (RES.CHIP 0603 4.7k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R232       47.396    33.071    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R233       43.510    35.458    90.0      T     64440-12/145       RH0603B     RES 1Mohm 1% 63mW MET 0603  (RES.CHIP     1M  1%  50V  0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R234       44.653    37.694     0.0      T     64440-12/613       RH0603B     RES 47kohm 1% 63mW MET 0603 (RES.CHIP 0603 47k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R236       47.396    36.957    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R237       51.892    29.032    90.0      T     64440-12/589       RH0603B     RES 4.7kohm 1% 63mW MET 0603 (RES.CHIP 0603 4.7k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R238       52.730    32.309     0.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R239       51.892    34.569    90.0      T     64440-12/145       RH0603B     RES 1Mohm 1% 63mW MET 0603  (RES.CHIP     1M  1%  50V  0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R240       52.553    37.389     0.0      T     64440-12/613       RH0603B     RES 47kohm 1% 63mW MET 0603 (RES.CHIP 0603 47k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R241       52.527    38.887     0.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R242       55.702    36.754    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R243        2.464    58.699     0.0      T     64440-12/599       RH0603B     RES 12kohm 1% 63mW MET 0603 (RES.CHIP 0603 12k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R301       47.955     6.198     0.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R302       33.909     7.899     0.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R304       34.849     4.089     0.0      T     2201790M0017       RH2512      RES 33ohm 5% 2W CERAMIC 2512 --> Class: Resistor | Dimensions (mm): 6.3 x 3.2 x 0.6 | Source: vishay.com
+R305       36.398    43.383    90.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R306       34.900    43.409    90.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R309       38.456    48.946    90.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R310       36.957    48.870    90.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R312       22.708    40.081    90.0      T     64440-12/049       RH0603B     RES 100ohm 1% 63mW MET 0603 (RES.CHIP 100o 1% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R314       27.889    41.808    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R315       32.969    10.312     0.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R316       34.569    12.370     0.0      T     64440-12/591       RH0603B     RES 5.6kohm 1% 63mW MET 0603  (RES.CHIP 0603 5.6k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R317       33.909    14.427    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R318       37.109    14.326    90.0      T     64440-12/577       RH0603B     RES 1.5kohm 1% 63mW MET 0603 (RES.CHIP 0603 1.5k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R321       30.632    17.170     0.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R322       29.210    26.619    90.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R323       37.668    24.663     0.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R324       22.568    33.985     0.0      T     64440-09/745       RHMS1       RES 4.7kohm 1% 250mW MET (RES.MELF 4.7Kohm 1% 1.5 X 3.6) --> Class: Resistor | Dimensions (mm): 3.6 x 1.5 | Source: vishay.com
+R325       34.950    31.572     0.0      T     2201501-0014       RH0603B     RES 470ohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 470o) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R326       34.214    29.388    90.0      T     2201512-0011       RH0603B     RES 2.7kohm .1% 62mW MET _  (RES.SMT 0603 0.1% 2.7k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R327       35.712    29.413    90.0      T     2201506-0019       RH0603B     RES 1kohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 1k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R328       31.979    31.572     0.0      T     2201501-0014       RH0603B     RES 470ohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 470o) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R329       32.715    29.388    90.0      T     2201512-0011       RH0603B     RES 2.7kohm .1% 62mW MET _  (RES.SMT 0603 0.1% 2.7k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R330       31.217    29.413    90.0      T     2201506-0019       RH0603B     RES 1kohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 1k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R331       37.414    29.413    90.0      T     64440-12/605       RH0603B     RES 22kohm 1% 63mW MET 0603  (RES.CHIP 0603 22k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R333       32.410    14.859    90.0      T     64440-12/001       RH0603B     RES 1ohm 5% 63mW MET _ (RES.CHIP 1o 5% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R334       20.193    41.135    90.0      T     64440-09/001       RHMS1       RES 1ohm 1% 250mW MET (RES.MELF 1.00ohm 1% 1.5X3.6) --> Class: Resistor | Dimensions (mm): 3.6 x 1.5 | Source: vishay.com
+R401       80.086    16.027     0.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R402       69.317     7.798     0.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R404       70.612     4.089     0.0      T     2201790M0017       RH2512      RES 33ohm 5% 2W CERAMIC 2512 --> Class: Resistor | Dimensions (mm): 6.3 x 3.2 x 0.6 | Source: vishay.com
+R405       71.603    43.586    90.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R406       70.104    43.612    90.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R409       73.355    48.743    90.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R410       71.653    48.565    90.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R412       57.607    40.183    90.0      T     64440-12/049       RH0603B     RES 100ohm 1% 63mW MET 0603 (RES.CHIP 100o 1% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R414       62.890    41.808    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R415       72.847    10.846     0.0      T     64440-12/609       RH0603B     RES 33kohm 1% 63mW MET 0603 (RES.CHIP 0603 33k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R416       74.371    12.370     0.0      T     64440-12/591       RH0603B     RES 5.6kohm 1% 63mW MET 0603  (RES.CHIP 0603 5.6k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R417       73.508    14.427    90.0      T     64440-12/097       RH0603B     RES 10kohm 1% 63mW MET 0603 (RES.CHIP 10k 1% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R418       76.759    14.402    90.0      T     64440-12/577       RH0603B     RES 1.5kohm 1% 63mW MET 0603 (RES.CHIP 0603 1.5k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R421       69.621    17.069     0.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R422       68.504    26.416    90.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R423       76.581    24.663     0.0      T     64440-12/999       RH0603B     RES 0ohm _% 100mW MET 0603  (RES.CHIP 0603 0o (zero ohm)) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R424       60.503    30.086    90.0      T     64440-09/745       RHMS1       RES 4.7kohm 1% 250mW MET (RES.MELF 4.7Kohm 1% 1.5 X 3.6) --> Class: Resistor | Dimensions (mm): 3.6 x 1.5 | Source: vishay.com
+R425       74.244    31.572     0.0      T     2201501-0014       RH0603B     RES 470ohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 470o) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R426       73.508    29.388    90.0      T     2201512-0011       RH0603B     RES 2.7kohm .1% 62mW MET _  (RES.SMT 0603 0.1% 2.7k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R427       75.006    29.413    90.0      T     2201506-0019       RH0603B     RES 1kohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 1k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R428       71.272    31.572     0.0      T     2201501-0014       RH0603B     RES 470ohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 470o) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R429       72.009    29.388    90.0      T     2201512-0011       RH0603B     RES 2.7kohm .1% 62mW MET _  (RES.SMT 0603 0.1% 2.7k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R430       70.510    29.413    90.0      T     2201506-0019       RH0603B     RES 1kohm .1% 62mW MET 0603  (RES.SMT 0603 0.1% 1k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R431       76.708    29.413    90.0      T     64440-12/605       RH0603B     RES 22kohm 1% 63mW MET 0603  (RES.CHIP 0603 22k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R433       72.111    14.427    90.0      T     64440-12/001       RH0603B     RES 1ohm 5% 63mW MET _ (RES.CHIP 1o 5% 50V 0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R434       57.810    33.795    90.0      T     64440-09/001       RHMS1       RES 1ohm 1% 250mW MET (RES.MELF 1.00ohm 1% 1.5X3.6) --> Class: Resistor | Dimensions (mm): 3.6 x 1.5 | Source: vishay.com
+R501        1.905    66.065    90.0      T     64440-12/821       RH0603B     RES 100kohm 1% 63mW MET 0603  (RES.CHIP 0603 100K 1%) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R502        3.404    66.040    90.0      T     64440-12/821       RH0603B     RES 100kohm 1% 63mW MET 0603  (RES.CHIP 0603 100K 1%) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R503        7.696    71.476    90.0      T     64440-12/627       RH0603B     RES 180kohm 1% 63mW MET 0603  (RES.CHIP 0603 180k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R504       10.693    71.476    90.0      T     64440-12/611       RH0603B     RES 39kohm 5% 63mW MET 0603 (RES.CHIP 0603 39k) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R505        9.195    71.476    90.0      T     2200516M1937       RH0603B     RES 51kohm 1% 63mW MET 0603 --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R509       13.792    71.577    90.0      T     64440-12/129       RH0603B     RES 220kohm 1% 63mW MET 0603  (RES.CHIP   220k  1%  50V  0603) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R510        6.350    67.589     0.0      T     64440-12/821       RH0603B     RES 100kohm 1% 63mW MET 0603  (RES.CHIP 0603 100K 1%) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+F101       93.497    59.258    90.0      T     68361-47/811       F535        Fuse (FUSIBILE SMT QUADROMELF DA 3 A) --> Class: Other | Dimensions (mm): 5.3 x 2.3 | Source: littelfuse.com
+L102       98.196    19.456    90.0      T     Y1200205           LH6D38      Y1200205 --> Class: Other | Dimensions (mm): 6.0 x 6.0 x 3.8 | Source: sumida.com
+L103       90.297    19.456    90.0      T     Y1200205           LH6D38      Y1200205 --> Class: Other | Dimensions (mm): 6.0 x 6.0 x 3.8 | Source: sumida.com
+L101       93.091    34.442    90.0      T     1500618M0021       LH4AA       IND 1.32mH 30% 3.3A SMD  (COMMON MODE CHOKES) --> Class: Other | Dimensions (mm): ~12.0 x 12.0 x 4.0 | Source: we-online.com
+R307       29.566    34.138     0.0      T     2201791M0016       RH2512      RES 100ohm 5% 2W CERAMIC 2512 --> Class: Resistor | Dimensions (mm): 6.3 x 3.2 x 0.6 | Source: vishay.com
+R407       71.577    34.138     0.0      T     2201791M0016       RH2512      RES 100ohm 5% 2W CERAMIC 2512 --> Class: Resistor | Dimensions (mm): 6.3 x 3.2 x 0.6 | Source: vishay.com
+C109        8.712    48.743     0.0      T     1AAN001690         CHUUT5-GA   CAPACITOR, ALUMINUM ELECTROLYTIC, SOLID POLYMER, POLARIZED, 80V, 47uF, SURFACE --> Class: Electrolytic Capacitor | Dimensions (mm): 8.0 x 10.0 | Source: panasonic.com
+C110        8.712    37.846     0.0      T     1AAN001690         CHUUT5-GA   CAPACITOR, ALUMINUM ELECTROLYTIC, SOLID POLYMER, POLARIZED, 80V, 47uF, SURFACE --> Class: Electrolytic Capacitor | Dimensions (mm): 8.0 x 10.0 | Source: panasonic.com
+C111        8.712    26.340     0.0      T     1AAN001690         CHUUT5-GA   CAPACITOR, ALUMINUM ELECTROLYTIC, SOLID POLYMER, POLARIZED, 80V, 47uF, SURFACE --> Class: Electrolytic Capacitor | Dimensions (mm): 8.0 x 10.0 | Source: panasonic.com
+C315       31.801    49.962     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor | Dimensions (mm): 3.2 x 2.5 x 2.0 | Source: murata.com / avx.com
+C316       31.801    46.838     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor | Dimensions (mm): 3.2 x 2.5 x 2.0 | Source: murata.com / avx.com
+C317       31.496    43.358     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor | Dimensions (mm): 3.2 x 2.5 x 2.0 | Source: murata.com / avx.com
+C320       26.594    46.838     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor | Dimensions (mm): 3.2 x 2.5 x 2.0 | Source: murata.com / avx.com
+C321       26.594    49.962     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor | Dimensions (mm): 3.2 x 2.5 x 2.0 | Source: murata.com / avx.com
+C327       29.413    30.074    90.0      T     Y0401017           CH0603A     CERAMIC CAP 1uF 10% 25V X7R 0603 --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C415       66.396    49.911     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor | Dimensions (mm): 3.2 x 2.5 x 2.0 | Source: murata.com / avx.com
+C416       66.396    46.812     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor | Dimensions (mm): 3.2 x 2.5 x 2.0 | Source: murata.com / avx.com
+C417       66.396    43.358     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor | Dimensions (mm): 3.2 x 2.5 x 2.0 | Source: murata.com / avx.com
+C420       61.189    46.812     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor | Dimensions (mm): 3.2 x 2.5 x 2.0 | Source: murata.com / avx.com
+C421       61.189    49.911     0.0      T     1AAN001081         CH1210A     Cap. J Leads Stacked - Ceramic X7R 47uF 20% 10V Case 1210-2 SMD --> Class: Capacitor | Dimensions (mm): 3.2 x 2.5 x 2.0 | Source: murata.com / avx.com
+C427       68.707    29.870    90.0      T     Y0401017           CH0603A     CERAMIC CAP 1uF 10% 25V X7R 0603 --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+C506       11.481    69.139     0.0      T     1AAN003554         CH0603A     CAP FIX CER 4.7nF 25V 10% 0603 --> Class: Capacitor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+D304       44.679    32.512   180.0      T     1AAN007995         RD123A      Rectifier Diode, Schottky, 1 Phase, 1 Element, 2A, 60V V(RRM), Silicon --> Class: Diode | Dimensions (mm): 3.7 x 1.6 x 1.2 | Source: diodes.com
+D404       73.812    37.795     0.0      T     1AAN007995         RD123A      Rectifier Diode, Schottky, 1 Phase, 1 Element, 2A, 60V V(RRM), Silicon --> Class: Diode | Dimensions (mm): 3.7 x 1.6 x 1.2 | Source: diodes.com
+IC302      33.020    22.454    90.0      T     1AAN015027         ADP1074ACC  ISOLATED SYNCH FORWARD CTRL WITH ACTIVE CLAMP AND iCOUPLER --> Class: IC | Dimensions (mm): 4.0 x 5.0 x 0.8 | Source: analog.com
+IC402      71.907    22.454    90.0      T     1AAN015027         ADP1074ACC  ISOLATED SYNCH FORWARD CTRL WITH ACTIVE CLAMP AND iCOUPLER --> Class: IC | Dimensions (mm): 4.0 x 5.0 x 0.8 | Source: analog.com
+R235       44.628    39.192     0.0      T     76502M101056       RH0603B     RESIST CRCW06032002F100 20K 1% SMD --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R319       37.846    20.168     0.0      T     2299999M0457       RH0603B     RES 28kohm 1% 100mW MET 0603 --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R320       37.821    21.463     0.0      T     2201835M0014       RH0603AA    RES 49.9kohm 1% 100mW MET 0603  (49K9 0603 THICK FILM 0.1W) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R419       76.759    19.964     0.0      T     2299999M0457       RH0603B     RES 28kohm 1% 100mW MET 0603 --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+R420       76.708    21.260     0.0      T     2201835M0014       RH0603AA    RES 49.9kohm 1% 100mW MET 0603  (49K9 0603 THICK FILM 0.1W) --> Class: Resistor | Dimensions (mm): 1.6 x 0.8 x 0.45 | Source: murata.com / vishay.com
+TR303      33.465    39.040   270.0      T     1AAN007754         SOT685-5    Power Field-Effect Transistor, 14A I(D), 100V, 0.007ohm, 1-Element, N-Channel, --> Class: Transistor | Dimensions (mm): 6.0 x 5.0 x 0.85 | Source: nxp.com
+TR304      40.005    44.310   180.0      T     1AAN007754         SOT685-5    Power Field-Effect Transistor, 14A I(D), 100V, 0.007ohm, 1-Element, N-Channel, --> Class: Transistor | Dimensions (mm): 6.0 x 5.0 x 0.85 | Source: nxp.com
+TR403      68.440    39.040   270.0      T     1AAN007754         SOT685-5    Power Field-Effect Transistor, 14A I(D), 100V, 0.007ohm, 1-Element, N-Channel, --> Class: Transistor | Dimensions (mm): 6.0 x 5.0 x 0.85 | Source: nxp.com
+TR404      75.311    44.310   180.0      T     1AAN007754         SOT685-5    Power Field-Effect Transistor, 14A I(D), 100V, 0.007ohm, 1-Element, N-Channel, --> Class: Transistor | Dimensions (mm): 6.0 x 5.0 x 0.85 | Source: nxp.com

@@ -25,6 +25,17 @@ enum class AoiMatchStatus {
 };
 
 /**
+ * @brief Informazioni di package e dimensioni reali da datasheet per un part number o componente.
+ */
+struct ComponentDatasheetInfo {
+    std::string assigned_class;          ///< Classe associata (es. "Resistor", "IC", ...)
+    double width_mm = 0.0;               ///< Larghezza reale del package (mm)
+    double height_mm = 0.0;              ///< Lunghezza/Altezza reale del package (mm)
+    double thickness_mm = 0.0;           ///< Spessore reale del package (mm)
+    std::string source;                  ///< Fonte del datasheet (es. ti.com, nexperia.com)
+};
+
+/**
  * @brief Rappresentazione di un singolo componente teorico letto dal file AOI (.asc).
  */
 struct AoiComponent {
@@ -38,6 +49,12 @@ struct AoiComponent {
     std::string description;         ///< Descrizione testuale (es. "RES 10kohm...", "OP AMP...")
     std::string raw_line;            ///< Riga originale completa del file .asc
     std::string assigned_class;      ///< Classe associata (es. "Resistor", "Capacitor", "IC", ...)
+
+    // Dimensioni fisiche reali da datasheet (lette da component_cv_mapping.txt)
+    double datasheet_width_mm = 0.0;     ///< Larghezza reale da datasheet (mm)
+    double datasheet_height_mm = 0.0;    ///< Altezza reale da datasheet (mm)
+    double datasheet_thickness_mm = 0.0; ///< Spessore reale da datasheet (mm)
+    std::string datasheet_source;        ///< Fonte/sito web del datasheet
 
     // Campi calcolati dopo l'allineamento geometrico e modellazione distorsione
     cv::Point2f nominal_px;          ///< Posizione teorica mappata in pixel sull'immagine PCB
@@ -104,8 +121,18 @@ struct VerifiedPcbComponent {
     std::string aoi_part_number;                         ///< Codice componente AOI
     std::string aoi_outline;                             ///< Package/Outline AOI
     std::string aoi_description;                         ///< Descrizione testuale AOI
-    double nominal_width_mm = 0.0;                       ///< Larghezza nominale dalle piazzole Gerber (mm)
-    double nominal_height_mm = 0.0;                      ///< Altezza nominale dalle piazzole Gerber (mm)
+    double nominal_x_mm = 0.0;                           ///< Coordinata nominale X teorica AOI (mm)
+    double nominal_y_mm = 0.0;                           ///< Coordinata nominale Y teorica AOI (mm)
+    double nominal_rot_deg = 0.0;                        ///< Angolo di orientamento nominale CAD (gradi)
+    double nominal_width_mm = 0.0;                       ///< Larghezza nominale dalle piazzole Gerber o datasheet (mm)
+    double nominal_height_mm = 0.0;                      ///< Altezza nominale dalle piazzole Gerber o datasheet (mm)
+
+    // Dimensioni fisiche reali da datasheet (lette da component_cv_mapping.txt)
+    double datasheet_width_mm = 0.0;                     ///< Larghezza reale da datasheet (mm)
+    double datasheet_height_mm = 0.0;                    ///< Altezza reale da datasheet (mm)
+    double datasheet_thickness_mm = 0.0;                 ///< Spessore reale da datasheet (mm)
+    std::string datasheet_source;                        ///< Fonte/sito web del datasheet
+
     cv::Point2f nominal_center_px;                       ///< Centro nominale teorico proiettato con distorsione
     double offset_error_px = 0.0;                        ///< Scostamento reale vs nominale (pixel)
     double offset_error_mm = 0.0;                        ///< Scostamento reale vs nominale (millimetri)
@@ -168,9 +195,15 @@ public:
     bool loadMappingFile(const std::string& mappingFilePath);
 
     /**
-     * @brief Salva una nuova associazione in coda al file component_cv_mapping.txt.
+     * @brief Salva una nuova associazione in coda al file component_cv_mapping.txt con classe e dimensioni.
      */
-    bool saveMappingEntry(const std::string& mappingFilePath, const std::string& rawLine, const std::string& assignedClass);
+    bool saveMappingEntry(const std::string& mappingFilePath,
+                          const std::string& rawLine,
+                          const std::string& assignedClass,
+                          double width_mm = 0.0,
+                          double height_mm = 0.0,
+                          double thickness_mm = 0.0,
+                          const std::string& source = "");
 
     /**
      * @brief Tenta di inferire automaticamente la classe corretta da RefDes, package e descrizione.
@@ -181,12 +214,17 @@ public:
                                        bool& isConfident) const;
 
     /**
-     * @brief Chiede interattivamente all'utente da terminale a quale classe associare la riga AOI non riconosciuta.
+     * @brief Chiede interattivamente all'utente da terminale le informazioni mancanti
+     * (classe, dimensioni e fonte datasheet) con guida esplicita per la ricerca online.
      */
     std::string askUserForClass(const std::string& ref,
                                 const std::string& partNumber,
                                 const std::string& outline,
-                                const std::string& description) const;
+                                const std::string& description,
+                                double& out_w_mm,
+                                double& out_h_mm,
+                                double& out_thick_mm,
+                                std::string& out_source) const;
 
     /**
      * @brief Esegue il parsing completo del file AOI (.asc) associando ciascun componente alla sua classe.
@@ -288,8 +326,14 @@ public:
         const std::string& preferredBaseImage = "",
         const std::string& cvDetectionOutputDir = "");
 
+    /**
+     * @brief Restituisce la tabella delle informazioni e dimensioni da datasheet caricate da component_cv_mapping.txt.
+     */
+    const std::map<std::string, ComponentDatasheetInfo>& getDatasheetTable() const { return datasheet_table_; }
+
 private:
     std::map<std::string, std::string> mapping_table_;
+    std::map<std::string, ComponentDatasheetInfo> datasheet_table_;
     std::vector<std::string> mapping_lines_raw_;
 
     static void getNominalOutlineDimensions(const std::string& outline, double& width_mm, double& height_mm);

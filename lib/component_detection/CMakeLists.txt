@@ -1,5 +1,7 @@
 add_library(component_detection
     src/component_detector.cpp
+    src/class_mapper.cpp
+    src/multi_model_detector.cpp
 )
 
 target_include_directories(component_detection

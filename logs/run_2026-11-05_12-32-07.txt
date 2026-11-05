@@ -1,0 +1,39 @@
+======================================================
+ Avvio run.sh: 2026-11-05 12:32:07
+ Log file: logs/run_2026-11-05_12-32-07.txt
+======================================================
+-- OpenCV versione trovata: 4.9.0
+-- Configuring done
+CMake Error at app/CMakeLists.txt:33 (add_executable):
+  Cannot find source file:
+
+    src/test_component_segmentation.cpp
+
+  Tried extensions .c .C .c++ .cc .cpp .cxx .cu .mpp .m .M .mm .ixx .cppm .h
+  .hh .h++ .hm .hpp .hxx .in .txx .f .F .for .f77 .f90 .f95 .f03 .hip .ispc
+
+
+CMake Error at app/CMakeLists.txt:33 (add_executable):
+  No SOURCES given to target: test_component_segmentation
+
+
+CMake Generate step failed.  Build files cannot be regenerated correctly.
+-- OpenCV versione trovata: 4.9.0
+-- Configuring done
+CMake Error at app/CMakeLists.txt:33 (add_executable):
+  Cannot find source file:
+
+    src/test_component_segmentation.cpp
+
+  Tried extensions .c .C .c++ .cc .cpp .cxx .cu .mpp .m .M .mm .ixx .cppm .h
+  .hh .h++ .hm .hpp .hxx .in .txx .f .F .for .f77 .f90 .f95 .f03 .hip .ispc
+
+
+CMake Error at app/CMakeLists.txt:33 (add_executable):
+  No SOURCES given to target: test_component_segmentation
+
+
+CMake Generate step failed.  Build files cannot be regenerated correctly.
+make: *** [Makefile:306: cmake_check_build_system] Error 1
+
+=== ERRORE DI COMPILAZIONE ===

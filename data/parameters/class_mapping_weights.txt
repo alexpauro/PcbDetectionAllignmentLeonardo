@@ -1,0 +1,323 @@
+# =========================================================================
+# FILE DI TRACCIAMENTO ASSOCIAZIONI CLASSI COMPONENTI PCB
+# =========================================================================
+# Questo file tiene traccia in modo persistente della mappatura tra le classi
+# dei diversi modelli/pesi di object detection e le 13 classi di riferimento
+# del modello ParsaVictor.
+#
+# Formato di ogni riga:
+#   [modello:]<classe_originale> = <classe_parsa_victor>
+#
+# Se non viene specificato il prefisso "modello:", l'associazione si applica
+# a tutti i modelli (regola globale).
+# Se una classe originale non e' presente qui, il sistema esegue una ricerca
+# basata su parole chiave e somiglianza; se incerta, chiedera' all'utente.
+#
+# Le 13 Classi Standard di ParsaVictor sono:
+#  1) Resistor
+#  2) Capacitor
+#  3) Electrolytic Capacitor
+#  4) IC
+#  5) Inductor
+#  6) Diode
+#  7) LED
+#  8) Transistor
+#  9) Oscillator
+# 10) Connector
+# 11) Switch/Button
+# 12) Other
+# 13) Marker
+# =========================================================================
+
+# --- Auto-mappatura 1:1 classi ParsaVictor ---
+Resistor = Resistor
+Capacitor = Capacitor
+Electrolytic Capacitor = Electrolytic Capacitor
+IC = IC
+Inductor = Inductor
+Diode = Diode
+LED = LED
+Transistor = Transistor
+Oscillator = Oscillator
+Connector = Connector
+Switch/Button = Switch/Button
+Other = Other
+Marker = Marker
+
+# --- Sinonimi e varianti Resistor ---
+resistor = Resistor
+resestor = Resistor
+resistance = Resistor
+resistenza = Resistor
+res = Resistor
+potentiometer = Resistor
+potenziometro = Resistor
+trimpot = Resistor
+shunt = Resistor
+resistor network = Resistor
+resnet = Resistor
+rp = Resistor
+resistor jumper = Resistor
+ressistor = Resistor
+resistort = Resistor
+parsa:Resistor = Resistor
+carddata:Resistor = Resistor
+dhbw:Resistor = Resistor
+
+# --- Sinonimi e varianti Capacitor ---
+capacitor = Capacitor
+cap1 = Capacitor
+cap2 = Capacitor
+cap3 = Capacitor
+cap4 = Capacitor
+condensatore = Capacitor
+cap = Capacitor
+capacitance = Capacitor
+ceramic capacitor = Capacitor
+multilayer ceramic capacitor = Capacitor
+mlcc = Capacitor
+tantalum = Capacitor
+parsa:Capacitor = Capacitor
+carddata:Capacitor = Capacitor
+dhbw:Capacitor = Capacitor
+
+# --- Sinonimi e varianti Electrolytic Capacitor ---
+electrolytic capacitor = Electrolytic Capacitor
+electrolytic = Electrolytic Capacitor
+elettrolitico = Electrolytic Capacitor
+condensatore elettrolitico = Electrolytic Capacitor
+elko = Electrolytic Capacitor
+can capacitor = Electrolytic Capacitor
+parsa:Electrolytic Capacitor = Electrolytic Capacitor
+carddata:Electrolytic Capacitor = Electrolytic Capacitor
+tesis:capacitor = Electrolytic Capacitor
+
+# --- Sinonimi e varianti IC ---
+ic = IC
+integrated circuit = IC
+chip = IC
+circuito integrato = IC
+circuito_integrado = IC
+procesador = IC
+processor = IC
+microcontroller = IC
+mcu = IC
+cpu = IC
+soc = IC
+sop = IC
+soic = IC
+qfp = IC
+tqfp = IC
+lqfp = IC
+bga = IC
+qfn = IC
+dip = IC
+fpga = IC
+regulator = IC
+voltage regulator = IC
+opamp = IC
+parsa:IC = IC
+carddata:IC = IC
+dhbw:IC = IC
+
+# --- Sinonimi e varianti Inductor ---
+inductor = Inductor
+induttore = Inductor
+ind = Inductor
+inductance = Inductor
+coil = Inductor
+choke = Inductor
+ferrite = Inductor
+ferrite bead = Inductor
+toroid = Inductor
+parsa:Inductor = Inductor
+carddata:Inductor = Inductor
+dhbw:Inductor = Inductor
+tesis:inductor = Inductor
+
+# --- Sinonimi e varianti Diode ---
+diode = Diode
+diodo = Diode
+zener = Diode
+zener diode = Diode
+schottky = Diode
+rectifier = Diode
+tvs = Diode
+transil = Diode
+varactor = Diode
+parsa:Diode = Diode
+carddata:Diode = Diode
+dhbw:Diode = Diode
+
+# --- Sinonimi e varianti LED ---
+led = LED
+indicator = LED
+diodo led = LED
+light = LED
+parsa:Led = LED
+carddata:Led = LED
+
+# --- Sinonimi e varianti Transistor ---
+transistor = Transistor
+mosfet = Transistor
+bjt = Transistor
+fet = Transistor
+igbt = Transistor
+triac = Transistor
+sot23 = Transistor
+parsa:Transistor = Transistor
+carddata:Transistor = Transistor
+dhbw:Transistor = Transistor
+tesis:transistor = Transistor
+
+# --- Sinonimi e varianti Oscillator ---
+oscillator = Oscillator
+oscilatore = Oscillator
+clock = Oscillator
+crystal = Oscillator
+xtal = Oscillator
+resonator = Oscillator
+quarzo = Oscillator
+oscilador = Oscillator
+parsa:Clock = Oscillator
+carddata:Clock = Oscillator
+dhbw:Oscillator = Oscillator
+tesis:oscilador = Oscillator
+
+# --- Sinonimi e varianti Connector ---
+connector = Connector
+connettore = Connector
+header = Connector
+pin header = Connector
+terminal = Connector
+terminal block = Connector
+usb = Connector
+rj45 = Connector
+hdmi = Connector
+bnc = Connector
+jack = Connector
+plug = Connector
+socket = Connector
+port = Connector
+slot = Connector
+ket noi = Connector
+parsa:Connector = Connector
+carddata:Connector = Connector
+
+# --- Sinonimi e varianti Switch/Button ---
+switch = Switch/Button
+button = Switch/Button
+switch_button = Switch/Button
+pulsante = Switch/Button
+interruttore = Switch/Button
+key = Switch/Button
+tactile switch = Switch/Button
+dip switch = Switch/Button
+pushbutton = Switch/Button
+buton = Switch/Button
+parsa:Switch = Switch/Button
+parsa:Button = Switch/Button
+carddata:Switch = Switch/Button
+carddata:Button = Switch/Button
+
+# --- Sinonimi e varianti Marker ---
+marker = Marker
+pad = Marker
+pads = Marker
+pin = Marker
+pins = Marker
+fiducial = Marker
+test point = Marker
+testpoint = Marker
+via = Marker
+parsa:Pads = Marker
+parsa:Pins = Marker
+parsa:Test Point = Marker
+carddata:Pads = Marker
+carddata:Pins = Marker
+carddata:Test Point = Marker
+
+# --- Sinonimi e varianti Other ---
+other = Other
+mov = Other
+altro = Other
+fuse = Other
+fusibile = Other
+relay = Other
+rele = Other
+transformer = Other
+trasformatore = Other
+battery = Other
+batteria = Other
+buzzer = Other
+transducer = Other
+heatsink = Other
+dissipatore = Other
+filter = Other
+emi filter = Other
+filtro = Other
+jumper = Other
+display = Other
+parsa:Fuse = Other
+parsa:Transformer = Other
+parsa:Battery = Other
+parsa:Buzzer = Other
+parsa:Heatsink = Other
+custom_yolo:resistore_smd = Resistor
+custom_yolo:resistore_smd = Resistor
+test_detector:Class_0 = Other
+test_detector:Class_1 = Other
+custom_yolo:resistore_smd = Resistor
+pcb-component-detection-yolo26:component = Other
+vision-based-electronic-component-identification:1-5-Volt-Battery = Other
+vision-based-electronic-component-identification:3-3-Volt-Battery = Other
+vision-based-electronic-component-identification:7-Segment-Display = Other
+vision-based-electronic-component-identification:9-Volt-Battery = Other
+vision-based-electronic-component-identification:Arduino-Mega = ?
+vision-based-electronic-component-identification:Arduino-Nano = ?
+vision-based-electronic-component-identification:Arduino-Uno = ?
+vision-based-electronic-component-identification:BJT-Transistor = Transistor
+vision-based-electronic-component-identification:Bluetooth-Module = ?
+vision-based-electronic-component-identification:Breadboard = ?
+vision-based-electronic-component-identification:Bridge-Rectifier = Diode
+vision-based-electronic-component-identification:Buck-Converter = ?
+vision-based-electronic-component-identification:Capacitor-10mf = Capacitor
+vision-based-electronic-component-identification:Capacitor-470mf = Capacitor
+vision-based-electronic-component-identification:DC-Motor = ?
+vision-based-electronic-component-identification:ESP32 = ?
+vision-based-electronic-component-identification:ESP32-CAM = ?
+vision-based-electronic-component-identification:FT-232-USB-Serial-Module = Connector
+vision-based-electronic-component-identification:Film-Capacitor = Capacitor
+vision-based-electronic-component-identification:Fuse-Base = Other
+vision-based-electronic-component-identification:GSM-Module = ?
+vision-based-electronic-component-identification:Gas-Sensor = ?
+vision-based-electronic-component-identification:Heat-Sink = ?
+vision-based-electronic-component-identification:High-Voltage-Ceramic-Capacitor = Capacitor
+vision-based-electronic-component-identification:Humidity-Sensor = ?
+vision-based-electronic-component-identification:IC-Base-14-Pin = IC
+vision-based-electronic-component-identification:IC-Base-28-Pin = IC
+vision-based-electronic-component-identification:IC-Chip = IC
+vision-based-electronic-component-identification:IR-Sensor = ?
+vision-based-electronic-component-identification:Keypad = ?
+vision-based-electronic-component-identification:LCD-Display = Other
+vision-based-electronic-component-identification:LDR-Sensor = ?
+vision-based-electronic-component-identification:LED-Light = LED
+vision-based-electronic-component-identification:Low-Voltage-Ceramic-Capacitor = Capacitor
+vision-based-electronic-component-identification:MLC-Capacitor = Capacitor
+vision-based-electronic-component-identification:Motion-Sensor = ?
+vision-based-electronic-component-identification:Motor-Driver = ?
+vision-based-electronic-component-identification:NTC-Thermistor = ?
+vision-based-electronic-component-identification:OLED-Display = Other
+vision-based-electronic-component-identification:Push-Switch = Switch/Button
+vision-based-electronic-component-identification:RFID-Scanner = ?
+vision-based-electronic-component-identification:Raindrops-Module = ?
+vision-based-electronic-component-identification:Relay-Module = Other
+vision-based-electronic-component-identification:Rocker-Switch = Switch/Button
+vision-based-electronic-component-identification:Servo-Motor = ?
+vision-based-electronic-component-identification:Soil-Moisture-Sensor = ?
+vision-based-electronic-component-identification:Sonar-Sensor = ?
+vision-based-electronic-component-identification:TCRT5000 = ?
+vision-based-electronic-component-identification:Tact-Switch = Switch/Button
+vision-based-electronic-component-identification:Taper-Potentiometer = Resistor
+vision-based-electronic-component-identification:Trimmer-Potentiometer = Resistor
+vision-based-electronic-component-identification:Water-Sensor = ?

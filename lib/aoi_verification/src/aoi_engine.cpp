@@ -291,8 +291,9 @@ AoiVerificationResult AoiVerificationProcessor::verifyAndClassify(
         vc.aoi_outline = a.outline;
         vc.aoi_description = a.description;
         vc.nominal_center_px = nomPx;
-
-        double totalRot = a.rot_deg + transform.residual_angle_deg;
+        vc.nominal_x_mm = a.x_mm;
+        vc.nominal_y_mm = a.y_mm;
+        vc.nominal_rot_deg = a.rot_deg;
 
         if (bestIdx >= 0) {
             pool[bestIdx].used = true;
@@ -304,18 +305,35 @@ AoiVerificationResult AoiVerificationProcessor::verifyAndClassify(
             a.match_distance_px = realDist;
             a.match_distance_mm = realDist / s;
 
-            // REQUISITO: Utilizza DIRETTAMENTE i riquadri trovati in DL per i componenti riconosciuti
+            // REQUISITO UTENTE: I box trovati in processed output sono SEMPRE corretti.
+            // aoi_verification deve solo guardare la label dei componenti trovati precedentemente
+            // e cambiarla solo in quella giusta se necessario (es. D306 e D406), SENZA modificare il box.
             vc.center = matched.center;
             vc.box = matched.box;
-            vc.rotated_box = matched.rbox;
-            if (vc.rotated_box.size.width <= 0.0f || vc.rotated_box.size.height <= 0.0f) {
-                vc.rotated_box = cv::RotatedRect(matched.center, matched.box.size(), static_cast<float>(totalRot));
+            if (matched.rbox.size.width > 0.0f && matched.rbox.size.height > 0.0f) {
+                vc.rotated_box = matched.rbox;
+            } else {
+                vc.rotated_box = cv::RotatedRect(matched.center, matched.box.size(), 0.0f);
             }
             vc.shape = matched.shape;
             vc.radius = matched.radius;
             vc.area = matched.area;
-            vc.nominal_width_mm = matched.box.width / s;
-            vc.nominal_height_mm = matched.box.height / s;
+
+            vc.datasheet_width_mm = a.datasheet_width_mm;
+            vc.datasheet_height_mm = a.datasheet_height_mm;
+            vc.datasheet_thickness_mm = a.datasheet_thickness_mm;
+            vc.datasheet_source = a.datasheet_source;
+
+            if (a.datasheet_width_mm > 0.0 && a.datasheet_height_mm > 0.0) {
+                vc.nominal_width_mm = a.datasheet_width_mm;
+                vc.nominal_height_mm = a.datasheet_height_mm;
+            } else if (a.pad_box_w_mm > 0.0 && a.pad_box_h_mm > 0.0) {
+                vc.nominal_width_mm = a.pad_box_w_mm;
+                vc.nominal_height_mm = a.pad_box_h_mm;
+            } else {
+                vc.nominal_width_mm = matched.box.width / s;
+                vc.nominal_height_mm = matched.box.height / s;
+            }
 
             vc.original_label = matched.label;
             vc.confidence = std::max(matched.conf, 0.90f);
@@ -366,18 +384,52 @@ AoiVerificationResult AoiVerificationProcessor::verifyAndClassify(
 
         const auto& a = res.aoi_components[i];
         cv::Point2f nomPx = vc.nominal_center_px;
-        double totalRot = a.rot_deg + transform.residual_angle_deg;
+        float boardBaseRot = (transform.orientation_name == "rot180") ? 180.0f : 0.0f;
+        double totalRot = a.rot_deg + boardBaseRot + transform.residual_angle_deg;
+        double normImgAngle = std::fmod(totalRot, 180.0);
+        if (normImgAngle < 0.0) normImgAngle += 180.0;
 
-        // Cerca nella sovrapposizione CV il componente geometrico più vicino alla coordinata nominale
+        // Stima delle dimensioni attese in pixel per il componente recuperato
+        float expW_px = 18.0f, expH_px = 30.0f;
+        if (a.datasheet_width_mm > 0.0 && a.datasheet_height_mm > 0.0) {
+            expW_px = static_cast<float>(std::max(a.datasheet_width_mm, a.datasheet_height_mm) * s);
+            expH_px = static_cast<float>(std::min(a.datasheet_width_mm, a.datasheet_height_mm) * s);
+        } else {
+            auto itDlSizes = partNumberDlSizes.find(a.part_number);
+            if (itDlSizes != partNumberDlSizes.end() && !itDlSizes->second.empty()) {
+                std::vector<float> dws, dhs;
+                for (const auto& sz : itDlSizes->second) {
+                    dws.push_back(std::max(sz.width, sz.height));
+                    dhs.push_back(std::min(sz.width, sz.height));
+                }
+                std::sort(dws.begin(), dws.end());
+                std::sort(dhs.begin(), dhs.end());
+                expW_px = dws[dws.size() / 2];
+                expH_px = dhs[dhs.size() / 2];
+            } else {
+                double w_mm = 1.6, h_mm = 0.8;
+                getNominalOutlineDimensions(a.outline, w_mm, h_mm);
+                expW_px = static_cast<float>(std::max(w_mm, h_mm) * s);
+                expH_px = static_cast<float>(std::min(w_mm, h_mm) * s);
+            }
+        }
+
+        // Cerca nella sovrapposizione CV il componente geometrico compatibile più vicino alla coordinata nominale
         int bestCvIdx = -1;
         double bestCvDist = 1e9;
         double cvSearchTol = tol_px * 1.1;
 
         for (size_t k = 0; k < cvPool.size(); ++k) {
             double dist = cv::norm(nomPx - cvPool[k].center);
-            if (dist <= cvSearchTol && dist < bestCvDist) {
-                bestCvDist = dist;
-                bestCvIdx = static_cast<int>(k);
+            if (dist <= cvSearchTol) {
+                float cMax = std::max(cvPool[k].rotated_box.size.width, cvPool[k].rotated_box.size.height);
+                float cMin = std::min(cvPool[k].rotated_box.size.width, cvPool[k].rotated_box.size.height);
+                // Filtra candidati palesemente incompatibili per dimensione
+                if (cMax > expW_px * 2.2f || cMax < expW_px * 0.40f || cMin < expH_px * 0.35f) continue;
+                if (dist < bestCvDist) {
+                    bestCvDist = dist;
+                    bestCvIdx = static_cast<int>(k);
+                }
             }
         }
 
@@ -402,42 +454,72 @@ AoiVerificationResult AoiVerificationProcessor::verifyAndClassify(
             vc.rotated_box = cv::RotatedRect(cvBest.center, cv::Size2f(medW, medH), cvBest.rotated_box.angle);
             vc.box = vc.rotated_box.boundingRect2f();
             vc.area = vc.box.width * vc.box.height;
-            vc.nominal_width_mm = vc.box.width / s;
-            vc.nominal_height_mm = vc.box.height / s;
+
+            vc.nominal_x_mm = a.x_mm;
+            vc.nominal_y_mm = a.y_mm;
+            vc.nominal_rot_deg = a.rot_deg;
+
+            vc.datasheet_width_mm = a.datasheet_width_mm;
+            vc.datasheet_height_mm = a.datasheet_height_mm;
+            vc.datasheet_thickness_mm = a.datasheet_thickness_mm;
+            vc.datasheet_source = a.datasheet_source;
+
+            if (a.datasheet_width_mm > 0.0 && a.datasheet_height_mm > 0.0) {
+                vc.nominal_width_mm = a.datasheet_width_mm;
+                vc.nominal_height_mm = a.datasheet_height_mm;
+            } else {
+                vc.nominal_width_mm = vc.box.width / s;
+                vc.nominal_height_mm = vc.box.height / s;
+            }
+
             vc.source_name = "RECOVERED_CV_SUPERPOSITION";
             vc.notes = "Componente recuperato tramite sovrapposizione multi-foto CV (" + a.ref_des + ")";
             vc.offset_error_px = bestCvDist;
             vc.offset_error_mm = bestCvDist / s;
 
         } else {
-            // Nessun candidato CV nelle vicinanze: recupero con dimensioni canoniche DL per stesso part_number
+            // Nessun candidato CV nelle vicinanze: recupero con dimensioni canoniche DL o datasheet
             float w_px = 18.0f, h_px = 30.0f;
-            auto itDlSizes = partNumberDlSizes.find(a.part_number);
-            if (itDlSizes != partNumberDlSizes.end() && !itDlSizes->second.empty()) {
-                std::vector<float> dws, dhs;
-                for (const auto& sz : itDlSizes->second) {
-                    dws.push_back(sz.width);
-                    dhs.push_back(sz.height);
-                }
-                std::sort(dws.begin(), dws.end());
-                std::sort(dhs.begin(), dhs.end());
-                w_px = dws[dws.size() / 2];
-                h_px = dhs[dhs.size() / 2];
+            if (a.datasheet_width_mm > 0.0 && a.datasheet_height_mm > 0.0) {
+                w_px = static_cast<float>(a.datasheet_width_mm * s);
+                h_px = static_cast<float>(a.datasheet_height_mm * s);
             } else {
-                double w_mm = 1.6, h_mm = 0.8;
-                getNominalOutlineDimensions(a.outline, w_mm, h_mm);
-                w_px = static_cast<float>(w_mm * s);
-                h_px = static_cast<float>(h_mm * s);
+                auto itDlSizes = partNumberDlSizes.find(a.part_number);
+                if (itDlSizes != partNumberDlSizes.end() && !itDlSizes->second.empty()) {
+                    std::vector<float> dws, dhs;
+                    for (const auto& sz : itDlSizes->second) {
+                        dws.push_back(sz.width);
+                        dhs.push_back(sz.height);
+                    }
+                    std::sort(dws.begin(), dws.end());
+                    std::sort(dhs.begin(), dhs.end());
+                    w_px = dws[dws.size() / 2];
+                    h_px = dhs[dhs.size() / 2];
+                } else {
+                    double w_mm = 1.6, h_mm = 0.8;
+                    getNominalOutlineDimensions(a.outline, w_mm, h_mm);
+                    w_px = static_cast<float>(w_mm * s);
+                    h_px = static_cast<float>(h_mm * s);
+                }
             }
+
+            vc.nominal_x_mm = a.x_mm;
+            vc.nominal_y_mm = a.y_mm;
+            vc.nominal_rot_deg = a.rot_deg;
+
+            vc.datasheet_width_mm = a.datasheet_width_mm;
+            vc.datasheet_height_mm = a.datasheet_height_mm;
+            vc.datasheet_thickness_mm = a.datasheet_thickness_mm;
+            vc.datasheet_source = a.datasheet_source;
 
             vc.center = nomPx;
             vc.shape = (a.outline.find("CHUUT") != std::string::npos) ? ShapeType::CIRCLE : ShapeType::RECTANGLE;
             vc.radius = (vc.shape == ShapeType::CIRCLE) ? std::max(w_px, h_px) * 0.5f : 0.0f;
-            vc.rotated_box = cv::RotatedRect(nomPx, cv::Size2f(w_px, h_px), static_cast<float>(totalRot));
+            vc.rotated_box = cv::RotatedRect(nomPx, cv::Size2f(w_px, h_px), static_cast<float>(normImgAngle));
             vc.box = vc.rotated_box.boundingRect2f();
             vc.area = vc.box.width * vc.box.height;
-            vc.nominal_width_mm = w_px / s;
-            vc.nominal_height_mm = h_px / s;
+            vc.nominal_width_mm = a.datasheet_width_mm > 0.0 ? a.datasheet_width_mm : (w_px / s);
+            vc.nominal_height_mm = a.datasheet_height_mm > 0.0 ? a.datasheet_height_mm : (h_px / s);
             vc.source_name = "RECOVERED_AOI_NOMINAL";
             vc.notes = "Componente recuperato tramite coordinate teoriche AOI (" + a.ref_des + ")";
             vc.offset_error_px = 0.0;

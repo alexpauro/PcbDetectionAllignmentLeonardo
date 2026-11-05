@@ -36,13 +36,13 @@ struct CvComponent {
 struct CvDetectionConfig {
     // --- Filtro Colore Substrato PCB Verdognolo ---
     bool use_green_filter = true;       ///< Attiva il filtro basato sul colore verdognolo del PCB
-    int h_min = 20;                     ///< Tonalita' minima HSV (tonalita' verde-oliva)
-    int h_max = 90;                     ///< Tonalita' massima HSV (tonalita' verde/azzurrino)
-    int s_min = 16;                     ///< Saturazione minima per substrato verde
+    int h_min = 8;                      ///< Tonalita' minima HSV (tonalita' verde-oliva / ambra PCB)
+    int h_max = 95;                     ///< Tonalita' massima HSV (tonalita' verde/azzurrino)
+    int s_min = 15;                     ///< Saturazione minima per substrato verde
     int s_max = 255;                    ///< Saturazione massima
     int v_min = 20;                     ///< Valore/Luminosita' minima per substrato
     int v_max = 250;                    ///< Valore/Luminosita' massima per substrato
-    float green_ratio_thresh = -0.05f;  ///< Soglia indice di verdura BGR: (2*G - R - B) / (R + G + B)
+    float green_ratio_thresh = -0.06f;  ///< Soglia indice di verdura BGR: (2*G - R - B) / (R + G + B)
 
     // --- Filtri per Bordi e Gradienti ---
     bool use_bilateral = true;          ///< Filtro bilaterale per ridurre rumore preservando i bordi

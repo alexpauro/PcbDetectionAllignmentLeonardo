@@ -1,0 +1,1472 @@
+======================================================
+ Avvio run.sh: 2026-11-05 14:51:52
+ Log file: logs/run_2026-11-05_14-51-52.txt
+======================================================
+-- OpenCV versione trovata: 4.9.0
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/build
+Consolidate compiler generated dependencies of target common
+Consolidate compiler generated dependencies of target cv_component_detection
+Consolidate compiler generated dependencies of target board_alignment
+[  5%] Built target cv_component_detection
+[ 20%] Built target board_alignment
+[ 17%] Built target common
+Consolidate compiler generated dependencies of target calibration
+Consolidate compiler generated dependencies of target component_detection
+[ 33%] Built target component_detection
+[ 38%] Built target calibration
+Consolidate compiler generated dependencies of target test_multi_model_detection
+Consolidate compiler generated dependencies of target output_processing
+[ 43%] Built target test_multi_model_detection
+[ 61%] Built target output_processing
+Consolidate compiler generated dependencies of target aoi_verification
+[ 79%] Built target aoi_verification
+Consolidate compiler generated dependencies of target test_aoi_verification
+Consolidate compiler generated dependencies of target component_alignment
+[ 84%] Built target test_aoi_verification
+[ 89%] Built target component_alignment
+Consolidate compiler generated dependencies of target test_component_alignment
+Consolidate compiler generated dependencies of target pcb_app
+[ 94%] Built target test_component_alignment
+[100%] Built target pcb_app
+
+=== ESECUZIONE ===
+=== AVVIO CALIBRAZIONE TELECAMERA ===
+
+--- Elaborazione in corso ---
+
+======================================================
+CALIBRAZIONE GIA' EFFETTUATA PER: ../data/inputs/calib_images/calib_images_robot
+Parametri trovati in: ../data/parameters/camera_params_robot.yml
+Salto la fase di calibrazione.
+======================================================
+
+========================================================
+Calibrazione completata con successo!
+Parametri salvati in: ../data/parameters/camera_params_robot.yml
+========================================================
+
+=== AVVIO RADDRIZZAMENTO IMMAGINI ROBOT ===
+
+Modalità di elaborazione raddrizzamento:
+1) Fai tutto (elabora automaticamente tutte le schede e tutti i lati)
+2) Una scheda alla volta e un lato alla volta
+3) Seleziona una sola scheda e un solo lato
+Seleziona un'opzione (1 / 2 / 3, default 1): 
+========================================
+           SCHEDE DISPONIBILI           
+========================================
+1) A
+2) B
+3) C
+4) D
+5) E
+6) F
+7) G
+Seleziona il numero della scheda da elaborare: 
+Per la scheda A, quale lato vuoi elaborare? (1 / TOP oppure 2 / BOTTOM): 
+Nessuna immagine .bmp trovata in ../data/inputs/pcb_images/A/TOP. Salto la telecamera.
+
+========================================================
+Elaborazione raddrizzamento per A [TOP] completata!
+Questa scheda e questo lato verranno utilizzati per tutte le fasi successive.
+========================================================
+
+Vuoi mostrare le finestre a schermo con i risultati per ciascuna scheda? (S/N, default S): 
+========================================================
+ AVVIO RICONOSCIMENTO BORDI ED ALLINEAMENTO GERBER 
+========================================================
+
+--- Elaborazione allineamento per scheda: A [TOP] ---
+Rilevate immagini già ritagliate in "../data/outputs/pcb_images_undistorted/A/TOP". Ricarico le originali non ritagliate da "../data/outputs/pcb_images_undistorted/A/TOP/ok".
+
+========================================================
+ AVVIO RICONOSCIMENTO BORDI ED ALLINEAMENTO GERBER 
+ Scheda: A | Lato: TOP
+ Numero foto disponibili (esposizioni diverse): 10
+========================================================
+
+Analisi file Gerber di produzione per identificazione bordo scheda (area massima):
+
+>>> STRATO BORDO SCHEDA SELEZIONATO (AREA MASSIMA):
+    File sorgente: AP9907898301M1.gdo
+    Layer: AP9907898301M1.gdo
+    Dimensioni disegno Gerber: 107.15 x 78.43 mm
+    Area totale bordo: 7062.00 mm^2
+    Aspect Ratio: 1.37
+
+Valutazione candidati bordo scheda nelle foto (Target AR Gerber = 1.366):
+  - Candidato #1 [density_profile_green]: 1227.000x889.000 px, AR=1.380 (diff=1.0%), Vuoto: [T:48, B:22, L:14, R:38 px] -> Penalità=-13.6
+
+>>> BORDO SCHEDA ASSOCIATO (MIGLIORE CORRISPONDENZA CON MARGINI VUOTI):
+    Metodo selezionato: density_profile_green
+    Dimensioni bordo foto: 1227.0 x 889.0 px
+    Margini di vuoto rilevati attorno alla scheda:
+      - In alto (Top)   : 48 px
+      - In basso (Bottom): 22 px
+      - A sinistra (Left): 14 px
+      - A destra (Right) : 38 px
+    Aspect ratio foto: 1.4 vs Gerber: 1.4 (Scostamento: 1.03%)
+Diagnostica bordi riconosciuti salvata in: ../data/outputs/pcb_board_alignment/A/TOP/board_edge_debug.png
+Parametri allineamento salvati in: ../data/parameters/board_alignment_A_TOP.yml
+
+Generazione visualizzazioni e ritaglio immagini lungo il bordo...
+  - [1/10] A_TOP_001.bmp: ritaglio (1228x890 px) salvato. Originale salvata in ok/. Overlay: ../data/outputs/pcb_board_alignment/A/TOP/A_TOP_001_aligned.png
+  - [2/10] A_TOP_002.bmp: ritaglio (1228x890 px) salvato. Originale salvata in ok/. Overlay: ../data/outputs/pcb_board_alignment/A/TOP/A_TOP_002_aligned.png
+  - [3/10] A_TOP_003.bmp: ritaglio (1228x890 px) salvato. Originale salvata in ok/. Overlay: ../data/outputs/pcb_board_alignment/A/TOP/A_TOP_003_aligned.png
+  - [4/10] A_TOP_004.bmp: ritaglio (1228x890 px) salvato. Originale salvata in ok/. Overlay: ../data/outputs/pcb_board_alignment/A/TOP/A_TOP_004_aligned.png
+  - [5/10] A_TOP_005.bmp: ritaglio (1228x890 px) salvato. Originale salvata in ok/. Overlay: ../data/outputs/pcb_board_alignment/A/TOP/A_TOP_005_aligned.png
+  - [6/10] A_TOP_006.bmp: ritaglio (1228x890 px) salvato. Originale salvata in ok/. Overlay: ../data/outputs/pcb_board_alignment/A/TOP/A_TOP_006_aligned.png
+  - [7/10] A_TOP_007.bmp: ritaglio (1228x890 px) salvato. Originale salvata in ok/. Overlay: ../data/outputs/pcb_board_alignment/A/TOP/A_TOP_007_aligned.png
+  - [8/10] A_TOP_008.bmp: ritaglio (1228x890 px) salvato. Originale salvata in ok/. Overlay: ../data/outputs/pcb_board_alignment/A/TOP/A_TOP_008_aligned.png
+  - [9/10] A_TOP_009.bmp: ritaglio (1228x890 px) salvato. Originale salvata in ok/. Overlay: ../data/outputs/pcb_board_alignment/A/TOP/A_TOP_009_aligned.png
+  - [10/10] A_TOP_010.bmp: ritaglio (1228x890 px) salvato. Originale salvata in ok/. Overlay: ../data/outputs/pcb_board_alignment/A/TOP/A_TOP_010_aligned.png
+Allineamento e ritaglio per A [TOP] completato con successo!
+
+========================================================
+Riconoscimento bordi, allineamento e ritaglio completati!
+Foto con riquadro bordo e allineamento salvate in: ../data/outputs/pcb_board_alignment
+Immagini ritagliate per successive analisi salvate in: ../data/outputs/pcb_images_undistorted
+Parametri di scala e omografia salvati in: ../data/parameters
+========================================================
+
+========================================================
+        MODALITÀ DI RILEVAMENTO COMPONENTI PCB          
+========================================================
+1) Computer Vision Classica (Filtro verde PCB, bordi, rettangoli ruotati e cerchi) + fusione dati
+2) Deep Learning YOLO (Modello a 2 stadi) + fusione dati
+3) Entrambi (prima CV Classica, poi YOLO) + fusione dati
+Seleziona un'opzione (1 / 2 / 3, default 3): 
+--------------------------------------------------------
+   CONFIGURAZIONE ALGORITMI DEEP LEARNING (DL)          
+--------------------------------------------------------
+1) Solo ParsaVictor (modello di riferimento a 2 stadi: any + fine) [Default]
+2) Tutti gli algoritmi e pesi disponibili in pcb_component_detection
+   (Ensemble multi-modello, unificazione classi e risoluzione contrasti per affidabilita')
+Seleziona un'opzione (1 / 2, default 1): -> Modalita' selezionata: Tutti i modelli e pesi disponibili in pcb_component_detection.
+
+========================================================
+=== AVVIO RILEVAMENTO COMPONENTI PCB (COMPUTER VISION) ===
+========================================================
+
+--- Elaborazione CV Componenti per scheda: A [TOP] ---
+
+Elaborazione Computer Vision per A [TOP] (10 immagini)...
+
+-> Analisi filtri e bordi su: A_TOP_001.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_001_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_001_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_001_components_cv.json
+   Componenti totali trovati: 670
+     - Rettangoli orientati/ruotati: 623
+     - Cerchi: 47
+
+-> Analisi filtri e bordi su: A_TOP_002.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_002_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_002_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_002_components_cv.json
+   Componenti totali trovati: 571
+     - Rettangoli orientati/ruotati: 514
+     - Cerchi: 57
+
+-> Analisi filtri e bordi su: A_TOP_003.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.json
+   Componenti totali trovati: 428
+     - Rettangoli orientati/ruotati: 398
+     - Cerchi: 30
+
+-> Analisi filtri e bordi su: A_TOP_004.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_004_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_004_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_004_components_cv.json
+   Componenti totali trovati: 464
+     - Rettangoli orientati/ruotati: 434
+     - Cerchi: 30
+
+-> Analisi filtri e bordi su: A_TOP_005.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_005_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_005_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_005_components_cv.json
+   Componenti totali trovati: 398
+     - Rettangoli orientati/ruotati: 315
+     - Cerchi: 83
+
+-> Analisi filtri e bordi su: A_TOP_006.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_006_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_006_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_006_components_cv.json
+   Componenti totali trovati: 507
+     - Rettangoli orientati/ruotati: 471
+     - Cerchi: 36
+
+-> Analisi filtri e bordi su: A_TOP_007.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_007_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_007_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_007_components_cv.json
+   Componenti totali trovati: 587
+     - Rettangoli orientati/ruotati: 551
+     - Cerchi: 36
+
+-> Analisi filtri e bordi su: A_TOP_008.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_008_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_008_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_008_components_cv.json
+   Componenti totali trovati: 658
+     - Rettangoli orientati/ruotati: 621
+     - Cerchi: 37
+
+-> Analisi filtri e bordi su: A_TOP_009.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_009_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_009_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_009_components_cv.json
+   Componenti totali trovati: 705
+     - Rettangoli orientati/ruotati: 641
+     - Cerchi: 64
+
+-> Analisi filtri e bordi su: A_TOP_010.bmp ...
+  [OK] Immagine annotata salvata in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_010_components_cv.jpg
+  [OK] Coordinate componenti CSV salvate in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_010_components_cv.csv
+  [OK] Riepilogo JSON salvato in: ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_010_components_cv.json
+   Componenti totali trovati: 682
+     - Rettangoli orientati/ruotati: 636
+     - Cerchi: 46
+Risultati salvati in: "../data/outputs/pcb_cv_component_detection/A/TOP"
+
+========================================================
+Rilevamento CV classica completato con successo!
+Immagini annotate, maschere, CSV e JSON salvati in:
+  ../data/outputs/pcb_cv_component_detection
+========================================================
+
+========================================================
+=== AVVIO RICONOSCIMENTO COMPONENTI PCB (TUTTI I MODELLI DL) ===
+========================================================
+
+Inizializzazione del rilevatore multi-modello (ensemble completo)...
+
+========================================================================
+ SCANSIONE AVANZATA PESI E ALGORITMI COMPONENT DETECTION
+ Cartella di ricerca principale: /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection
+========================================================================
+
+[Inventario Pesi Trovati]: 7 file identificati nel sistema:
+ [1] ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.pt
+     Percorso:   /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.pt
+     Modello:    pcb-component-detection-yolo26
+     Dimensione: 19.44 MB
+     Stato:      [VALIDO E DISPONIBILE]
+ [2] ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx
+     Percorso:   /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx
+     Modello:    pcb-component-detection-yolo26
+     Dimensione: 36.59 MB
+     Stato:      [VALIDO E DISPONIBILE]
+ [3] ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx
+     Percorso:   /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx
+     Modello:    pcb-component-detection-yolo26
+     Dimensione: 36.61 MB
+     Stato:      [VALIDO E DISPONIBILE]
+ [4] ParsaVictor/pcb-component-detection-yolo26/weights/any_best.pt
+     Percorso:   /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.pt
+     Modello:    pcb-component-detection-yolo26
+     Dimensione: 19.43 MB
+     Stato:      [VALIDO E DISPONIBILE]
+ [5] vision-based-electronic-component-identification/weights/best.pt
+     Percorso:   /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/vision-based-electronic-component-identification/weights/best.pt
+     Modello:    vision-based-electronic-component-identification
+     Dimensione: 5.24 MB
+     Stato:      [VALIDO E DISPONIBILE]
+ [6] pcb-components-detection-recognition/yolov5s_results15/weights/best.pt
+     Percorso:   /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/pcb-components-detection-recognition/yolov5s_results15/weights/best.pt
+     Modello:    yolov5s_results15
+     Stato:      [ATTENZIONE: 0 BYTE - NON CARICABILE]
+     Dettaglio:  FILE VUOTO (0 byte): segnaposto Git o download incompleto
+     --> NOTA: Il repository originale 'pcb-components-detection-recognition'
+         ha caricato un file 'best.pt' vuoto a 0 byte su GitHub.
+         I pesi addestrati effettivi sono disponibili nel Google Drive del progetto:
+         https://drive.google.com/drive/folders/1odzD298ImaHI3NKozQNGIgKbflzgSWIn?usp=sharing
+         Scaricando o inserendo un file pesi valido (>0 byte), verra' caricato automaticamente!
+ [7] pcb-components-detection-recognition/yolov5s_results15/weights/last.pt
+     Percorso:   /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/pcb-components-detection-recognition/yolov5s_results15/weights/last.pt
+     Modello:    yolov5s_results15
+     Stato:      [ATTENZIONE: 0 BYTE - NON CARICABILE]
+     Dettaglio:  FILE VUOTO (0 byte): segnaposto Git o download incompleto
+     --> NOTA: Il repository originale 'pcb-components-detection-recognition'
+         ha caricato un file 'best.pt' vuoto a 0 byte su GitHub.
+         I pesi addestrati effettivi sono disponibili nel Google Drive del progetto:
+         https://drive.google.com/drive/folders/1odzD298ImaHI3NKozQNGIgKbflzgSWIn?usp=sharing
+         Scaricando o inserendo un file pesi valido (>0 byte), verra' caricato automaticamente!
+------------------------------------------------------------------------
+[ComponentDetector] Caricamento rete ANY: /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx ...
+[ComponentDetector] Modello ANY caricato con successo.
+[ComponentDetector] Caricamento rete FINE: /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx ...
+[ComponentDetector] Modello FINE caricato con successo (13 classi configurate).
+
+[OK] Modello di Riferimento 'ParsaVictor' caricato (Priorita': 1.25x, 13 classi standard).
+
+-> Inizializzazione modello secondario: pcb-component-detection-yolo26
+   File pesi: /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.pt
+[ComponentDetector] Trovato modello ONNX già esportato: "/home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx"
+   Unificazione classi del modello (1 classi):
+     - 'component' -> 'Other'
+   [OK] Modello 'pcb-component-detection-yolo26' pronto per l'inferenza.
+
+-> Inizializzazione modello secondario: pcb-component-detection-yolo26
+   File pesi: /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.pt
+[ComponentDetector] Trovato modello ONNX già esportato: "/home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx"
+   Unificazione classi del modello (13 classi):
+     - 'Resistor' -> 'Resistor'
+     - 'Capacitor' -> 'Capacitor'
+     - 'Electrolytic Capacitor' -> 'Electrolytic Capacitor'
+     - 'IC' -> 'IC'
+     - 'Inductor' -> 'Inductor'
+     - 'Diode' -> 'Diode'
+     - 'LED' -> 'LED'
+     - 'Transistor' -> 'Transistor'
+     - 'Oscillator' -> 'Oscillator'
+     - 'Connector' -> 'Connector'
+     - 'Switch/Button' -> 'Switch/Button'
+     - 'Other' -> 'Other'
+     - 'Marker' -> 'Marker'
+   [OK] Modello 'pcb-component-detection-yolo26' pronto per l'inferenza.
+
+-> Inizializzazione modello secondario: vision-based-electronic-component-identification
+   File pesi: /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/vision-based-electronic-component-identification/weights/best.pt
+[ComponentDetector] Pesi in formato PyTorch .pt rilevati. Avvio esportazione in ONNX: "/home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/vision-based-electronic-component-identification/weights/best.onnx"...
+[ComponentDetector] Esecuzione comando: ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/.venv/bin/python3 ../pcb_component_detection/export_onnx.py --weights "/home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/vision-based-electronic-component-identification/weights/best.pt" --imgsz 1024 --out "/home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/vision-based-electronic-component-identification/weights/best.onnx"
+Caricamento modello YOLO da: /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/vision-based-electronic-component-identification/weights/best.pt...
+Esportazione in ONNX (imgsz=1024, opset=12)...
+Ultralytics 8.4.200 🚀 Python-3.10.12 torch-2.14.1+cpu CPU (Intel Core i7-1065G7 1.30GHz)
+YOLO11n summary (fused): 101 layers, 2,594,047 parameters, 0 gradients, 16.7 GFLOPs
+
+[34m[1mPyTorch:[0m starting from '/home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/vision-based-electronic-component-identification/weights/best.pt' with input shape (1, 3, 1024, 1024) BCHW and output shape(s) (1, 65, 21504) (5.2 MB)
+[31m[1mrequirements:[0m Ultralytics requirements ['onnxruntime', 'onnxslim>=0.1.82'] not found, attempting AutoUpdate...
+Collecting onnxruntime
+  Downloading onnxruntime-1.23.2-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (5.1 kB)
+Collecting onnxslim>=0.1.82
+  Downloading onnxslim-0.1.99-py3-none-any.whl.metadata (13 kB)
+Collecting coloredlogs (from onnxruntime)
+  Downloading coloredlogs-15.0.1-py2.py3-none-any.whl.metadata (12 kB)
+Collecting flatbuffers (from onnxruntime)
+  Downloading flatbuffers-25.12.19-py2.py3-none-any.whl.metadata (1.0 kB)
+Requirement already satisfied: numpy>=1.21.6 in /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/.venv/lib/python3.10/site-packages (from onnxruntime) (2.2.6)
+Requirement already satisfied: packaging in /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/.venv/lib/python3.10/site-packages (from onnxruntime) (26.3)
+Requirement already satisfied: protobuf in /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/.venv/lib/python3.10/site-packages (from onnxruntime) (7.36.2)
+Requirement already satisfied: sympy in /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/.venv/lib/python3.10/site-packages (from onnxruntime) (1.14.0)
+Collecting colorama (from onnxslim>=0.1.82)
+  Downloading colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+Requirement already satisfied: ml-dtypes in /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/.venv/lib/python3.10/site-packages (from onnxslim>=0.1.82) (0.6.0)
+Requirement already satisfied: onnx in /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/.venv/lib/python3.10/site-packages (from onnxslim>=0.1.82) (1.23.2)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/.venv/lib/python3.10/site-packages (from sympy->onnxruntime) (1.3.0)
+Collecting humanfriendly>=9.1 (from coloredlogs->onnxruntime)
+  Downloading humanfriendly-10.0-py2.py3-none-any.whl.metadata (9.2 kB)
+Requirement already satisfied: typing_extensions>=4.7.1 in /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/.venv/lib/python3.10/site-packages (from onnx->onnxslim>=0.1.82) (4.16.0)
+Downloading onnxruntime-1.23.2-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (17.4 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 17.4/17.4 MB 2.8 MB/s  0:00:06
+Downloading onnxslim-0.1.99-py3-none-any.whl (248 kB)
+Downloading colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+Downloading coloredlogs-15.0.1-py2.py3-none-any.whl (46 kB)
+Downloading humanfriendly-10.0-py2.py3-none-any.whl (86 kB)
+Downloading flatbuffers-25.12.19-py2.py3-none-any.whl (26 kB)
+Installing collected packages: flatbuffers, humanfriendly, colorama, coloredlogs, onnxslim, onnxruntime
+
+Successfully installed colorama-0.4.6 coloredlogs-15.0.1 flatbuffers-25.12.19 humanfriendly-10.0 onnxruntime-1.23.2 onnxslim-0.1.99
+
+[31m[1mrequirements:[0m AutoUpdate success ✅ 11.1s
+WARNING ⚠️ [31m[1mrequirements:[0m [1mRestart runtime or rerun command for updates to take effect[0m
+
+
+[34m[1mONNX:[0m starting export with onnx 1.23.2 opset 12...
+[34m[1mONNX:[0m slimming with onnxslim 0.1.99...
+[0;93m2026-11-05 14:52:33.965256529 [W:onnxruntime:Default, device_discovery.cc:164 DiscoverDevicesForPlatform] GPU device discovery failed: device_discovery.cc:89 ReadFileContents Failed to open file: "/sys/class/drm/card0/device/vendor"[m
+[34m[1mONNX:[0m export success ✅ 15.6s, saved as '/home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/vision-based-electronic-component-identification/weights/best.onnx' (10.4 MB)
+
+Export complete (17.0s)
+Results saved to [1m/home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/vision-based-electronic-component-identification/weights/best.onnx[0m
+Predict:         yolo predict task=detect model=/home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/vision-based-electronic-component-identification/weights/best.onnx imgsz=1024 
+Validate:        yolo val task=detect model=/home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/vision-based-electronic-component-identification/weights/best.onnx imgsz=1024  
+Visualize:       https://netron.app
+Modello esportato con successo in: /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/vision-based-electronic-component-identification/weights/best.onnx
+Classi esportate in: /home/alexpauro/Tesi/PcbDetectionAllignmentLeonardo/pcb_component_detection/vision-based-electronic-component-identification/weights/best_classes.txt
+[ComponentDetector] Esportazione completata con successo.
+   Unificazione classi del modello (61 classi):
+[ClassMapper] Mappatura automatica: '1-5-Volt-Battery' [vision-based-electronic-component-identification] -> 'Other' (confidenza: 95%, SUBSTRING_MATCH [battery])
+     - '1-5-Volt-Battery' -> 'Other'
+[ClassMapper] Mappatura automatica: '3-3-Volt-Battery' [vision-based-electronic-component-identification] -> 'Other' (confidenza: 95%, SUBSTRING_MATCH [battery])
+     - '3-3-Volt-Battery' -> 'Other'
+[ClassMapper] Mappatura automatica: '7-Segment-Display' [vision-based-electronic-component-identification] -> 'Other' (confidenza: 95%, SUBSTRING_MATCH [display])
+     - '7-Segment-Display' -> 'Other'
+[ClassMapper] Mappatura automatica: '9-Volt-Battery' [vision-based-electronic-component-identification] -> 'Other' (confidenza: 95%, SUBSTRING_MATCH [battery])
+     - '9-Volt-Battery' -> 'Other'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Arduino-Mega'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Arduino-Mega' [vision-based-electronic-component-identification] -> '?'
+     - 'Arduino-Mega' -> '?'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Arduino-Nano'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Arduino-Nano' [vision-based-electronic-component-identification] -> '?'
+     - 'Arduino-Nano' -> '?'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Arduino-Uno'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Arduino-Uno' [vision-based-electronic-component-identification] -> '?'
+     - 'Arduino-Uno' -> '?'
+[ClassMapper] Mappatura automatica: 'BJT-Transistor' [vision-based-electronic-component-identification] -> 'Transistor' (confidenza: 95%, SUBSTRING_MATCH [transistor])
+     - 'BJT-Transistor' -> 'Transistor'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Bluetooth-Module'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Bluetooth-Module' [vision-based-electronic-component-identification] -> '?'
+     - 'Bluetooth-Module' -> '?'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Breadboard'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Breadboard' [vision-based-electronic-component-identification] -> '?'
+     - 'Breadboard' -> '?'
+[ClassMapper] Mappatura automatica: 'Bridge-Rectifier' [vision-based-electronic-component-identification] -> 'Diode' (confidenza: 95%, SUBSTRING_MATCH [rectifier])
+     - 'Bridge-Rectifier' -> 'Diode'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Buck-Converter'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Buck-Converter' [vision-based-electronic-component-identification] -> '?'
+     - 'Buck-Converter' -> '?'
+     - 'Buzzer' -> 'Other'
+[ClassMapper] Mappatura automatica: 'Capacitor-10mf' [vision-based-electronic-component-identification] -> 'Capacitor' (confidenza: 95%, SUBSTRING_MATCH [capacitor])
+     - 'Capacitor-10mf' -> 'Capacitor'
+[ClassMapper] Mappatura automatica: 'Capacitor-470mf' [vision-based-electronic-component-identification] -> 'Capacitor' (confidenza: 95%, SUBSTRING_MATCH [capacitor])
+     - 'Capacitor-470mf' -> 'Capacitor'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'DC-Motor'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'DC-Motor' [vision-based-electronic-component-identification] -> '?'
+     - 'DC-Motor' -> '?'
+     - 'Diode' -> 'Diode'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'ESP32'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'ESP32' [vision-based-electronic-component-identification] -> '?'
+     - 'ESP32' -> '?'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'ESP32-CAM'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'ESP32-CAM' [vision-based-electronic-component-identification] -> '?'
+     - 'ESP32-CAM' -> '?'
+[ClassMapper] Mappatura automatica: 'FT-232-USB-Serial-Module' [vision-based-electronic-component-identification] -> 'Connector' (confidenza: 95%, WHOLE_TOKEN_MATCH [usb])
+     - 'FT-232-USB-Serial-Module' -> 'Connector'
+[ClassMapper] Mappatura automatica: 'Film-Capacitor' [vision-based-electronic-component-identification] -> 'Capacitor' (confidenza: 95%, SUBSTRING_MATCH [capacitor])
+     - 'Film-Capacitor' -> 'Capacitor'
+     - 'Fuse' -> 'Other'
+[ClassMapper] Mappatura automatica: 'Fuse-Base' [vision-based-electronic-component-identification] -> 'Other' (confidenza: 95%, SUBSTRING_MATCH [fuse])
+     - 'Fuse-Base' -> 'Other'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'GSM-Module'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'GSM-Module' [vision-based-electronic-component-identification] -> '?'
+     - 'GSM-Module' -> '?'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Gas-Sensor'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Gas-Sensor' [vision-based-electronic-component-identification] -> '?'
+     - 'Gas-Sensor' -> '?'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Heat-Sink'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Heat-Sink' [vision-based-electronic-component-identification] -> '?'
+     - 'Heat-Sink' -> '?'
+[ClassMapper] Mappatura automatica: 'High-Voltage-Ceramic-Capacitor' [vision-based-electronic-component-identification] -> 'Capacitor' (confidenza: 95%, SUBSTRING_MATCH [capacitor])
+     - 'High-Voltage-Ceramic-Capacitor' -> 'Capacitor'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Humidity-Sensor'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Humidity-Sensor' [vision-based-electronic-component-identification] -> '?'
+     - 'Humidity-Sensor' -> '?'
+[ClassMapper] Mappatura automatica: 'IC-Base-14-Pin' [vision-based-electronic-component-identification] -> 'IC' (confidenza: 90%, WHOLE_TOKEN_MATCH [ic])
+     - 'IC-Base-14-Pin' -> 'IC'
+[ClassMapper] Mappatura automatica: 'IC-Base-28-Pin' [vision-based-electronic-component-identification] -> 'IC' (confidenza: 90%, WHOLE_TOKEN_MATCH [ic])
+     - 'IC-Base-28-Pin' -> 'IC'
+[ClassMapper] Mappatura automatica: 'IC-Chip' [vision-based-electronic-component-identification] -> 'IC' (confidenza: 90%, WHOLE_TOKEN_MATCH [chip])
+     - 'IC-Chip' -> 'IC'
+     - 'IGBT' -> 'Transistor'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'IR-Sensor'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'IR-Sensor' [vision-based-electronic-component-identification] -> '?'
+     - 'IR-Sensor' -> '?'
+     - 'Inductor' -> 'Inductor'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Keypad'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Keypad' [vision-based-electronic-component-identification] -> '?'
+     - 'Keypad' -> '?'
+[ClassMapper] Mappatura automatica: 'LCD-Display' [vision-based-electronic-component-identification] -> 'Other' (confidenza: 95%, SUBSTRING_MATCH [display])
+     - 'LCD-Display' -> 'Other'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'LDR-Sensor'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'LDR-Sensor' [vision-based-electronic-component-identification] -> '?'
+     - 'LDR-Sensor' -> '?'
+[ClassMapper] Mappatura automatica: 'LED-Light' [vision-based-electronic-component-identification] -> 'LED' (confidenza: 95%, WHOLE_TOKEN_MATCH [led])
+     - 'LED-Light' -> 'LED'
+[ClassMapper] Mappatura automatica: 'Low-Voltage-Ceramic-Capacitor' [vision-based-electronic-component-identification] -> 'Capacitor' (confidenza: 95%, SUBSTRING_MATCH [capacitor])
+     - 'Low-Voltage-Ceramic-Capacitor' -> 'Capacitor'
+[ClassMapper] Mappatura automatica: 'MLC-Capacitor' [vision-based-electronic-component-identification] -> 'Capacitor' (confidenza: 95%, SUBSTRING_MATCH [capacitor])
+     - 'MLC-Capacitor' -> 'Capacitor'
+     - 'MOSFET' -> 'Transistor'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Motion-Sensor'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Motion-Sensor' [vision-based-electronic-component-identification] -> '?'
+     - 'Motion-Sensor' -> '?'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Motor-Driver'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Motor-Driver' [vision-based-electronic-component-identification] -> '?'
+     - 'Motor-Driver' -> '?'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'NTC-Thermistor'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'NTC-Thermistor' [vision-based-electronic-component-identification] -> '?'
+     - 'NTC-Thermistor' -> '?'
+[ClassMapper] Mappatura automatica: 'OLED-Display' [vision-based-electronic-component-identification] -> 'Other' (confidenza: 95%, SUBSTRING_MATCH [display])
+     - 'OLED-Display' -> 'Other'
+     - 'Pin-Header' -> 'Connector'
+[ClassMapper] Mappatura automatica: 'Push-Switch' [vision-based-electronic-component-identification] -> 'Switch/Button' (confidenza: 95%, SUBSTRING_MATCH [switch])
+     - 'Push-Switch' -> 'Switch/Button'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'RFID-Scanner'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'RFID-Scanner' [vision-based-electronic-component-identification] -> '?'
+     - 'RFID-Scanner' -> '?'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Raindrops-Module'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Raindrops-Module' [vision-based-electronic-component-identification] -> '?'
+     - 'Raindrops-Module' -> '?'
+[ClassMapper] Mappatura automatica: 'Relay-Module' [vision-based-electronic-component-identification] -> 'Other' (confidenza: 95%, SUBSTRING_MATCH [relay])
+     - 'Relay-Module' -> 'Other'
+     - 'Resistor' -> 'Resistor'
+[ClassMapper] Mappatura automatica: 'Rocker-Switch' [vision-based-electronic-component-identification] -> 'Switch/Button' (confidenza: 95%, SUBSTRING_MATCH [switch])
+     - 'Rocker-Switch' -> 'Switch/Button'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Servo-Motor'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Servo-Motor' [vision-based-electronic-component-identification] -> '?'
+     - 'Servo-Motor' -> '?'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Soil-Moisture-Sensor'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Soil-Moisture-Sensor' [vision-based-electronic-component-identification] -> '?'
+     - 'Soil-Moisture-Sensor' -> '?'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Sonar-Sensor'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Sonar-Sensor' [vision-based-electronic-component-identification] -> '?'
+     - 'Sonar-Sensor' -> '?'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'TCRT5000'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'TCRT5000' [vision-based-electronic-component-identification] -> '?'
+     - 'TCRT5000' -> '?'
+[ClassMapper] Mappatura automatica: 'Tact-Switch' [vision-based-electronic-component-identification] -> 'Switch/Button' (confidenza: 102%, SUBSTRING_MATCH [tact switch])
+     - 'Tact-Switch' -> 'Switch/Button'
+[ClassMapper] Mappatura automatica: 'Taper-Potentiometer' [vision-based-electronic-component-identification] -> 'Resistor' (confidenza: 95%, SUBSTRING_MATCH [potentiometer])
+     - 'Taper-Potentiometer' -> 'Resistor'
+[ClassMapper] Mappatura automatica: 'Trimmer-Potentiometer' [vision-based-electronic-component-identification] -> 'Resistor' (confidenza: 95%, SUBSTRING_MATCH [potentiometer])
+     - 'Trimmer-Potentiometer' -> 'Resistor'
+
+========================================================================
+ [ClassMapper] ASSOCIAZIONE CLASSE INCERTA RILEVATA                     
+========================================================================
+  Modello:           vision-based-electronic-component-identification
+  Classe originale:  'Water-Sensor'
+------------------------------------------------------------------------
+Seleziona a quale classe di ParsaVictor associare questa classe:
+  1) Resistor
+  2) Capacitor
+  3) Electrolytic Capacitor
+  4) IC
+  5) Inductor
+  6) Diode
+  7) LED
+  8) Transistor
+  9) Oscillator
+ 10) Connector
+ 11) Switch/Button
+ 12) Other
+ 13) Marker
+ 14) Sconosciuto (?) / Ignora
+Inserisci numero (1-14, default 14): [ClassMapper] Associazione registrata dall'utente: 'Water-Sensor' [vision-based-electronic-component-identification] -> '?'
+     - 'Water-Sensor' -> '?'
+     - 'Zener-Diode' -> 'Diode'
+   [OK] Modello 'vision-based-electronic-component-identification' pronto per l'inferenza.
+
+========================================================================
+ RIEPILOGO: 4 algoritmi/pesi DL attivi e pronti per l'ensemble.
+========================================================================
+
+Rilevatore multi-modello pronto con 4 algoritmi/pesi attivi.
+
+--- Elaborazione componenti per scheda: A [TOP] ---
+
+Elaborazione di 10 immagini per A [TOP]...
+
+-> Esecuzione rilevamento su: A_TOP_001.bmp ...
+   - Modello [ParsaVictor]: trovati 14 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 14 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 11 componenti.
+   - Modello [vision-based-electronic-component-identification]: trovati 1 componenti.
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_001_summary.json
+   Trovati 18 componenti.
+   Dettaglio classi:
+     - Diode: 1
+     - IC: 7
+     - Other: 6
+     - Resistor: 4
+
+-> Esecuzione rilevamento su: A_TOP_002.bmp ...
+   - Modello [ParsaVictor]: trovati 6 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 6 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 49 componenti.
+   - Modello [vision-based-electronic-component-identification]: trovati 0 componenti.
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_002_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_002_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_002_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_002_summary.json
+   Trovati 53 componenti.
+   Dettaglio classi:
+     - Diode: 1
+     - Electrolytic Capacitor: 1
+     - IC: 2
+     - Other: 4
+     - Resistor: 45
+
+-> Esecuzione rilevamento su: A_TOP_003.bmp ...
+   - Modello [ParsaVictor]: trovati 138 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 138 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 105 componenti.
+   - Modello [vision-based-electronic-component-identification]: trovati 0 componenti.
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_003_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_003_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_003_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_003_summary.json
+   Trovati 155 componenti.
+   Dettaglio classi:
+     - Capacitor: 9
+     - Connector: 2
+     - Diode: 1
+     - IC: 12
+     - Other: 102
+     - Resistor: 28
+     - Transistor: 1
+
+-> Esecuzione rilevamento su: A_TOP_004.bmp ...
+   - Modello [ParsaVictor]: trovati 118 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 118 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 121 componenti.
+   - Modello [vision-based-electronic-component-identification]: trovati 0 componenti.
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_004_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_004_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_004_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_004_summary.json
+   Trovati 146 componenti.
+   Dettaglio classi:
+     - Capacitor: 17
+     - Connector: 2
+     - Electrolytic Capacitor: 1
+     - IC: 14
+     - Marker: 5
+     - Other: 83
+     - Resistor: 24
+
+-> Esecuzione rilevamento su: A_TOP_005.bmp ...
+   - Modello [ParsaVictor]: trovati 21 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 21 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 29 componenti.
+   - Modello [vision-based-electronic-component-identification]: trovati 0 componenti.
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_005_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_005_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_005_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_005_summary.json
+   Trovati 36 componenti.
+   Dettaglio classi:
+     - Capacitor: 7
+     - Diode: 2
+     - IC: 12
+     - Oscillator: 1
+     - Other: 9
+     - Resistor: 2
+     - Transistor: 3
+
+-> Esecuzione rilevamento su: A_TOP_006.bmp ...
+   - Modello [ParsaVictor]: trovati 82 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 82 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 114 componenti.
+   - Modello [vision-based-electronic-component-identification]: trovati 0 componenti.
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_006_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_006_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_006_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_006_summary.json
+   Trovati 128 componenti.
+   Dettaglio classi:
+     - Capacitor: 13
+     - Connector: 2
+     - Electrolytic Capacitor: 2
+     - IC: 19
+     - Marker: 3
+     - Other: 56
+     - Resistor: 29
+     - Switch/Button: 1
+     - Transistor: 3
+
+-> Esecuzione rilevamento su: A_TOP_007.bmp ...
+   - Modello [ParsaVictor]: trovati 68 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 68 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 95 componenti.
+   - Modello [vision-based-electronic-component-identification]: trovati 1 componenti.
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_007_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_007_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_007_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_007_summary.json
+   Trovati 103 componenti.
+   Dettaglio classi:
+     - Capacitor: 4
+     - Connector: 1
+     - Electrolytic Capacitor: 2
+     - IC: 17
+     - Inductor: 1
+     - Marker: 3
+     - Oscillator: 1
+     - Other: 50
+     - Resistor: 23
+     - Transistor: 1
+
+-> Esecuzione rilevamento su: A_TOP_008.bmp ...
+   - Modello [ParsaVictor]: trovati 65 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 65 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 25 componenti.
+   - Modello [vision-based-electronic-component-identification]: trovati 0 componenti.
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_008_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_008_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_008_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_008_summary.json
+   Trovati 73 componenti.
+   Dettaglio classi:
+     - Capacitor: 2
+     - Connector: 1
+     - Diode: 2
+     - IC: 5
+     - Other: 55
+     - Resistor: 8
+
+-> Esecuzione rilevamento su: A_TOP_009.bmp ...
+   - Modello [ParsaVictor]: trovati 12 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 12 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 10 componenti.
+   - Modello [vision-based-electronic-component-identification]: trovati 1 componenti.
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_009_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_009_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_009_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_009_summary.json
+   Trovati 18 componenti.
+   Dettaglio classi:
+     - Diode: 1
+     - IC: 6
+     - Other: 7
+     - Resistor: 4
+
+-> Esecuzione rilevamento su: A_TOP_010.bmp ...
+   - Modello [ParsaVictor]: trovati 12 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 12 componenti.
+   - Modello [pcb-component-detection-yolo26]: trovati 12 componenti.
+   - Modello [vision-based-electronic-component-identification]: trovati 2 componenti.
+[ComponentDetector] Salvata immagine elementi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_010_elements.jpg
+[ComponentDetector] Salvata immagine tipi: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_010_types.jpg
+[ComponentDetector] Salvato report CSV: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_010_detections.csv
+[ComponentDetector] Salvato riepilogo JSON: ../data/outputs/pcb_component_detection/A/TOP/A_TOP_010_summary.json
+   Trovati 19 componenti.
+   Dettaglio classi:
+     - Diode: 1
+     - IC: 8
+     - Other: 6
+     - Resistor: 4
+Risultati salvati in: "../data/outputs/pcb_component_detection/A/TOP"
+
+========================================================
+Rilevamento componenti completato con successo!
+Immagini, CSV e riepiloghi JSON salvati in: ../data/outputs/pcb_component_detection
+========================================================
+
+========================================================
+=== AVVIO ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE ===
+========================================================
+[ComponentDetector] Trovato modello ONNX già esportato: "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx"
+[ComponentDetector] Caricamento rete ANY: ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/any_best.onnx ...
+[ComponentDetector] Modello ANY caricato con successo.
+[ComponentDetector] Trovato modello ONNX già esportato: "../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx"
+[ComponentDetector] Caricamento rete FINE: ../pcb_component_detection/ParsaVictor/pcb-component-detection-yolo26/weights/fine_best.onnx ...
+[ComponentDetector] Modello FINE caricato con successo (13 classi configurate).
+
+Vuoi selezionare manualmente la foto base per il rendering grafico di ciascun lato? (S/N, default S): 
+--- Elaborazione output per scheda: A [TOP] ---
+
+========================================================
+ ELABORAZIONE OUTPUT E FUSIONE MULTI-ESPOSIZIONE        
+ Scheda: A | Lato: TOP
+========================================================
+
+-> Foto consigliata (piu' componenti rilevati): A_TOP_003 (155 componenti DL)
+
+--- STEP 1: Fusione rilevamenti DL multi-esposizione ---
+   Componenti DL unificati totali: 194
+   Dettaglio classi (priorita' no-? e voti di maggioranza):
+     - Capacitor: 10
+     - Connector: 2
+     - Electrolytic Capacitor: 2
+     - IC: 19
+     - Marker: 3
+     - Other: 103
+     - Resistor: 51
+     - Switch/Button: 1
+     - Transistor: 3
+
+--- STEP 2: Riconoscimento componenti CV con pesi Deep Learning ---
+   Caricati 428 componenti CV da ../data/outputs/pcb_cv_component_detection/A/TOP/A_TOP_003_components_cv.csv
+   Componenti CV classificati totali: 428
+   Dettaglio classi CV riconosciute con pesi DL:
+     - ?: 68
+     - Capacitor: 11
+     - Connector: 3
+     - Electrolytic Capacitor: 8
+     - IC: 97
+     - Marker: 3
+     - Other: 211
+     - Resistor: 20
+     - Switch/Button: 1
+     - Transistor: 6
+
+--- STEP 3: Elaborazione Componenti Finali ---
+   [Modalità 3: Entrambi DL + CV Classica]
+
+--- FASE 1: Armonizzazione Componenti Identici Riconosciuti ---
+   Cluster di componenti identici identificati: 15
+   Componenti ri-classificati/uniformati: 14
+     * Cluster #3 (2 componenti identici): Classe armonizzata: 'Capacitor' (Conf: 0.79). 1 corretti/promossi da: [Other: 1] 
+     * Cluster #7 (2 componenti identici): Classe armonizzata: 'Other' (Conf: 0.77). 1 corretti/promossi da: [Electrolytic Capacitor: 1] 
+     * Cluster #10 (28 componenti identici): Classe armonizzata: 'Other' (Conf: 0.75). 9 corretti/promossi da: [Capacitor: 1] [Resistor: 8] 
+     * Cluster #11 (2 componenti identici): Classe armonizzata: 'IC' (Conf: 0.50). 1 corretti/promossi da: [Transistor: 1] 
+     * Cluster #12 (3 componenti identici): Classe armonizzata: 'Resistor' (Conf: 0.75). 1 corretti/promossi da: [Other: 1] 
+     * Cluster #15 (4 componenti identici): Classe armonizzata: 'Capacitor' (Conf: 0.75). 1 corretti/promossi da: [Other: 1] 
+
+--- FASE 2: Ricerca Globale su tutta la Scheda di Porzioni Simili ---
+   Nuovi componenti scoperti su scheda: 7
+     + Trovato nuovo componente: Other ad alta similarita' a (822.00, 102.00) [Conf: 0.92]
+     + Trovato nuovo componente: Other ad alta similarita' a (870.00, 102.00) [Conf: 0.92]
+     + Trovato nuovo componente: Other ad alta similarita' a (893.00, 102.00) [Conf: 0.92]
+     + Trovato nuovo componente: Other ad alta similarita' a (917.00, 103.00) [Conf: 0.92]
+     + Trovato nuovo componente: Capacitor ad alta similarita' a (756.00, 547.00) [Conf: 0.79]
+     + Trovato nuovo componente: Resistor ad alta similarita' a (622.00, 653.00) [Conf: 0.86]
+     + Trovato nuovo componente: Resistor ad alta similarita' a (648.00, 723.00) [Conf: 0.88]
+   Totale componenti finali unificati: 199
+   Ripartizione per fonte:
+     - DL_ONLY: 96
+     - FUSED_DL_CV: 96
+     - SIMILARITY_DISCOVERED: 7
+   Riepilogo finale classi:
+     - Capacitor: 12
+     - Connector: 2
+     - Electrolytic Capacitor: 1
+     - IC: 20
+     - Marker: 3
+     - Other: 112
+     - Resistor: 46
+     - Switch/Button: 1
+     - Transistor: 2
+
+[OutputProcessor] Salvataggio passaggi intermedi in: ../data/outputs/pcb_processed_output/A/TOP
+  -> [Step 1] Immagine elementi DL: ../data/outputs/pcb_processed_output/A/TOP/step1_merged_dl_elements.jpg
+  -> [Step 1] Immagine tipi DL: ../data/outputs/pcb_processed_output/A/TOP/step1_merged_dl_types.jpg
+  -> [Step 1] Report CSV: ../data/outputs/pcb_processed_output/A/TOP/step1_merged_dl_detections.csv
+  -> [Step 1] Riepilogo JSON: ../data/outputs/pcb_processed_output/A/TOP/step1_merged_dl_summary.json
+  -> [Step 2] Immagine elementi CV: ../data/outputs/pcb_processed_output/A/TOP/step2_cv_dl_elements.jpg
+  -> [Step 2] Immagine CV classificati DL: ../data/outputs/pcb_processed_output/A/TOP/step2_cv_dl_classified.jpg
+  -> [Step 2] Report CSV: ../data/outputs/pcb_processed_output/A/TOP/step2_cv_dl_detections.csv
+  -> [Step 2] Riepilogo JSON: ../data/outputs/pcb_processed_output/A/TOP/step2_cv_dl_summary.json
+  -> [Step 3] Immagine finale elementi: ../data/outputs/pcb_processed_output/A/TOP/step3_final_fused_elements.jpg
+  -> [Step 3] Immagine finale tipi con legenda: ../data/outputs/pcb_processed_output/A/TOP/step3_final_fused_types.jpg
+  -> [Step 3] Immagine finale geometrica per fonti: ../data/outputs/pcb_processed_output/A/TOP/step3_final_fused_geometric.jpg
+  -> [Step 3] Report CSV Finale Completo: ../data/outputs/pcb_processed_output/A/TOP/final_fused_components.csv
+  -> [Step 3] Riepilogo JSON Finale Completo: ../data/outputs/pcb_processed_output/A/TOP/final_fused_summary.json
+
+========================================================
+Elaborazione output e fusione completata con successo!
+Tutti i passaggi intermedi salvati in:
+  ../data/outputs/pcb_processed_output
+========================================================
+
+========================================================
+=== AVVIO VERIFICA E ARMONIZZAZIONE COMPONENTI (AOI) ===
+========================================================
+
+--- Elaborazione verifica AOI per scheda: A [TOP] ---
+
+========================================================
+ AVVIO VERIFICA AOI: A [TOP]
+========================================================
+[AOI] Caricate 194 associazioni dal file di mapping: ../data/parameters/component_cv_mapping.txt
+[AOI] Analisi del file coordinate AOI: ../data/inputs/pcb_coordinates_componentes_from_aoi/A/TOP/AA900789820001ABTOP-AOI.asc
+[AOI] File analizzato con successo: 194 componenti nominali.
+[AOI] Ingombro da piazzole Gerber disabilitato come da specifica utente.
+[AOI] Riquadri determinati direttamente da DL e da sovrapposizione multi-foto CV.
+[AOI] Utilizzo dell'immagine base scelta dall'utente per il rendering grafico: A_TOP_003.bmp
+[AOI] Caricamento sovrapposizione CV da 10 foto...
+[AOI] Sovrapposizione multi-foto CV completata: caricati 5670 elementi geometrici da 10 esposizioni.
+[AOI] Migliore orientazione teorica: rot180 (Inlier iniziali: 184/194)
+[AOI] Modello di correzione distorsione ottica e prospettica stimato con successo!
+  - Corrispondenza inlier: 188/194 (96.9%)
+  - Errore medio di allineamento: 4.26 px (0.37 mm)
+
+========================================================
+[AOI] RIEPILOGO VERIFICA ARMONIZZATA (DL + SOVRAPPOSIZIONE CV):
+  - Componenti nominali AOI:         194
+  - Match esatti confermati (DL):    55
+  - Classi errate corrette con AOI:  124
+  - Totale associati su scheda:      179 / 194 (92.3%)
+  - Componenti mancanti recuperati:  15
+  - Rilevamenti extra (non disegnati):20
+  - Scostamento medio reale/nominale:4.94 px (0.434 mm)
+========================================================
+[AOI] Salvato CSV componenti verificati in: ../data/outputs/pcb_aoi_verification/A/TOP/A_TOP_003_aoi_verified_components.csv
+[AOI] Salvato JSON riepilogo in: ../data/outputs/pcb_aoi_verification/A/TOP/A_TOP_003_aoi_verified_summary.json
+[AOI] Salvata immagine allineamento in: ../data/outputs/pcb_aoi_verification/A/TOP/A_TOP_003_best_alignment.jpg
+[AOI] Salvata immagine tipi verificati in: ../data/outputs/pcb_aoi_verification/A/TOP/A_TOP_003_verified_types.jpg
+[AOI] Salvata immagine elementi verificati in: ../data/outputs/pcb_aoi_verification/A/TOP/A_TOP_003_verified_elements.jpg
+[AOI] Salvati parametri YAML in: ../data/parameters/aoi_alignment_A_TOP.yml
+
+========================================================
+Verifica componenti AOI completata con successo!
+Immagini con allineamento e componenti verificati salvate in:
+  ../data/outputs/pcb_aoi_verification
+========================================================
+
+========================================================
+=== AVVIO ALLINEAMENTO E MODELLAZIONE REALE COMPONENTI ===
+========================================================
+
+--- Elaborazione allineamento per scheda: A [TOP] ---
+[ALIGNMENT] Caricamento di 10 immagini a esposizione diversa per estrazione multi-modale...
+[ALIGNMENT] Caricate con successo 10 immagini multi-esposizione.
+[ALIGNMENT] Caricati parametri allineamento e omografia da: "../data/parameters/aoi_alignment_A_TOP.yml"
+[ALIGNMENT] Caricati 194 componenti verificati da: ../data/outputs/pcb_aoi_verification/A/TOP/A_TOP_003_aoi_verified_components.csv
+
+========================================================
+=== AVVIO MODELLAZIONE PRECISA COMPONENTI (CALIPER + TEMPLATE) ===
+========================================================
+[ALIGNMENT] Totale componenti in ingresso: 194 | Immagini multi-esposizione: 10
+[ALIGNMENT] Ordinamento completato: componenti ordinati per area decrescente (da max a min).
+
+========================================================
+=== RIEPILOGO FINALE FUSIONE CALIPER + EDGE-TEMPLATE ===
+  - Totale componenti elaborati:       194
+  - Componenti da Processed Output:    179
+  - Componenti recuperati da AOI:      15
+  - Micro-orientamento rifinito:       194 / 194
+  - Scostamento medio reale/nominale:  0.411 mm (4.69 px)
+  - Errore medio micro-rotazione:      0.15°
+========================================================
+[ALIGNMENT] Salvato CSV componenti allineati: ../data/outputs/pcb_component_alignment/A/TOP/A_TOP_003_precise_aligned_components.csv
+[ALIGNMENT] Salvato JSON riepilogo: ../data/outputs/pcb_component_alignment/A/TOP/A_TOP_003_precise_aligned_summary.json
+[ALIGNMENT] Salvata immagine contorni sottili e colorati: ../data/outputs/pcb_component_alignment/A/TOP/A_TOP_003_aligned_contours.jpg
+[ALIGNMENT] Salvata immagine rettangoli aderenti: ../data/outputs/pcb_component_alignment/A/TOP/A_TOP_003_precise_bounding_boxes.jpg
+[ALIGNMENT] Salvate 4 maschere dei filtri intermedi in: "../data/outputs/pcb_component_alignment/A/TOP/intermediate_filters"
+
+========================================================
+Allineamento e modellazione componenti completata con successo!
+Immagini e file CSV salvati in:
+  ../data/outputs/pcb_component_alignment
+========================================================
+
+Pipeline complessiva completata con successo.
+
+=== PROGRAMMA TERMINATO (Codice: 0) ===

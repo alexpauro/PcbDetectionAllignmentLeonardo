@@ -42,7 +42,8 @@ bool AoiVerificationProcessor::saveResults(
     if (csv.is_open()) {
         csv << "id,ref_des,status,final_label,original_label,confidence,source,center_x,center_y,width,height,"
             << "angle_deg,radius,area,nominal_x_mm,nominal_y_mm,nominal_width_mm,nominal_height_mm,"
-            << "nominal_x_px,nominal_y_px,offset_px,offset_mm,aoi_part_number,aoi_outline,notes\n";
+            << "nominal_x_px,nominal_y_px,offset_px,offset_mm,aoi_part_number,aoi_outline,notes,"
+            << "datasheet_width_mm,datasheet_height_mm,datasheet_thickness_mm,datasheet_source,nominal_rot_deg\n";
 
         for (const auto& c : result.verified_components) {
             if (c.status == AoiMatchStatus::UNMATCHED_DETECTION) continue;
@@ -51,13 +52,16 @@ bool AoiVerificationProcessor::saveResults(
             if (c.status == AoiMatchStatus::CLASS_CORRECTED) stStr = "CLASS_CORRECTED";
             else if (c.status == AoiMatchStatus::RECOVERED_BY_AOI) stStr = "RECOVERED_BY_AOI";
 
-            double nomX_mm = 0.0, nomY_mm = 0.0;
-            auto itAoi = std::find_if(result.aoi_components.begin(), result.aoi_components.end(), [&](const AoiComponent& a) {
-                return a.ref_des == c.ref_des;
-            });
-            if (itAoi != result.aoi_components.end()) {
-                nomX_mm = itAoi->x_mm;
-                nomY_mm = itAoi->y_mm;
+            double nomX_mm = c.nominal_x_mm, nomY_mm = c.nominal_y_mm, nomRot_deg = c.nominal_rot_deg;
+            if (nomX_mm == 0.0 && nomY_mm == 0.0) {
+                auto itAoi = std::find_if(result.aoi_components.begin(), result.aoi_components.end(), [&](const AoiComponent& a) {
+                    return a.ref_des == c.ref_des;
+                });
+                if (itAoi != result.aoi_components.end()) {
+                    nomX_mm = itAoi->x_mm;
+                    nomY_mm = itAoi->y_mm;
+                    nomRot_deg = itAoi->rot_deg;
+                }
             }
 
             csv << c.id << ",\""
@@ -77,7 +81,12 @@ bool AoiVerificationProcessor::saveResults(
                 << c.offset_error_px << "," << std::setprecision(3) << c.offset_error_mm << ",\""
                 << c.aoi_part_number << "\",\""
                 << c.aoi_outline << "\",\""
-                << c.notes << "\"\n";
+                << c.notes << "\","
+                << c.datasheet_width_mm << ","
+                << c.datasheet_height_mm << ","
+                << c.datasheet_thickness_mm << ",\""
+                << c.datasheet_source << "\","
+                << std::setprecision(2) << nomRot_deg << "\n";
         }
         std::cout << "[AOI] Salvato CSV componenti verificati in: " << csvPath << std::endl;
     }
